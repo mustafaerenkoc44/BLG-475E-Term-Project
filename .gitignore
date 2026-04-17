@@ -1,0 +1,14 @@
+.idea/
+.vscode/
+*.iml
+.tools/
+
+Phase1/target/
+Phase2/target/
+
+Phase1/data/raw/*.jsonl.gz
+Phase1/tasks/**/dataset/canonical_solution.java
+Phase1/results/artifacts/
+
+coverage/
+jacoco.exec

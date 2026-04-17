@@ -1,0 +1,4 @@
+task_id,model_name,compiles,base_tests_passed,base_tests_total,improved_tests_passed,improved_tests_total,branch_coverage_percent,branches_missed,manual_eq_class_coverage_percent,refactor_needed,final_status,notes
+Java/2,Qwen2.5-Coder-7B-Instruct,,,,,,,,,,,
+Java/2,DeepSeek-Coder-V2-Lite-Instruct,,,,,,,,,,,
+
