@@ -1,4 +1,4 @@
-# BLG 475E - Term Project
+﻿# BLG 475E - Term Project
 
 [![Phase 1 CI](https://github.com/mustafaerenkoc44/BLG-475E-Term-Project/actions/workflows/phase1-ci.yml/badge.svg)](https://github.com/mustafaerenkoc44/BLG-475E-Term-Project/actions/workflows/phase1-ci.yml)
 [![Phase 2 CI](https://github.com/mustafaerenkoc44/BLG-475E-Term-Project/actions/workflows/phase2-ci.yml/badge.svg)](https://github.com/mustafaerenkoc44/BLG-475E-Term-Project/actions/workflows/phase2-ci.yml)
@@ -43,6 +43,7 @@ The repository is organized around two connected deliverables:
 - final `BookScan` implementation passed `15/15` integration and regression
   tests
 - final `BookScan` branch coverage: `97.22%` (`70 / 72`)
+- final `BookScan` line coverage: `99.09%` (`109 / 110`)
 - prompt-combination experiment results:
   - original combined prompt, Qwen: `7/15` tests passed
   - original combined prompt, DeepSeek: `9/15` tests passed
@@ -50,6 +51,8 @@ The repository is organized around two connected deliverables:
   - edited combined prompt, DeepSeek: `15/15` tests passed, `95.31%` branch coverage
 - the selected final implementation outperforms both raw original-prompt
   variants and slightly exceeds the best edited-prompt coverage result
+- the two Phase 2 residual branch misses are documented, intentional
+  defensive helper guards that cannot be reached through the public API
 
 ## Repository Layout
 
@@ -74,13 +77,19 @@ Phase 1 result summary:
 
 - `Phase1/docs/analysis/phase1_execution_report.md`
 - `Phase1/docs/analysis/task_level_review.md`
-- `Phase1/docs/report/phase1_report_draft.md`
+- `Phase1/docs/analysis/mutation_testing_strategy.md`
+- `Phase1/docs/report/phase1_report_draft.md` (Markdown draft)
+- `Phase1/docs/report/ieee/phase1_report.tex` +
+  `phase1_report.bib` (IEEE conference template)
 
 Phase 2 result summary:
 
 - `Phase2/docs/analysis/phase2_execution_report.md`
 - `Phase2/docs/analysis/prompt_strategy_comparison.md`
-- `Phase2/docs/report/phase2_report_draft.md`
+- `Phase2/docs/analysis/black_box_assessment.md`
+- `Phase2/docs/report/phase2_report_draft.md` (Markdown draft)
+- `Phase2/docs/report/ieee/phase2_report.tex` +
+  `phase2_report.bib` (IEEE conference template)
 
 ## Reproducibility Notes
 

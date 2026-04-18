@@ -78,10 +78,14 @@ did not define many integration details. The edited combined prompt clarified:
 ### C. Toolchain
 
 - Java 21
-- Maven 3.9+
-- JUnit 6
-- JaCoCo 0.8.12
+- Maven 3.9+ (Surefire 3.5, JaCoCo 0.8.12)
+- JUnit 6 (`junit-platform-console-standalone-6.0.3`)
+- PITest 1.20.5 with `pitest-junit5-plugin` 1.2.3 exposed through an opt-in
+  Maven profile `mutation` (`mvn -P mutation test`) so that an automated
+  mutation score can be produced on top of the hand-crafted Phase 1
+  guardrails without slowing down the default `mvn clean verify` cycle
 - PowerShell 7 + Python 3.11 helper scripts
+- GitHub Actions workflow `.github/workflows/phase2-ci.yml`
 
 ## III. `BookScan` Design
 

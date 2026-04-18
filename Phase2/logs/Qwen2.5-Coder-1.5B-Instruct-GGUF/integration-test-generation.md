@@ -33,3 +33,31 @@ The scenario list was merged with the manual black-box assessment and then
 implemented as `BookScanIntegrationTest.java` plus `BookScanRegressionTest.java`.
 The final test code is stricter than the raw suggestion because it also checks
 result maps and line-number ordering.
+
+## Scenario-to-Test Mapping
+
+The table below maps every scenario in the model's response to the exact
+JUnit 6 test method that encodes it in the final repository. Scenarios without
+an existing method are explicitly listed as "not adopted" with a reason.
+
+| # | Scenario suggested by the model | Final test method | File |
+|---|---|---|---|
+| 1 | multi-line aggregation with per-line counts | `scanByWordLengthAggregatesCountsAndLinesAcrossText` | `BookScanIntegrationTest.java` |
+| 2 | `can't` / `co-op` token preservation | `scanByWordLengthTreatsApostrophesAndHyphensAsSingleWords` | `BookScanIntegrationTest.java` |
+| 3a | case-insensitive whole-word search | `scanWordCountsWholeWordMatchesIgnoringCaseAcrossLines` | `BookScanIntegrationTest.java` |
+| 3b | whole-word rejection inside longer words (`echoic`) | `scanWordDoesNotMatchInsideLongerWords` | `BookScanIntegrationTest.java` |
+| 4 | trimmed query surrounded by punctuation | `scanWordFindsTrimmedQueriesNextToPunctuation` | `BookScanIntegrationTest.java` |
+| 5a | blank / multi-token query rejected | `scanWordRejectsBlankOrMultiTokenQueries` | `BookScanIntegrationTest.java` |
+| 5b | null / blank text or query handled | `scanWordReturnsEmptyResultForNullInputsAndBlankTexts` | `BookScanIntegrationTest.java` |
+| 5c | invalid `scanByWordLength` inputs (null / blank / non-positive length) | `scanByWordLengthReturnsEmptyResultForInvalidInputs` | `BookScanIntegrationTest.java` |
+| (added during repair) | uppercase query canonicalization via `flipCase` | `scanWordCanonicalizesUppercaseQueriesBeforeWholeWordMatching` | `BookScanIntegrationTest.java` |
+| (added during repair) | alphanumeric whole-word tokens | `scanWordHandlesAlphanumericWholeWordQueries` | `BookScanIntegrationTest.java` |
+| (added during repair) | line-list uniqueness under repeated hits | `scanByWordLengthKeepsMatchingLinesUniqueEvenWithManyHits` | `BookScanIntegrationTest.java` |
+| 6a | overlapping substring counting regression | `howManyTimesCountsOverlappingSubstrings` | `BookScanRegressionTest.java` |
+| 6b | `strlen(null)` regression | `strlenThrowsOnNullAndReturnsLengthOtherwise` | `BookScanRegressionTest.java` |
+| 6c | symbol-preserving `flipCase` regression | `flipCasePreservesSymbolsWhileTogglingLetters` | `BookScanRegressionTest.java` |
+| 6d (added during repair) | guard on blank / null / oversized substring needles | `howManyTimesReturnsZeroForEmptyNullOrOversizedNeedles` | `BookScanRegressionTest.java` |
+
+Scenarios "added during repair" came from the original-prompt failure analysis
+and the black-box assessment; the model had not surfaced them on its own but
+they were necessary to cover the full contract of the edited prompt.

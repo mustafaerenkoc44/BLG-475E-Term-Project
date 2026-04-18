@@ -26,10 +26,13 @@ The final implementation preserves those three helper semantics through:
 - `src/main/java/BookScan.java`
   - selected final implementation used in the report and CI
 - `src/test/java/BookScanIntegrationTest.java`
-  - cross-method integration scenarios for line scanning, tokenization,
-    case-insensitive matching, punctuation handling, and alphanumeric words
+  - eleven cross-method integration scenarios for line scanning,
+    tokenization, case-insensitive matching, punctuation handling,
+    alphanumeric words, and invalid inputs
 - `src/test/java/BookScanRegressionTest.java`
-  - focused regression tests for helper-method semantics
+  - four focused regression tests that keep the Phase 1 helper semantics
+    (`howManyTimes`, `strlen`, `flipCase`) callable from inside the
+    composite class
 - `generated-code/`
   - four candidate `BookScan` implementations generated from
     original-combined and edited-combined prompts for both models
@@ -40,8 +43,11 @@ The final implementation preserves those three helper semantics through:
 - `docs/analysis/`
   - execution report, prompt-strategy comparison, black-box assessment, and
     coverage summary
-- `docs/report/`
-  - Phase 2 report draft ready to merge into the final combined report
+- `docs/report/phase2_report_draft.md`
+  - Markdown Phase 2 report draft
+- `docs/report/ieee/phase2_report.tex` + `phase2_report.bib`
+  - camera-ready Phase 2 report in the IEEE conference template, sharing
+    its bibliography style with the Phase 1 IEEE report
 
 ## Final Metrics
 
@@ -78,8 +84,10 @@ The final implementation preserves those three helper semantics through:
 
 1. `docs/analysis/phase2_execution_report.md`
 2. `docs/analysis/prompt_strategy_comparison.md`
-3. `results/prompt_comparison_summary.md`
-4. `docs/report/phase2_report_draft.md`
+3. `docs/analysis/black_box_assessment.md`
+4. `results/prompt_comparison_summary.md`
+5. `docs/report/phase2_report_draft.md` (Markdown) or
+   `docs/report/ieee/phase2_report.tex` (IEEE conference template)
 
 ## Reproducibility
 
@@ -87,5 +95,14 @@ The final implementation preserves those three helper semantics through:
   - `mvn -f Phase2/pom.xml clean verify`
   - `powershell -ExecutionPolicy Bypass -File .\Phase2\scripts\Run-Phase2PromptComparison.ps1`
   - `powershell -ExecutionPolicy Bypass -File .\Phase2\scripts\Summarize-Phase2Results.ps1`
+- optional automated mutation score (PITest):
+  - `mvn -f Phase2/pom.xml -P mutation test`
+  - reports: `Phase2/target/pit-reports/index.html` (HTML),
+    `Phase2/target/pit-reports/mutations.xml` and `mutations.csv`
+  - the `mutation` profile is disabled by default so that
+    `mvn clean verify` stays fast; PITest is run explicitly when a
+    machine-measured mutation score is needed, in addition to the Phase 1
+    hand-crafted mutation guardrails inherited by `BookScan` via
+    `howManyTimes`/`strlen`/`flipCase`.
 - CI:
   - `.github/workflows/phase2-ci.yml`

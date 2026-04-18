@@ -33,7 +33,6 @@ The stored outputs in this repository correspond to the local GGUF execution var
 
 ## What is already set up and executed
 
-- `pom.xml`: Maven project with JUnit 6 and JaCoCo.
 - `data/selected_prompts.csv`: a balanced 30-task starter set.
 - `data/selection_criteria.md`: difficulty and selection rationale.
 - `scripts/Download-HumanEvalJavaDataset.ps1`: fetches the official Java dataset file.
@@ -76,13 +75,18 @@ The stored outputs in this repository correspond to the local GGUF execution var
   - All 60 improved suites (30 tasks x 2 models) now report
     `compile_success=true` and `junit_success=true`.
 
-## Suggested workflow
+## Suggested reading order
 
-1. Review `docs/analysis/phase1_execution_report.md` for the execution narrative.
-2. Review `docs/analysis/task_level_review.md` and the per-task folders for black-box and coverage evidence.
-3. Review `docs/literature/phase1_literature_review.md` and adapt it to your report voice if needed.
-4. Move the content into the official IEEE template.
-5. Replace all author placeholders before submission.
+1. `docs/analysis/phase1_execution_report.md` for the execution narrative.
+2. `docs/analysis/task_level_review.md` and the per-task folders for
+   black-box and coverage evidence.
+3. `docs/analysis/mutation_testing_strategy.md` for the mutation guardrail
+   inventory and the per-task operator mapping.
+4. `docs/literature/phase1_literature_review.md` for the sourced literature
+   review notes.
+5. `docs/report/phase1_report_draft.md` for the Markdown report draft and
+   `docs/report/ieee/phase1_report.tex` (with `phase1_report.bib`) for the
+   camera-ready IEEE conference submission.
 
 ## Tooling assumptions
 
@@ -95,4 +99,17 @@ The stored outputs in this repository correspond to the local GGUF execution var
 
 ## Literature review note
 
-The repository now includes a sourced literature-review draft and filled paper matrix so the report section can be finalized quickly. If you want strict compliance with the course note about manual writing, use those files as structured notes and rewrite the prose in your own final report voice.
+The repository includes a sourced literature-review draft and filled paper
+matrix under `docs/literature/`. The final report prose lives in
+`docs/report/phase1_report_draft.md` (Markdown) and
+`docs/report/ieee/phase1_report.tex` (IEEE LaTeX); both cite the same
+five-paper bibliography so that submission can happen from either format.
+
+## Phase 2 link
+
+Phase 2 builds on the three Phase 1 tasks `Java/18`, `Java/23`, and
+`Java/27` by lifting their helpers into a composite `BookScan` class
+under a Maven + JUnit 6 + JaCoCo pipeline. See
+`../Phase2/docs/report/ieee/phase2_report.tex` and
+`../Phase2/docs/analysis/phase2_execution_report.md` for the Phase 2
+deliverables.

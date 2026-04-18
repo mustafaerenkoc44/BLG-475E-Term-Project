@@ -145,6 +145,29 @@ public API under the current specification:
 For that reason, the residual misses are documented as intentional defensive
 branches rather than missing test obligations.
 
+## Automated Mutation Coverage (PITest)
+
+In addition to the Phase 1 hand-crafted `improvedMutation...` guardrails
+inherited through tasks `Java/18`, `Java/23`, and `Java/27`, Phase 2 wires
+PITest (`org.pitest:pitest-maven` 1.20.5 with `pitest-junit5-plugin` 1.2.3)
+into an opt-in Maven profile named `mutation`. This profile is disabled by
+default so that `mvn clean verify` stays fast, and it is invoked explicitly
+when an automated mutation score is required:
+
+```
+mvn -f Phase2/pom.xml -P mutation test
+```
+
+PITest generates mutants against `BookScan` and re-runs the 15 JUnit 6
+integration/regression tests against each one. Reports are written to
+`Phase2/target/pit-reports/` in HTML, XML, and CSV form. The GitHub Actions
+workflow `phase2-ci.yml` also runs this profile as a best-effort step and
+uploads the PITest reports alongside the other Phase 2 artefacts. The
+combination of PITest (automated operator coverage on `BookScan`) and the
+Phase 1 hand-crafted guardrails (targeted operator coverage on
+`howManyTimes`, `strlen`, `flipCase`) gives Phase 2 two complementary
+mutation lenses.
+
 ## Assessment
 
 Phase 2 confirms the main hypothesis from Phase 1: correctness depends at least

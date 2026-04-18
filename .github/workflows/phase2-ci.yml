@@ -88,6 +88,45 @@ jobs:
         run: |
           mvn -Dmaven.repo.local="$PHASE2_DIR/.m2" -f "$PHASE2_DIR/pom.xml" clean verify
 
+      - name: Run PITest mutation coverage (BookScan)
+        continue-on-error: true
+        run: |
+          mvn -Dmaven.repo.local="$PHASE2_DIR/.m2" \
+              -f "$PHASE2_DIR/pom.xml" \
+              -P mutation \
+              -DskipTests=false \
+              test
+
+      - name: Summarize PITest mutation score
+        continue-on-error: true
+        shell: pwsh
+        run: |
+          $csvPath = Join-Path $env:PHASE2_DIR "target/pit-reports/mutations.csv"
+          if (-not (Test-Path $csvPath)) {
+              Write-Host "No PITest CSV found (skipping summary)."
+              exit 0
+          }
+          $rows = @(Import-Csv -Path $csvPath -Header filename,className,mutator,method,lineNumber,status,killingTests)
+          if ($rows.Count -eq 0) {
+              Write-Host "PITest produced no rows."
+              exit 0
+          }
+          $killed   = ($rows | Where-Object { $_.status -eq 'KILLED' }).Count
+          $survived = ($rows | Where-Object { $_.status -eq 'SURVIVED' }).Count
+          $noCov    = ($rows | Where-Object { $_.status -eq 'NO_COVERAGE' }).Count
+          $timedOut = ($rows | Where-Object { $_.status -eq 'TIMED_OUT' }).Count
+          $other    = $rows.Count - $killed - $survived - $noCov - $timedOut
+          $total    = $rows.Count
+          $score    = if ($total -gt 0) { "{0:N2}" -f ((100.0 * $killed) / $total) } else { "n/a" }
+          Write-Host "PITest summary for BookScan:"
+          Write-Host ("  total mutants : {0}" -f $total)
+          Write-Host ("  killed        : {0}" -f $killed)
+          Write-Host ("  survived      : {0}" -f $survived)
+          Write-Host ("  no-coverage   : {0}" -f $noCov)
+          Write-Host ("  timed-out     : {0}" -f $timedOut)
+          Write-Host ("  other status  : {0}" -f $other)
+          Write-Host ("  mutation score: {0}%" -f $score)
+
       - name: Run prompt-comparison experiment
         run: |
           python "$PHASE2_DIR/scripts/python/run_phase2_prompt_comparison.py" \
@@ -146,5 +185,6 @@ jobs:
             Phase2/results/**
             Phase2/target/site/jacoco/**
             Phase2/target/surefire-reports/**
+            Phase2/target/pit-reports/**
           if-no-files-found: warn
           retention-days: 30

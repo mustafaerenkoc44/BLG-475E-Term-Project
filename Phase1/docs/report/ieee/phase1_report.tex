@@ -74,7 +74,9 @@ equivalence-partitioning plus mutation-kill trace materially improves the
 transparency of the benchmark. A group-of-two variance from the original
 three-person assignment rule is discussed in Section~\ref{sec:team}. We
 detail the workflow, the group-of-two compensations, threats to validity
-and a Phase~2 migration path to a fully automated Maven + PITest build.
+and the Phase~2 extension that lifts the selected Phase~1 helpers
+(\texttt{Java/18}, \texttt{Java/23}, \texttt{Java/27}) into a composite
+\texttt{BookScan} class built under a Maven + JaCoCo pipeline.
 
 The full repository, interaction logs, CI workflow and per-task artefacts
 are available at the URL listed in the acknowledgement.
@@ -338,7 +340,7 @@ normally caught by a third reviewer; we partially offset this by rotating
 code reviewers task-by-task.
 
 % ---------------------------------------------------------------------------
-\section{Conclusion and Phase 2 Roadmap}
+\section{Conclusion and Phase~2 Extension}
 
 Phase~1 shows that small open-weight code-LLMs can drive a reproducible
 Java evaluation pipeline when they are surrounded by normalisation,
@@ -346,20 +348,35 @@ repair, coverage and mutation-based guardrails. DeepSeek edges Qwen on
 aggregate branch coverage, but both models require similar amounts of
 manual remediation.
 
-Phase~2 will lift three of Phase~1's constraints:
+Phase~2 extends three concrete aspects of Phase~1 and is reported in full
+in the companion document \texttt{Phase2/docs/report/ieee/phase2\_report.tex}:
 
 \begin{enumerate}
-  \item replace the PowerShell-driven JUnit runner with a Maven profile
-    so that PITest can produce machine-measured mutation scores;
-  \item integrate the 30-prompt solutions into the BookScan case study
-    to measure end-to-end quality under realistic system calls;
-  \item automate prompt variation so that we can study the sensitivity
-    of the two models to prompt engineering in a controlled manner.
+  \item \textbf{From PowerShell to Maven:} the Phase~2 build is driven by
+    Maven 3.9+ with Surefire~3.5 and JaCoCo~0.8.12, while the PowerShell
+    and Python~3.11 drivers are kept as a lightweight prompt-comparison
+    harness for side-by-side model runs.
+  \item \textbf{From isolated tasks to a composite class:} the three
+    HumanEval-X tasks most suited for integration
+    (\texttt{Java/18}, \texttt{Java/23}, \texttt{Java/27}) are lifted
+    into a single \texttt{BookScan} class that combines substring
+    counting, string-length filtering and case-insensitive word search.
+    The final \texttt{BookScan} passes $15/15$ integration and
+    regression tests and reaches $70/72 = 97.22\,\%$ branch coverage
+    under Maven-driven JaCoCo.
+  \item \textbf{From a single prompt to prompt variation:} Phase~2
+    compares an original combined prompt against an edited combined
+    prompt for both models, with every run recorded to CSV and to raw
+    JaCoCo artefacts. The experiment confirms that once guardrails are
+    in place, explicit prompt contracts improve outcomes more than
+    switching between the two models.
 \end{enumerate}
 
-The hand-crafted mutants and equivalence classes from Phase~1 will be
-retained as behavioural guardrails even after PITest is turned on; they
-describe intent, not coverage.
+The hand-crafted mutants and equivalence classes from Phase~1 carry over
+unchanged: their guardrail methods keep protecting the Phase~2 helpers
+(\texttt{howManyTimes}, \texttt{strlen}, \texttt{flipCase}) inside the
+composite \texttt{BookScan} class, which is exactly how the Phase~1 report
+originally intended them to be used.
 
 % ---------------------------------------------------------------------------
 \section*{Acknowledgement}

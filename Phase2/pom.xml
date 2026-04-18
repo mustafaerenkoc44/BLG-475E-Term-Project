@@ -14,6 +14,8 @@
     <junit.version>6.0.3</junit.version>
     <jacoco.version>0.8.12</jacoco.version>
     <surefire.version>3.5.3</surefire.version>
+    <pitest.version>1.20.5</pitest.version>
+    <pitest.junit5.version>1.2.3</pitest.junit5.version>
   </properties>
 
   <dependencies>
@@ -62,4 +64,60 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <!--
+      Activate with:  mvn -P mutation test
+      PITest runs against BookScan with the Phase 2 JUnit 6 suite and writes
+      HTML/CSV reports under target/pit-reports/.
+    -->
+    <profile>
+      <id>mutation</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.pitest</groupId>
+            <artifactId>pitest-maven</artifactId>
+            <version>${pitest.version}</version>
+            <dependencies>
+              <dependency>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-junit5-plugin</artifactId>
+                <version>${pitest.junit5.version}</version>
+              </dependency>
+            </dependencies>
+            <executions>
+              <execution>
+                <id>pitest-run</id>
+                <phase>test</phase>
+                <goals>
+                  <goal>mutationCoverage</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <targetClasses>
+                <param>BookScan</param>
+              </targetClasses>
+              <targetTests>
+                <param>BookScan*Test</param>
+              </targetTests>
+              <outputFormats>
+                <outputFormat>HTML</outputFormat>
+                <outputFormat>XML</outputFormat>
+                <outputFormat>CSV</outputFormat>
+              </outputFormats>
+              <timestampedReports>false</timestampedReports>
+              <mutators>
+                <mutator>STRONGER</mutator>
+              </mutators>
+              <verbose>false</verbose>
+              <threads>1</threads>
+              <reportsDirectory>${project.build.directory}/pit-reports</reportsDirectory>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
