@@ -26,13 +26,14 @@ The final implementation preserves those three helper semantics through:
 - `src/main/java/BookScan.java`
   - selected final implementation used in the report and CI
 - `src/test/java/BookScanIntegrationTest.java`
-  - eleven cross-method integration scenarios for line scanning,
+  - twelve cross-method integration scenarios for line scanning,
     tokenization, case-insensitive matching, punctuation handling,
-    alphanumeric words, and invalid inputs
+    alphanumeric words, mixed-case normalization, and invalid inputs
 - `src/test/java/BookScanRegressionTest.java`
-  - four focused regression tests that keep the Phase 1 helper semantics
-    (`howManyTimes`, `strlen`, `flipCase`) callable from inside the
-    composite class
+  - six focused regression and white-box hardening tests that keep the
+    Phase 1 helper semantics (`howManyTimes`, `strlen`, `flipCase`)
+    callable from inside the composite class and pin down private
+    normalization defenses
 - `generated-code/`
   - four candidate `BookScan` implementations generated from
     original-combined and edited-combined prompts for both models
@@ -53,40 +54,44 @@ The final implementation preserves those three helper semantics through:
 
 ### Selected Final Implementation
 
-- JUnit success: `15 / 15`
-- branch coverage: `70 / 72 = 97.22%`
-- line coverage: `109 / 110 = 99.09%`
+- JUnit success: `18 / 18`
+- branch coverage: `72 / 72 = 100.00%`
+- line coverage: `110 / 110 = 100.00%`
+- mutation score (PITest): `79 / 93 = 84.95%`
 
 ### Prompt-Comparison Results
 
 | Strategy | Model | JUnit Pass | Branch Coverage |
 |---|---|---:|---:|
-| original-combined | Qwen2.5-Coder-1.5B-Instruct-GGUF | `7 / 15` | n/a |
-| original-combined | DeepSeek-Coder-1.3B-Instruct-GGUF | `9 / 15` | n/a |
-| edited-combined | Qwen2.5-Coder-1.5B-Instruct-GGUF | `15 / 15` | `66 / 68 = 97.06%` |
-| edited-combined | DeepSeek-Coder-1.3B-Instruct-GGUF | `15 / 15` | `61 / 64 = 95.31%` |
-| selected-final | Manual-Selected | `15 / 15` | `70 / 72 = 97.22%` |
+| original-combined | Qwen2.5-Coder-1.5B-Instruct-GGUF | `6 / 18` | n/a |
+| original-combined | DeepSeek-Coder-1.3B-Instruct-GGUF | `8 / 18` | n/a |
+| edited-combined | Qwen2.5-Coder-1.5B-Instruct-GGUF | `17 / 18` | n/a |
+| edited-combined | DeepSeek-Coder-1.3B-Instruct-GGUF | `17 / 18` | n/a |
+| selected-final | Manual-Selected | `18 / 18` | `72 / 72 = 100.00%` |
 
 ## Main Findings
 
 - The original combined prompt was too vague about line numbering, token
   boundaries, punctuation, and case normalization; both models produced
   integration bugs as a result.
-- The edited combined prompt fixed those ambiguities and immediately lifted
-  both models to full JUnit success.
-- The final selected implementation keeps the edited-prompt behavior but adds a
-  few manual refinements that make the public API clearer and slightly improve
-  branch coverage.
-- The only remaining uncovered branches are defensive private-helper paths that
-  are not reachable through the public specification.
+- The edited combined prompt fixed the public integration bugs, but both models
+  still failed one stricter regression on blank-token canonicalization inside a
+  private helper.
+- The final selected implementation closes that last regression, reaches full
+  JaCoCo branch/line coverage, and separates the camera-ready solution from the
+  raw edited-prompt candidates.
+- The remaining PITest survivors are concentrated in equivalent or defensive
+  helper branches and are documented in
+  `docs/analysis/mutation_assessment.md`.
 
 ## Recommended Reading Order
 
 1. `docs/analysis/phase2_execution_report.md`
-2. `docs/analysis/prompt_strategy_comparison.md`
-3. `docs/analysis/black_box_assessment.md`
-4. `results/prompt_comparison_summary.md`
-5. `docs/report/phase2_report_draft.md` (Markdown) or
+2. `docs/analysis/mutation_assessment.md`
+3. `docs/analysis/prompt_strategy_comparison.md`
+4. `docs/analysis/black_box_assessment.md`
+5. `results/prompt_comparison_summary.md`
+6. `docs/report/phase2_report_draft.md` (Markdown) or
    `docs/report/ieee/phase2_report.tex` (IEEE conference template)
 
 ## Reproducibility
@@ -99,6 +104,8 @@ The final implementation preserves those three helper semantics through:
   - `mvn -f Phase2/pom.xml -P mutation test`
   - reports: `Phase2/target/pit-reports/index.html` (HTML),
     `Phase2/target/pit-reports/mutations.xml` and `mutations.csv`
+  - last measured result in this repository:
+    `79 / 93 = 84.95%` mutation score with `110 / 110` mutated lines covered
   - the `mutation` profile is disabled by default so that
     `mvn clean verify` stays fast; PITest is run explicitly when a
     machine-measured mutation score is needed, in addition to the Phase 1

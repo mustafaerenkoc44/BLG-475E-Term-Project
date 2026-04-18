@@ -40,19 +40,20 @@ The repository is organized around two connected deliverables:
 
 ### Phase 2 Highlights
 
-- final `BookScan` implementation passed `15/15` integration and regression
+- final `BookScan` implementation passed `18/18` integration and regression
   tests
-- final `BookScan` branch coverage: `97.22%` (`70 / 72`)
-- final `BookScan` line coverage: `99.09%` (`109 / 110`)
+- final `BookScan` branch coverage: `100.00%` (`72 / 72`)
+- final `BookScan` line coverage: `100.00%` (`110 / 110`)
+- final `BookScan` mutation score: `84.95%` (`79 / 93` mutants killed)
 - prompt-combination experiment results:
-  - original combined prompt, Qwen: `7/15` tests passed
-  - original combined prompt, DeepSeek: `9/15` tests passed
-  - edited combined prompt, Qwen: `15/15` tests passed, `97.06%` branch coverage
-  - edited combined prompt, DeepSeek: `15/15` tests passed, `95.31%` branch coverage
-- the selected final implementation outperforms both raw original-prompt
-  variants and slightly exceeds the best edited-prompt coverage result
-- the two Phase 2 residual branch misses are documented, intentional
-  defensive helper guards that cannot be reached through the public API
+  - original combined prompt, Qwen: `6/18` tests passed
+  - original combined prompt, DeepSeek: `8/18` tests passed
+  - edited combined prompt, Qwen: `17/18` tests passed
+  - edited combined prompt, DeepSeek: `17/18` tests passed
+- the selected final implementation is the only variant that clears the full
+  strengthened suite, including the blank-token canonicalization regression
+- JaCoCo leaves no residual branch or line misses; the remaining mutation
+  survivors are documented as equivalent or defensive helper behavior
 
 ## Repository Layout
 
@@ -85,6 +86,7 @@ Phase 1 result summary:
 Phase 2 result summary:
 
 - `Phase2/docs/analysis/phase2_execution_report.md`
+- `Phase2/docs/analysis/mutation_assessment.md`
 - `Phase2/docs/analysis/prompt_strategy_comparison.md`
 - `Phase2/docs/analysis/black_box_assessment.md`
 - `Phase2/docs/report/phase2_report_draft.md` (Markdown draft)

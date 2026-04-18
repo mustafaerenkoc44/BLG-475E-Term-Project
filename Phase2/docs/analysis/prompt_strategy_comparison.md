@@ -39,10 +39,10 @@ Added constraints:
 
 | Strategy | Model | Tests Passed | Pass Rate | Branch Coverage |
 |---|---|---:|---:|---:|
-| original-combined | Qwen2.5-Coder-1.5B-Instruct-GGUF | `7 / 15` | `46.67%` | n/a |
-| original-combined | DeepSeek-Coder-1.3B-Instruct-GGUF | `9 / 15` | `60.00%` | n/a |
-| edited-combined | Qwen2.5-Coder-1.5B-Instruct-GGUF | `15 / 15` | `100.00%` | `97.06%` |
-| edited-combined | DeepSeek-Coder-1.3B-Instruct-GGUF | `15 / 15` | `100.00%` | `95.31%` |
+| original-combined | Qwen2.5-Coder-1.5B-Instruct-GGUF | `6 / 18` | `33.33%` | n/a |
+| original-combined | DeepSeek-Coder-1.3B-Instruct-GGUF | `8 / 18` | `44.44%` | n/a |
+| edited-combined | Qwen2.5-Coder-1.5B-Instruct-GGUF | `17 / 18` | `94.44%` | n/a |
+| edited-combined | DeepSeek-Coder-1.3B-Instruct-GGUF | `17 / 18` | `94.44%` | n/a |
 
 ## What the Original Prompt Missed
 
@@ -56,6 +56,9 @@ integration behavior:
   target words inside larger words such as `theme` and `echoic`.
 - Both original variants lacked a precise punctuation policy and therefore
   mishandled `can't`, `co-op`, and trimmed queries next to punctuation.
+- Both original variants also left internal helper structure under-specified,
+  which is why the final helper-hardening regressions hit
+  `NoSuchMethodException` for `tokenizeWords` / `canonicalizeWord`.
 
 These are not isolated unit bugs. They are integration defects caused by
 implicit contracts between tokenization, search, and result aggregation.
@@ -72,9 +75,12 @@ Three improvements mattered most:
 2. it stated exactly what shape the results should have;
 3. it stated exactly how helper behaviors should be reused across the class.
 
-Once those requirements were explicit, both models converged toward valid
-implementations and the remaining differences were minor structural choices
-rather than user-visible bugs.
+Once those requirements were explicit, both models converged toward
+integration-clean public behavior. The only remaining gap under the final
+strengthened suite was a white-box regression:
+`privateCanonicalizeWordRejectsBlankTokens`. That final guard was not stated
+explicitly in the edited prompt and therefore remained under-specified for both
+models.
 
 ## Selected Final Variant
 
@@ -89,4 +95,6 @@ Qwen variant in coverage and to both edited variants in behavior, but adds:
 
 The selected final variant therefore acts as the "camera-ready" implementation
 for the report, while the prompt-comparison variants remain as experimental
-artefacts.
+artefacts. It is also the only variant that clears the full 18-test suite,
+which now includes helper-hardening regressions in addition to the public
+integration contract.

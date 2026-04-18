@@ -32,7 +32,8 @@ cross-method behavior rather than isolated helper tests only. Cover:
 The scenario list was merged with the manual black-box assessment and then
 implemented as `BookScanIntegrationTest.java` plus `BookScanRegressionTest.java`.
 The final test code is stricter than the raw suggestion because it also checks
-result maps and line-number ordering.
+result maps, line-number ordering, and private-helper hardening rules that were
+discovered during the final PITest-guided review.
 
 ## Scenario-to-Test Mapping
 
@@ -52,12 +53,16 @@ an existing method are explicitly listed as "not adopted" with a reason.
 | 5c | invalid `scanByWordLength` inputs (null / blank / non-positive length) | `scanByWordLengthReturnsEmptyResultForInvalidInputs` | `BookScanIntegrationTest.java` |
 | (added during repair) | uppercase query canonicalization via `flipCase` | `scanWordCanonicalizesUppercaseQueriesBeforeWholeWordMatching` | `BookScanIntegrationTest.java` |
 | (added during repair) | alphanumeric whole-word tokens | `scanWordHandlesAlphanumericWholeWordQueries` | `BookScanIntegrationTest.java` |
+| (added during hardening) | mixed-case token normalization without uppercase-only artifacts | `scanWordNormalizesMixedCaseTokensWithoutFlipArtifacts` | `BookScanIntegrationTest.java` |
 | (added during repair) | line-list uniqueness under repeated hits | `scanByWordLengthKeepsMatchingLinesUniqueEvenWithManyHits` | `BookScanIntegrationTest.java` |
 | 6a | overlapping substring counting regression | `howManyTimesCountsOverlappingSubstrings` | `BookScanRegressionTest.java` |
 | 6b | `strlen(null)` regression | `strlenThrowsOnNullAndReturnsLengthOtherwise` | `BookScanRegressionTest.java` |
 | 6c | symbol-preserving `flipCase` regression | `flipCasePreservesSymbolsWhileTogglingLetters` | `BookScanRegressionTest.java` |
 | 6d (added during repair) | guard on blank / null / oversized substring needles | `howManyTimesReturnsZeroForEmptyNullOrOversizedNeedles` | `BookScanRegressionTest.java` |
+| (added during hardening) | `tokenizeWords(null)` must return a fresh mutable empty list | `tokenizeWordsReturnsFreshMutableEmptyListForNullInput` | `BookScanRegressionTest.java` |
+| (added during hardening) | blank private token canonicalization must collapse to `\"\"` | `privateCanonicalizeWordRejectsBlankTokens` | `BookScanRegressionTest.java` |
 
 Scenarios "added during repair" came from the original-prompt failure analysis
-and the black-box assessment; the model had not surfaced them on its own but
-they were necessary to cover the full contract of the edited prompt.
+and the black-box assessment; scenarios "added during hardening" came from the
+final JaCoCo/PITest review and are the checks that distinguish the selected
+final implementation from the raw edited-prompt variants.

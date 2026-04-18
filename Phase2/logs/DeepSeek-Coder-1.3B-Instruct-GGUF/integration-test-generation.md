@@ -29,7 +29,8 @@ cross-method behavior rather than isolated helper tests only. Cover:
 
 The response was used as a scenario checklist. The final repository turns that
 checklist into stricter executable assertions with exact line maps and
-whole-word expectations.
+whole-word expectations, then extends it with helper-hardening checks found
+during the final JaCoCo/PITest review.
 
 ## Scenario-to-Test Mapping
 
@@ -50,8 +51,11 @@ assessment and the original-prompt failure analysis.
 | 5d | invalid inputs for `scanByWordLength` | `scanByWordLengthReturnsEmptyResultForInvalidInputs` | `BookScanIntegrationTest.java` |
 | (added during repair) | uppercase query canonicalization via `flipCase` | `scanWordCanonicalizesUppercaseQueriesBeforeWholeWordMatching` | `BookScanIntegrationTest.java` |
 | (added during repair) | alphanumeric whole-word tokens | `scanWordHandlesAlphanumericWholeWordQueries` | `BookScanIntegrationTest.java` |
+| (added during hardening) | mixed-case token normalization without uppercase-only artifacts | `scanWordNormalizesMixedCaseTokensWithoutFlipArtifacts` | `BookScanIntegrationTest.java` |
 | (added during repair) | line-list uniqueness under repeated hits | `scanByWordLengthKeepsMatchingLinesUniqueEvenWithManyHits` | `BookScanIntegrationTest.java` |
 | 6a | overlapping substring counting regression | `howManyTimesCountsOverlappingSubstrings` | `BookScanRegressionTest.java` |
 | 6b | `strlen(null)` regression | `strlenThrowsOnNullAndReturnsLengthOtherwise` | `BookScanRegressionTest.java` |
 | 6c | mixed-case `flipCase` regression | `flipCasePreservesSymbolsWhileTogglingLetters` | `BookScanRegressionTest.java` |
 | 6d (added during repair) | guard on blank / null / oversized substring needles | `howManyTimesReturnsZeroForEmptyNullOrOversizedNeedles` | `BookScanRegressionTest.java` |
+| (added during hardening) | `tokenizeWords(null)` must return a fresh mutable empty list | `tokenizeWordsReturnsFreshMutableEmptyListForNullInput` | `BookScanRegressionTest.java` |
+| (added during hardening) | blank private token canonicalization must collapse to `\"\"` | `privateCanonicalizeWordRejectsBlankTokens` | `BookScanRegressionTest.java` |

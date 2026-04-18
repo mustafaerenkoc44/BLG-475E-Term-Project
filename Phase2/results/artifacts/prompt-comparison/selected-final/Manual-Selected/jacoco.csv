@@ -1,6 +1,6 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 JaCoCo Coverage Report,default,BookScan.WordSearchResult,0,15,0,0,0,1,0,1,0,1
-JaCoCo Coverage Report,default,BookScan,2,493,2,70,1,109,2,49,0,15
+JaCoCo Coverage Report,default,BookScan,0,495,0,72,0,110,0,51,0,15
 JaCoCo Coverage Report,default,BookScan.ScanResult,0,18,0,0,0,1,0,1,0,1
-JaCoCo Coverage Report,default,BookScanRegressionTest,5,85,0,0,0,20,1,5,1,5
-JaCoCo Coverage Report,default,BookScanIntegrationTest,0,455,0,0,0,103,0,12,0,12
+JaCoCo Coverage Report,default,BookScanRegressionTest,5,165,0,0,0,36,1,7,1,7
+JaCoCo Coverage Report,default,BookScanIntegrationTest,0,497,0,0,0,113,0,13,0,13

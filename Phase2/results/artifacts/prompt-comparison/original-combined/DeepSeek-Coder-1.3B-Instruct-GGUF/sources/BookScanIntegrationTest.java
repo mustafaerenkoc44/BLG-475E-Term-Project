@@ -117,8 +117,10 @@ class BookScanIntegrationTest {
         BookScan.WordSearchResult blank = scanner.scanWord(text, "   ");
         BookScan.WordSearchResult multiToken = scanner.scanWord(text, "two words");
 
+        Assertions.assertEquals("", blank.word());
         Assertions.assertEquals(0, blank.totalOccurrences());
         Assertions.assertEquals(List.of(), blank.matchingLines());
+        Assertions.assertEquals("two words", multiToken.word());
         Assertions.assertEquals(0, multiToken.totalOccurrences());
         Assertions.assertEquals(List.of(), multiToken.matchingLines());
     }
@@ -186,5 +188,18 @@ class BookScanIntegrationTest {
         Assertions.assertEquals(2, result.totalOccurrences());
         Assertions.assertEquals(List.of(1), result.matchingLines());
         Assertions.assertEquals(Map.of(1, 2), result.occurrencesByLine());
+    }
+
+    @Test
+    void scanWordNormalizesMixedCaseTokensWithoutFlipArtifacts() {
+        BookScan scanner = new BookScan();
+        String text = "AbC aBc ABC abcX";
+
+        BookScan.WordSearchResult result = scanner.scanWord(text, "abc");
+
+        Assertions.assertEquals("abc", result.word());
+        Assertions.assertEquals(3, result.totalOccurrences());
+        Assertions.assertEquals(List.of(1), result.matchingLines());
+        Assertions.assertEquals(Map.of(1, 3), result.occurrencesByLine());
     }
 }

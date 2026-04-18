@@ -1,2 +1,0 @@
-[INFO] Loading execution data file C:\Users\musta\Downloads\BLG_475E_Term_Project\Phase2\results\artifacts\prompt-comparison\edited-combined\DeepSeek-Coder-1.3B-Instruct-GGUF\jacoco.exec.
-[INFO] Analyzing 5 classes.

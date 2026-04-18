@@ -30,7 +30,8 @@ The workflow remained semi-agentic:
 4. improve the prompt manually and regenerate the candidate;
 5. compare the edited-prompt variants against a manually selected final
    implementation;
-6. validate the selected final implementation again through `mvn clean verify`.
+6. validate the selected final implementation again through `mvn clean verify`
+   and `mvn -P mutation test`.
 
 ## Final Deliverables
 
@@ -48,23 +49,25 @@ The workflow remained semi-agentic:
 
 | Strategy | Model | Compiled | JUnit | Tests | Failed | Branch Coverage |
 |---|---|---|---|---:|---:|---:|
-| original-combined | Qwen2.5-Coder-1.5B-Instruct-GGUF | yes | no | 15 | 8 | n/a |
-| original-combined | DeepSeek-Coder-1.3B-Instruct-GGUF | yes | no | 15 | 6 | n/a |
-| edited-combined | Qwen2.5-Coder-1.5B-Instruct-GGUF | yes | yes | 15 | 0 | `66 / 68 = 97.06%` |
-| edited-combined | DeepSeek-Coder-1.3B-Instruct-GGUF | yes | yes | 15 | 0 | `61 / 64 = 95.31%` |
-| selected-final | Manual-Selected | yes | yes | 15 | 0 | `70 / 72 = 97.22%` |
+| original-combined | Qwen2.5-Coder-1.5B-Instruct-GGUF | yes | no | 18 | 12 | n/a |
+| original-combined | DeepSeek-Coder-1.3B-Instruct-GGUF | yes | no | 18 | 10 | n/a |
+| edited-combined | Qwen2.5-Coder-1.5B-Instruct-GGUF | yes | no | 18 | 1 | n/a |
+| edited-combined | DeepSeek-Coder-1.3B-Instruct-GGUF | yes | no | 18 | 1 | n/a |
+| selected-final | Manual-Selected | yes | yes | 18 | 0 | `72 / 72 = 100.00%` |
 
 ## Failure Analysis
 
 ### Original Combined Prompt, Qwen
 
-Qwen passed only `7 / 15` tests. The failing cases showed four systematic
+Qwen passed only `6 / 18` tests. The failing cases showed four systematic
 integration problems:
 
 - zero-based and non-unique line numbering in `scanByWordLength`
 - raw space-splitting that breaks apostrophe and hyphen tokens
 - case-sensitive/raw-substring search in `scanWord`
 - no canonicalization for uppercase or alphanumeric queries
+- no extracted `tokenizeWords` / `canonicalizeWord` helpers, so the final
+  helper-hardening regressions fail with `NoSuchMethodException`
 
 Representative failures:
 
@@ -76,7 +79,7 @@ Representative failures:
 
 ### Original Combined Prompt, DeepSeek
 
-DeepSeek passed `9 / 15` tests. It was stronger than Qwen on line numbering but
+DeepSeek passed `8 / 18` tests. It was stronger than Qwen on line numbering but
 still produced integration defects:
 
 - punctuation stripping that breaks apostrophe/hyphen preservation
@@ -84,6 +87,8 @@ still produced integration defects:
 - over-counting in case-insensitive search
 - no precise whole-word behavior around punctuation
 - alphanumeric whole-word over-counting
+- no extracted `tokenizeWords` / `canonicalizeWord` helpers, so the final
+  helper-hardening regressions fail with `NoSuchMethodException`
 
 Representative failures:
 
@@ -95,8 +100,17 @@ Representative failures:
 
 ### Edited Combined Prompt
 
-Both edited-prompt variants passed the full `15 / 15` suite. The edited prompt
-made the following requirements explicit:
+The edited prompt fixed the public integration bugs and reduced both models to
+exactly one remaining failure. The strengthened 18-test suite now exposes a
+single shared blind spot:
+
+- `privateCanonicalizeWordRejectsBlankTokens`
+
+This regression checks that the private `canonicalizeWord` helper collapses a
+blank token to the empty string. Both edited-prompt variants returned the
+original blank token instead, so they stopped at `17 / 18` instead of reaching
+the selected final baseline. The edited prompt still made the following
+requirements explicit and solved the large public-facing defects:
 
 - line numbers must be one-based
 - matching line lists must not contain duplicates
@@ -107,7 +121,8 @@ made the following requirements explicit:
 - helper methods from tasks `18/23/27` must remain reusable inside the class
 
 The edited prompt therefore removed the ambiguity that caused the original
-integration failures.
+integration failures, but it still left one internal normalization rule
+implicit.
 
 ## Selected Final Implementation
 
@@ -124,26 +139,17 @@ clearer:
 
 `mvn clean verify` confirms:
 
-- `15 / 15` tests passed
-- `70 / 72 = 97.22%` branch coverage
-- `109 / 110 = 99.09%` line coverage
+- `18 / 18` tests passed
+- `72 / 72 = 100.00%` branch coverage
+- `110 / 110 = 100.00%` line coverage
 
-## Residual Coverage Gaps
+## JaCoCo Closure
 
-Only two branches remain uncovered in the final Maven JaCoCo report:
-
-- `canonicalizeWord`: the `trimmed.isEmpty()` defensive guard
-- `tokenizeWords`: the `line == null` defensive guard
-
-These branches are private helper defenses and are not reachable through the
-public API under the current specification:
-
-- tokenization never emits blank tokens into `canonicalizeWord`
-- public entry points either return early for invalid inputs or split concrete
-  strings into non-null lines before tokenization
-
-For that reason, the residual misses are documented as intentional defensive
-branches rather than missing test obligations.
+No JaCoCo branches or lines remain uncovered in the final Maven report. The
+last gap was closed by adding helper-hardening regressions for blank-token
+normalization and null tokenization behavior. Those checks separate the final
+selected implementation from the raw edited-prompt candidates, which still
+miss the blank-token normalization rule.
 
 ## Automated Mutation Coverage (PITest)
 
@@ -158,15 +164,32 @@ when an automated mutation score is required:
 mvn -f Phase2/pom.xml -P mutation test
 ```
 
-PITest generates mutants against `BookScan` and re-runs the 15 JUnit 6
+PITest generates mutants against `BookScan` and re-runs the 18 JUnit 6
 integration/regression tests against each one. Reports are written to
-`Phase2/target/pit-reports/` in HTML, XML, and CSV form. The GitHub Actions
-workflow `phase2-ci.yml` also runs this profile as a best-effort step and
-uploads the PITest reports alongside the other Phase 2 artefacts. The
-combination of PITest (automated operator coverage on `BookScan`) and the
+`Phase2/target/pit-reports/` in HTML, XML, and CSV form. The latest measured
+result is:
+
+- `93` mutants generated
+- `79` mutants killed
+- `14` mutants survived
+- mutation score `84.95%`
+- mutated-line coverage `110 / 110 = 100.00%`
+
+The remaining survivors are concentrated in equivalent or defensive helper
+paths:
+
+- `canonicalizeWord`: uppercase-only and blank-token predicate mutations that
+  still normalize to the same lowercase observable value
+- `scanByWordLength` and `scanWord`: blank-input early-return mutations that
+  collapse to the same empty observable result
+- `howManyTimes`, `tokenizeWords`, and `flipCase`: defensive or effectively
+  equivalent branch changes around empty input and non-letter characters
+
+The combination of PITest (automated operator coverage on `BookScan`) and the
 Phase 1 hand-crafted guardrails (targeted operator coverage on
-`howManyTimes`, `strlen`, `flipCase`) gives Phase 2 two complementary
-mutation lenses.
+`howManyTimes`, `strlen`, `flipCase`) therefore gives Phase 2 two
+complementary mutation lenses: public-behavior regression and equivalent-mutant
+triage.
 
 ## Assessment
 

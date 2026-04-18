@@ -24,11 +24,13 @@ evaluated under two prompt strategies: an original combined prompt and an
 edited combined prompt. The original prompt leaves several integration
 contracts implicit and both models therefore fail multiple test cases. The
 edited prompt makes token boundaries, line-number semantics, whole-word
-matching, and invalid-input behavior explicit; both models then pass the full
-suite. The selected final implementation passes `15/15` JUnit 6 tests and
-achieves `70/72 = 97.22%` branch coverage with JaCoCo. The results show that
-for integration-heavy classes, prompt clarity and coverage-guided validation
-are at least as important as the underlying model choice.
+matching, and invalid-input behavior explicit; both models then reach `17/18`
+under the strengthened suite. The selected final implementation closes the
+remaining private-helper normalization gap, passes `18/18` JUnit 6 tests, and
+achieves `72/72 = 100.00%` branch coverage with `110/110 = 100.00%` line
+coverage in JaCoCo. The results show that for integration-heavy classes,
+prompt clarity and coverage-guided validation are at least as important as the
+underlying model choice.
 
 ## I. Introduction
 
@@ -112,8 +114,8 @@ integration challenge lies in how these helpers interact:
 
 ## IV. Integration Test Strategy
 
-The Phase 2 suite contains eleven integration tests and four focused regression
-tests. The integration tests check:
+The Phase 2 suite contains twelve integration tests and six focused regression
+or hardening tests. The integration tests check:
 
 - aggregation across multiple lines,
 - uniqueness of matching-line lists,
@@ -122,6 +124,7 @@ tests. The integration tests check:
 - rejection of blank and multi-token queries,
 - case-insensitive search,
 - alphanumeric whole-word behavior,
+- mixed-case normalization behavior,
 - invalid-input handling.
 
 The regression tests preserve the helper semantics inherited from Phase 1:
@@ -129,7 +132,9 @@ The regression tests preserve the helper semantics inherited from Phase 1:
 - overlapping substring counting,
 - null/empty/oversized substring safeguards,
 - symbol-preserving case flipping,
-- null behavior for `strlen`.
+- null behavior for `strlen`,
+- fresh mutable empty-list behavior for `tokenizeWords(null)`,
+- blank-token collapse for `canonicalizeWord`.
 
 ## V. Results
 
@@ -137,11 +142,11 @@ The regression tests preserve the helper semantics inherited from Phase 1:
 
 | Strategy | Model | Tests Passed | Pass Rate | Branch Coverage |
 |---|---|---:|---:|---:|
-| original-combined | Qwen2.5-Coder-1.5B-Instruct-GGUF | `7 / 15` | `46.67%` | n/a |
-| original-combined | DeepSeek-Coder-1.3B-Instruct-GGUF | `9 / 15` | `60.00%` | n/a |
-| edited-combined | Qwen2.5-Coder-1.5B-Instruct-GGUF | `15 / 15` | `100.00%` | `97.06%` |
-| edited-combined | DeepSeek-Coder-1.3B-Instruct-GGUF | `15 / 15` | `100.00%` | `95.31%` |
-| selected-final | Manual-Selected | `15 / 15` | `100.00%` | `97.22%` |
+| original-combined | Qwen2.5-Coder-1.5B-Instruct-GGUF | `6 / 18` | `33.33%` | n/a |
+| original-combined | DeepSeek-Coder-1.3B-Instruct-GGUF | `8 / 18` | `44.44%` | n/a |
+| edited-combined | Qwen2.5-Coder-1.5B-Instruct-GGUF | `17 / 18` | `94.44%` | n/a |
+| edited-combined | DeepSeek-Coder-1.3B-Instruct-GGUF | `17 / 18` | `94.44%` | n/a |
+| selected-final | Manual-Selected | `18 / 18` | `100.00%` | `100.00%` |
 
 ### B. Original Prompt Failure Modes
 
@@ -162,29 +167,37 @@ For DeepSeek, the main defects were:
 - over-counting in case-insensitive search,
 - weak punctuation handling around the query boundary.
 
+Both original variants also failed the final helper-hardening reflection checks
+because they did not expose the expected `tokenizeWords` /
+`canonicalizeWord` helper behavior.
+
 ### C. Edited Prompt Improvement
 
-The edited prompt removed these ambiguities and both models immediately reached
-full JUnit success. This is the clearest quantitative result of Phase 2:
-prompt engineering closed more defects than switching between the two models.
+The edited prompt removed these ambiguities and both models immediately cleared
+all public integration scenarios. Under the final strengthened suite they stop
+at `17 / 18` because they still fail one white-box hardening regression:
+`privateCanonicalizeWordRejectsBlankTokens`. This is still the clearest
+quantitative result of Phase 2: prompt engineering closed far more defects than
+switching between the two models, but the camera-ready implementation required
+one final manual tightening of a helper contract.
 
 ## VI. Coverage and Test Adequacy
 
 The selected final implementation achieved:
 
-- branch coverage: `70 / 72 = 97.22%`
-- line coverage: `109 / 110 = 99.09%`
+- branch coverage: `72 / 72 = 100.00%`
+- line coverage: `110 / 110 = 100.00%`
+- mutation score: `79 / 93 = 84.95%`
 
 Manual black-box assessment shows that all public equivalence classes are now
-covered. The two remaining uncovered branches are both private defensive helper
-paths:
+covered. The final hardening regressions also close the last private-helper
+coverage gaps that had previously remained in JaCoCo.
 
-- `canonicalizeWord` when a blank token somehow reaches normalization
-- `tokenizeWords` when a null line somehow reaches tokenization
-
-These states are unreachable through the public API because invalid public
-inputs are filtered earlier and tokenization never emits blank tokens. Their
-presence is therefore a design-level guard rather than a missing test target.
+PITest still reports `14` surviving mutants, but they are concentrated in
+equivalent or defensive helper behavior rather than in untested public
+features. In particular, uppercase-only normalization predicates in
+`canonicalizeWord` and blank-input early-return predicates in `scanWord` /
+`scanByWordLength` often collapse to the same externally observable result.
 
 ## VII. Discussion
 
@@ -197,9 +210,10 @@ must be stated explicitly or the model will fill the gaps with inconsistent
 defaults.
 
 Another important result is that the better edited-prompt variants were already
-very strong. The manually selected final implementation did not need to repair
-large functional defects; instead it consolidated the result types, helper
-layout, and immutable-return behavior while pushing coverage slightly higher.
+very strong on the public API. The manually selected final implementation did
+not need to repair large user-visible defects; instead it consolidated the
+result types, helper layout, immutable-return behavior, and blank-token
+normalization rule while pushing JaCoCo to full closure.
 
 ## VIII. Conclusion
 

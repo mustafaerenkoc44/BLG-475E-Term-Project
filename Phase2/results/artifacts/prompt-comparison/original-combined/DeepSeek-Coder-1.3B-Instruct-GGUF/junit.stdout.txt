@@ -1,5 +1,15 @@
 
-Failures (6):
+Failures (10):
+  JUnit Jupiter:BookScanIntegrationTest:scanWordNormalizesMixedCaseTokensWithoutFlipArtifacts()
+    MethodSource [className = 'BookScanIntegrationTest', methodName = 'scanWordNormalizesMixedCaseTokensWithoutFlipArtifacts', methodParameterTypes = '']
+    => org.opentest4j.AssertionFailedError: expected: <3> but was: <4>
+       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:158)
+       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:139)
+       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:201)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:152)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:147)
+       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:558)
+       BookScanIntegrationTest.scanWordNormalizesMixedCaseTokensWithoutFlipArtifacts(BookScanIntegrationTest.java:201)
   JUnit Jupiter:BookScanIntegrationTest:scanByWordLengthTreatsApostrophesAndHyphensAsSingleWords()
     MethodSource [className = 'BookScanIntegrationTest', methodName = 'scanByWordLengthTreatsApostrophesAndHyphensAsSingleWords', methodParameterTypes = '']
     => org.opentest4j.AssertionFailedError: expected: <3> but was: <1>
@@ -19,7 +29,17 @@ Failures (6):
        org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:152)
        org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:147)
        org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:558)
-       BookScanIntegrationTest.scanWordCanonicalizesUppercaseQueriesBeforeWholeWordMatching(BookScanIntegrationTest.java:170)
+       BookScanIntegrationTest.scanWordCanonicalizesUppercaseQueriesBeforeWholeWordMatching(BookScanIntegrationTest.java:172)
+  JUnit Jupiter:BookScanIntegrationTest:scanWordRejectsBlankOrMultiTokenQueries()
+    MethodSource [className = 'BookScanIntegrationTest', methodName = 'scanWordRejectsBlankOrMultiTokenQueries', methodParameterTypes = '']
+    => org.opentest4j.AssertionFailedError: expected: <> but was: <   >
+       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:158)
+       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:139)
+       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:201)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:184)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:179)
+       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1188)
+       BookScanIntegrationTest.scanWordRejectsBlankOrMultiTokenQueries(BookScanIntegrationTest.java:120)
   JUnit Jupiter:BookScanIntegrationTest:scanWordCountsWholeWordMatchesIgnoringCaseAcrossLines()
     MethodSource [className = 'BookScanIntegrationTest', methodName = 'scanWordCountsWholeWordMatchesIgnoringCaseAcrossLines', methodParameterTypes = '']
     => org.opentest4j.AssertionFailedError: expected: <3> but was: <4>
@@ -39,7 +59,7 @@ Failures (6):
        org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:152)
        org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:147)
        org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:558)
-       BookScanIntegrationTest.scanWordDoesNotMatchInsideLongerWords(BookScanIntegrationTest.java:154)
+       BookScanIntegrationTest.scanWordDoesNotMatchInsideLongerWords(BookScanIntegrationTest.java:156)
   JUnit Jupiter:BookScanIntegrationTest:scanWordFindsTrimmedQueriesNextToPunctuation()
     MethodSource [className = 'BookScanIntegrationTest', methodName = 'scanWordFindsTrimmedQueriesNextToPunctuation', methodParameterTypes = '']
     => org.opentest4j.AssertionFailedError: expected: <3> but was: <0>
@@ -59,19 +79,29 @@ Failures (6):
        org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:152)
        org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:147)
        org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:558)
-       BookScanIntegrationTest.scanWordHandlesAlphanumericWholeWordQueries(BookScanIntegrationTest.java:186)
+       BookScanIntegrationTest.scanWordHandlesAlphanumericWholeWordQueries(BookScanIntegrationTest.java:188)
+  JUnit Jupiter:BookScanRegressionTest:tokenizeWordsReturnsFreshMutableEmptyListForNullInput()
+    MethodSource [className = 'BookScanRegressionTest', methodName = 'tokenizeWordsReturnsFreshMutableEmptyListForNullInput', methodParameterTypes = '']
+    => java.lang.NoSuchMethodException: BookScan.tokenizeWords(java.lang.String)
+       java.base/java.lang.Class.getDeclaredMethod(Class.java:2850)
+       BookScanRegressionTest.tokenizeWordsReturnsFreshMutableEmptyListForNullInput(BookScanRegressionTest.java:52)
+  JUnit Jupiter:BookScanRegressionTest:privateCanonicalizeWordRejectsBlankTokens()
+    MethodSource [className = 'BookScanRegressionTest', methodName = 'privateCanonicalizeWordRejectsBlankTokens', methodParameterTypes = '']
+    => java.lang.NoSuchMethodException: BookScan.canonicalizeWord(java.lang.String)
+       java.base/java.lang.Class.getDeclaredMethod(Class.java:2850)
+       BookScanRegressionTest.privateCanonicalizeWordRejectsBlankTokens(BookScanRegressionTest.java:67)
 
-Test run finished after 624 ms
+Test run finished after 483 ms
 [         5 containers found      ]
 [         0 containers skipped    ]
 [         5 containers started    ]
 [         0 containers aborted    ]
 [         5 containers successful ]
 [         0 containers failed     ]
-[        15 tests found           ]
+[        18 tests found           ]
 [         0 tests skipped         ]
-[        15 tests started         ]
+[        18 tests started         ]
 [         0 tests aborted         ]
-[         9 tests successful      ]
-[         6 tests failed          ]
+[         8 tests successful      ]
+[        10 tests failed          ]
 
