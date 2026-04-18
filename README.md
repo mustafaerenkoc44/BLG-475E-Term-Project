@@ -1,33 +1,78 @@
-# BLG 475E Term Project Workspace
+# BLG 475E - Term Project
 
-This repository is structured around the two project phases described in the course brief and now contains a completed Phase 1 workspace plus a prepared Phase 2 starting point.
+[![Phase 1 CI](https://github.com/mustafaerenkoc44/BLG-475E-Term-Project/actions/workflows/phase1-ci.yml/badge.svg)](https://github.com/mustafaerenkoc44/BLG-475E-Term-Project/actions/workflows/phase1-ci.yml)
 
-The workspace now contains:
+Course repository for the BLG 475E Software Quality and Testing term project. The repository is organized around two project phases:
 
-- `Phase1/`: completed warm-up phase with selected prompts, raw LLM logs, generated Java solutions, generated JUnit tests, coverage results, black-box assessment files, refactoring logs, and report material.
-- `Phase2/`: extension phase placeholder for the `BookScan` integration-testing work.
+- `Phase1`: LLM-based Java code generation, unit-test generation, black-box assessment, and branch-coverage analysis on 30 selected HumanEval-X Java prompts.
+- `Phase2`: integration-testing extension centered on the `BookScan` class and prompt-combination experiments.
 
-## Current status
+## Team
 
-- Phase 1 prompt selection, generation, base testing, improved testing, coverage analysis, and task-level documentation are in place.
-- The measured Phase 1 results currently show `30/30` base-test success for both public local models.
-- Aggregate branch coverage is `96.09%` for `Qwen2.5-Coder-1.5B-Instruct-GGUF` and `98.46%` for `DeepSeek-Coder-1.3B-Instruct-GGUF`, increasing to `96.88%` and `99.23%` after the improved JUnit suites.
+- Mustafa Eren KOC - `150190805`
+- Onat Baris ERCAN - `150201075`
 
-## Recommended next steps
+## Project Snapshot
 
-1. Review `Phase1/docs/report/phase1_report_draft.md` and adapt it into the IEEE template.
-2. Replace the author-header placeholders with your real names and IDs.
-3. Use `Phase2/` to implement `BookScan` and the integration-testing experiments.
-4. Keep the same descriptive commit style for every Phase 2 step.
+- Phase 1 is complete and versioned with descriptive step-by-step commits.
+- Two public local coder models were evaluated:
+  - `Qwen2.5-Coder-1.5B-Instruct-GGUF`
+  - `DeepSeek-Coder-1.3B-Instruct-GGUF`
+- Final Phase 1 correctness:
+  - `30/30` compiled and `30/30` base-test pass for both models
+- Aggregate branch coverage:
+  - Qwen base: `96.09%`
+  - Qwen improved: `96.88%`
+  - DeepSeek base: `98.46%`
+  - DeepSeek improved: `99.23%`
 
-## Commit style
+## Repository Layout
 
-Use commit messages that tell the story of the work:
+- `Phase1/`
+  - selected prompts, raw LLM logs, generated Java solutions, generated JUnit tests, coverage outputs, black-box assessment files, refactoring logs, and report material
+- `Phase2/`
+  - `BookScan` implementation plan, integration-testing strategy, and Phase 2 starter structure
+- `.github/workflows/phase1-ci.yml`
+  - GitHub Actions workflow for validating the Phase 1 Maven project
 
-- `Step 1: Added prompt selection rationale and categorized 30 tasks`
-- `Step 2: Stored Qwen outputs for 10 easy prompts without edits`
-- `Step 4: Improved boundary tests after JaCoCo branch analysis`
+## Phase 1 Deliverables
 
-## CI
+Phase 1 already includes:
 
-A GitHub Actions workflow is included at `.github/workflows/phase1-ci.yml` so the Phase 1 Maven project can be verified in GitHub.
+- prompt selection and difficulty categorization for 30 HumanEval-X Java tasks
+- raw prompt/response logging for both LLMs
+- generated Java solutions and generated JUnit test suites
+- dataset base-test execution results
+- improved tests driven by branch coverage and black-box reasoning
+- per-task equivalence partitioning, boundary analysis, and refactoring notes
+- Phase 1 literature review draft and report draft
+
+Start here if you want the Phase 1 result summary:
+
+- `Phase1/docs/analysis/phase1_execution_report.md`
+- `Phase1/docs/analysis/task_level_review.md`
+- `Phase1/docs/report/phase1_report_draft.md`
+
+## Phase 2 Direction
+
+Phase 2 focuses on integration testing for a new `BookScan` class that combines the logic associated with:
+
+- `Java/18` substring counting
+- `Java/23` string length
+- `Java/27` upper-lower case conversion
+
+The `Phase2` folder now contains a clearer implementation and testing roadmap so the second phase can continue without restructuring the repository.
+
+## Reproducibility Notes
+
+- Java: JDK 21+
+- Build tool: Maven 3.9+
+- Test framework: JUnit 6
+- Coverage tool: JaCoCo
+- Local inference runtime used in Phase 1: `llama.cpp`
+
+## Submission Notes
+
+- Java files include the required author header block.
+- The Phase 1 report draft contains the repository URL and workload distribution in the acknowledgment section.
+- The commit history is intentionally descriptive so the repository tells the development story step by step.
