@@ -1,0 +1,87 @@
+# Interaction Log
+
+- Model: Qwen2.5-Coder-1.5B-Instruct-GGUF
+- Task: Java/31
+- Step: code-generation
+
+## Full Prompt
+
+```text
+import java.util.*;
+import java.lang.*;
+
+class Solution {
+    /**
+    Return true if a given number is prime, and false otherwise.
+    >>> isPrime(6)
+    false
+    >>> isPrime(101)
+    true
+    >>> isPrime(11)
+    true
+    >>> isPrime(13441)
+    true
+    >>> isPrime(61)
+    true
+    >>> isPrime(4)
+    false
+    >>> isPrime(1)
+    false
+     */
+    public boolean isPrime(int n) {
+
+```
+
+## Raw Model Response
+
+```text
+import java.util.*;
+import java.lang.*;
+
+class Solution {
+    /**
+    Return true if a given number is prime, and false otherwise.
+    >>> isPrime(6)
+    false
+    >>> isPrime(101)
+    true
+    >>> isPrime(11)
+    true
+    >>> isPrime(13441)
+    true
+    >>> isPrime(61)
+    true
+    >>> isPrime(4)
+    false
+    >>> isPrime(1)
+    false
+     */
+    public boolean isPrime(int n) { 
+        if (n <= 1) return false;
+        for (int i = 2; i * i <= n; i++) {
+            if (n % i == 0) return false;
+        }
+        return true;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Solution sol = new Solution();
+        System.out.println(sol.isPrime(6)); // false
+        System.out.println(sol.isPrime(101)); // true
+        System.out.println(sol.isPrime(11)); // true
+        System.out.println(sol.isPrime(13441)); // true
+        System.out.println(sol.isPrime(61)); // true
+        System.out.println(sol.isPrime(4)); // false
+        System.out.println(sol.isPrime(1)); // false
+    }
+}
+```
+
+This code defines a `Solution` class with a method `isPrime` that checks if a given number is prime. It iterates from 2 to the square root of the number and checks if the number is divisible by any of these values. If it finds a divisor, the number is not prime, and the method returns `false`. If no divisors are found, the number is
+```
+
+## Usage Note
+
+Saved as raw code-generation output.

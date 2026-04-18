@@ -1,7 +1,10 @@
 .idea/
 .vscode/
 *.iml
+__pycache__/
+*.pyc
 .tools/
+2526_BLG_475E_Project.pdf
 
 Phase1/target/
 Phase2/target/

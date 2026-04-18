@@ -1,0 +1,39 @@
+import java.util.*;
+import java.lang.*;
+
+class Solution {
+    /**
+    Input is a space-delimited string of numberals from 'zero' to 'nine'.
+    Valid choices are 'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight' and 'nine'.
+    Return the string with numbers sorted from smallest to largest
+    >>> sortNumbers("three one five")
+    "one three five"
+     */
+    public String sortNumbers(String numbers) {        
+        String[] choices = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
+        String[] sortedNumbers = new String[choices.length];
+        for (int i = 0; i < choices.length; i++) {
+            sortedNumbers[i] = choices[i];
+        }
+        Arrays.sort(sortedNumbers, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return o1.compareTo(o2);
+            }
+        });
+        String sortedNumbersString = "";
+        for (int i = 0; i < sortedNumbers.length; i++) {
+            sortedNumbersString += sortedNumbers[i];
+        }
+        return sortedNumbersString;
+    }
+    
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        System.out.println(solution.sortNumbers("three one five")); // Expected output: "one three five"
+        System.out.println(solution.sortNumbers("nine eight seven six five four three two one zero")); // Expected output: "zero one two three four five six seven eight nine"
+    }
+}
+```
+
+This solution restructures the original problem by using an array of strings to represent the choices

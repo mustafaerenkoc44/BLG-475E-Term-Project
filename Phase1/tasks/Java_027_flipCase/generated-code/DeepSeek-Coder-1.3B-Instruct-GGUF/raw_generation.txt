@@ -1,0 +1,33 @@
+import java.util.*;
+import java.lang.*;
+
+class Solution {
+    /**
+    For a given string, flip lowercase characters to uppercase and uppercase to lowercase.
+    >>> flipCase("Hello")
+    "hELLO"
+     */
+    public String flipCase(String string) {
+        StringBuilder sb = new StringBuilder();
+        for (char c : string.toCharArray()) {
+            if (Character.isUpperCase(c)) {
+                sb.append(Character.toLowerCase(c));
+            } else {
+                sb.append(Character.toUpperCase(c));
+            }
+        }
+        return sb.toString();
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        System.out.println(solution.flipCase("Hello"));
+    }
+}
+```
+
+This program defines a class `Solution` with a method `flipCase` that takes a string as input and returns a new string where all the lowercase characters are replaced by uppercase and vice versa. The `Character.isUpperCase(c)` method checks if a character is uppercase, and `Character.toLowerCase(c)` and `Character.toUpperCase(c)` convert a character to lowercase or uppercase, respectively.
+
+In the `main` method, we create an

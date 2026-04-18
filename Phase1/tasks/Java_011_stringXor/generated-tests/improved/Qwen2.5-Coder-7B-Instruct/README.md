@@ -1,0 +1,1 @@
+# Store improved JUnit tests after smell and coverage analysis here.

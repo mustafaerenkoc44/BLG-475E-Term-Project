@@ -1,0 +1,34 @@
+import java.util.*;
+import java.lang.*;
+
+class Solution {
+    /**
+    Input to this function is a string represented multiple groups for nested parentheses separated by spaces.
+    For each of the group, output the deepest level of nesting of parentheses.
+    E.g. (()()) has maximum two levels of nesting while ((())) has three.
+
+    >>> parseNestedParens("(()()) ((())) () ((())()())")
+    [2, 3, 1, 3]
+     */
+    public List<Integer> parseNestedParens(String paren_string) {
+        List<Integer> levels = new ArrayList<>();
+        String[] groups = paren_string.split(" ");
+        for (String group : groups) {
+            int maxLevel = 0;
+            int currentLevel = 0;
+            for (char ch : group.toCharArray()) {
+                if (ch == '(') {
+                    currentLevel++;
+                    maxLevel = Math.max(maxLevel, currentLevel);
+                } else if (ch == ')') {
+                    currentLevel--;
+                }
+            }
+            levels.add(maxLevel);
+        }
+        return levels;
+    }
+}
+```
+
+This solution works by first splitting the input string into groups of parentheses. Then, for each group, it iterates through the characters in the group, keeping track of the current level of nesting. If it encounters a '(', it increases the current level and updates the maximum level if necessary. If it encounters a ')', it decreases the current level. The maximum level is the deepest level of nesting it has seen so far for that group. This is then added to the list of levels.

@@ -1,0 +1,31 @@
+import java.util.*;
+import java.lang.*;
+
+class Solution {
+    /**
+    Find how many times a given substring can be found in the original string. Count overlaping cases.
+    >>> howManyTimes("", "a")
+    0
+    >>> howManyTimes("aaa", "a")
+    3
+    >>> howManyTimes("aaaa", "aa")
+    3
+     */
+    public int howManyTimes(String string, String substring) { 
+        int count = 0;
+        int index = 0;
+        while ((index = string.indexOf(substring, index)) != -1) {
+            count++;
+            index++; // Move to the next character to allow for overlapping matches
+        }
+        return count;
+    }
+
+    public static void main(String[] args) {
+        Solution sol = new Solution();
+        System.out.println(sol.howManyTimes("", "a")); // Expected output: 0
+        System.out.println(sol.howManyTimes("aaa", "a")); // Expected output: 3
+        System.out.println(sol.howManyTimes("aaaa", "aa")); // Expected output: 3
+    }
+}
+``` This Java solution defines a method `howManyTimes` that takes two strings as input: the original string and the substring to search for. It returns the number of times the substring appears in the original string, including overlapping occurrences. The method uses the `indexOf` method to find the first occurrence of the substring starting from the current index and increments the index by one after each find to allow for overlapping matches. The process continues until the substring is no longer found. The main method demonstrates the usage of the `howManyTimes` method with a few test cases.

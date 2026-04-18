@@ -1,0 +1,22 @@
+/* @Authors
+* Student Names: <student_name>
+* Student IDs: <student_id>
+*/
+
+public class Main {
+    public static void main(String[] args) {
+        Solution s = new Solution();
+        List<Boolean> correct = Arrays.asList(
+                !s.isPrime(6),
+                s.isPrime(101),
+                s.isPrime(11),
+                s.isPrime(13441),
+                s.isPrime(61),
+                !s.isPrime(4),
+                !s.isPrime(1)
+        );
+        if (correct.contains(false)) {
+            throw new AssertionError();
+        }
+    }
+}

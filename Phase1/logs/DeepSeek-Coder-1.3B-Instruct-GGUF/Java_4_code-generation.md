@@ -1,0 +1,76 @@
+# Interaction Log
+
+- Model: DeepSeek-Coder-1.3B-Instruct-GGUF
+- Task: Java/4
+- Step: code-generation
+
+## Full Prompt
+
+```text
+import java.util.*;
+import java.lang.*;
+
+class Solution {
+    /**
+    For a given list of input numbers, calculate Mean Absolute Deviation
+    around the mean of this dataset.
+    Mean Absolute Deviation is the average absolute difference between each
+    element and a centerpoint (mean in this case):
+    MAD = average | x - x_mean |
+    >>> meanAbsoluteDeviation(Arrays.asList(1.0, 2.0, 3.0, 4.0))
+    1.0
+     */
+    public double meanAbsoluteDeviation(List<Double> numbers) {
+
+```
+
+## Raw Model Response
+
+```text
+import java.util.*;
+import java.lang.*;
+
+class Solution {
+    /**
+    For a given list of input numbers, calculate Mean Absolute Deviation
+    around the mean of this dataset.
+    Mean Absolute Deviation is the average absolute difference between each
+    element and a centerpoint (mean in this case):
+    MAD = average | x - x_mean |
+    >>> meanAbsoluteDeviation(Arrays.asList(1.0, 2.0, 3.0, 4.0))
+    1.0
+     */
+    public double meanAbsoluteDeviation(List<Double> numbers) {
+        double sum = 0;
+        double mean = mean(numbers);
+        for(Double num : numbers){
+            sum += Math.abs(num - mean);
+        }
+        return sum / numbers.size();
+    }
+
+    /**
+    Calculate the mean of a list of numbers
+    >>> mean(Arrays.asList(1.0, 2.0, 3.0, 4.0))
+    2.5
+    */
+    public double mean(List<Double> numbers) {
+        double sum = 0;
+        for(Double num : numbers){
+            sum += num;
+        }
+        return sum / numbers.size();
+    }
+}
+```
+
+The `meanAbsoluteDeviation` method calculates the Mean Absolute Deviation by summing the absolute differences between each number and the mean, then dividing by the number of elements.
+
+The `mean` method calculates the mean by summing all the numbers in the list and then dividing by the number of elements.
+
+The `meanAbsoluteDeviation` method is a part of the `Solution` class. It takes
+```
+
+## Usage Note
+
+Saved as raw code-generation output.

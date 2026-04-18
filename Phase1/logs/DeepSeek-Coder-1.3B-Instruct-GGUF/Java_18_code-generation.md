@@ -1,0 +1,65 @@
+# Interaction Log
+
+- Model: DeepSeek-Coder-1.3B-Instruct-GGUF
+- Task: Java/18
+- Step: code-generation
+
+## Full Prompt
+
+```text
+import java.util.*;
+import java.lang.*;
+
+class Solution {
+    /**
+    Find how many times a given substring can be found in the original string. Count overlaping cases.
+    >>> howManyTimes("", "a")
+    0
+    >>> howManyTimes("aaa", "a")
+    3
+    >>> howManyTimes("aaaa", "aa")
+    3
+     */
+    public int howManyTimes(String string, String substring) {
+
+```
+
+## Raw Model Response
+
+```text
+import java.util.*;
+import java.lang.*;
+
+class Solution {
+    /**
+    Find how many times a given substring can be found in the original string. Count overlaping cases.
+    >>> howManyTimes("", "a")
+    0
+    >>> howManyTimes("aaa", "a")
+    3
+    >>> howManyTimes("aaaa", "aa")
+    3
+     */
+    public int howManyTimes(String string, String substring) {
+        int count = 0;
+        for (int i = 0; i <= string.length() - substring.length(); i++) {
+            String sub = string.substring(i, i + substring.length());
+            if (sub.equals(substring)) {
+                count++;
+            }
+        }
+        return count;
+    }
+}
+```
+
+This program works by looping through the string, taking a substring of the same length as the substring being searched for. If the substring matches the substring being searched for, it increments the count. The function then returns the count.
+
+The time complexity of this program is O(n), where n is the length of the string. This is because the program loops through the string once.
+
+The space complexity is O(1), as the program only uses a constant amount of space to store the count and the loop variables.
+```
+
+## Usage Note
+
+Saved as raw code-generation output.

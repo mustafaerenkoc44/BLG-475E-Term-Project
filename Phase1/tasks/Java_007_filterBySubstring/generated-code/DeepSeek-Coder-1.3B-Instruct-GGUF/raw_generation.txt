@@ -1,0 +1,28 @@
+import java.util.*;
+import java.lang.*;
+
+class Solution {
+    /**
+    Filter an input list of strings only for ones that contain given substring
+    >>> filterBySubstring(List.of(), "a")
+    []
+    >>> filterBySubstring(Arrays.asList("abc", "bacd", "cde", "array"), "a")
+    ["abc", "bacd", "array"]
+     */
+    public List<String> filterBySubstring(List<String> strings, String substring) {
+        List<String> result = new ArrayList<>();
+        for(String str : strings){
+            if(str.contains(substring)){
+                result.add(str);
+            }
+        }
+        return result;
+    }
+}
+```
+
+This program defines a function `filterBySubstring` that takes a list of strings and a substring as input, and returns a new list containing only the strings from the input list that contain the given substring.
+
+The function uses a for-loop to iterate over each string in the input list. For each string, it checks if the string contains the given substring using the `contains` method. If the string contains the substring, it adds the string to the result list. Finally, it returns the result list.
+
+The function is tested with an empty list, a list with a single string, and a list with multiple strings. The expected output is the list of strings that contain the substring.

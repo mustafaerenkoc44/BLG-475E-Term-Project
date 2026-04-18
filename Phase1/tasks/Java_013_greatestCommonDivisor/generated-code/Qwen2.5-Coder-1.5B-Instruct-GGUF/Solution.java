@@ -1,0 +1,32 @@
+/* @Authors
+* Student Names: <student_name>
+* Student IDs: <student_id>
+*/
+
+import java.util.*;
+import java.lang.*;
+
+
+class Solution {
+    /**
+    Return a greatest common divisor of two integers a and b
+    >>> greatestCommonDivisor(3, 5)
+    1
+    >>> greatestCommonDivisor(25, 15)
+    5
+     */
+    public int greatestCommonDivisor(int a, int b) { 
+        // Base case: if b is 0, a is the GCD
+        if (b == 0) {
+            return a;
+        }
+        // Recursive case: gcd(a, b) = gcd(b, a % b)
+        return greatestCommonDivisor(b, a % b);
+    }
+    
+    public static void main(String[] args) {
+        Solution sol = new Solution();
+        System.out.println(sol.greatestCommonDivisor(3, 5));  // Output: 1
+        System.out.println(sol.greatestCommonDivisor(25, 15)); // Output: 5
+    }
+}

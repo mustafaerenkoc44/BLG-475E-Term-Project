@@ -1,0 +1,64 @@
+import java.util.*;
+import java.lang.*;
+
+class Solution {
+    /**
+    Input are two strings a and b consisting only of 1s and 0s.
+    Perform binary XOR on these inputs and return result also as a string.
+    >>> stringXor("010", "110")
+    "100"
+     */
+    public String stringXor(String a, String b) { 
+        // Convert strings to arrays of characters
+        char[] aChars = a.toCharArray();
+        char[] bChars = b.toCharArray();
+        
+        // Initialize result array
+        char[] result = new char[aChars.length];
+        
+        // Perform XOR operation
+        for (int i = 0; i < aChars.length; i++) {
+            result[i] = (aChars[i] == bChars[i]) ? '0' : '1';
+        }
+        
+        // Convert result array back to string
+        return new String(result);
+    }
+    
+    public static void main(String[] args) {
+        Solution sol = new Solution();
+        System.out.println(sol.stringXor("010", "110")); // Output: "100"
+    }
+}
+```java
+```java
+```java
+```java
+```java
+```java
+```java
+```java
+```java
+```java
+```java
+```java
+```java
+```java
+```java
+```java
+```java
+```java
+```java
+```java
+```java
+```java
+```java
+```java
+```java
+```java
+```java
+```java
+```java
+```java
+```java
+```java

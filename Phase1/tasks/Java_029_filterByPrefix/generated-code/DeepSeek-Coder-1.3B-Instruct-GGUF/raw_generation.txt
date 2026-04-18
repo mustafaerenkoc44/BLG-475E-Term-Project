@@ -1,0 +1,21 @@
+import java.util.*;
+import java.lang.*;
+import java.util.stream.Collectors;
+
+class Solution {
+    /**
+    Filter an input list of strings only for ones that start with a given prefix.
+    >>> filterByPrefix(List.of(), "a")
+    []
+    >>> filterByPrefix(Arrays.asList("abc", "bcd", "cde", "array"), "a")
+    ["abc", "array"]
+     */
+    public List<String> filterByPrefix(List<String> strings, String prefix) {
+        return strings.stream()
+            .filter(s -> s.startsWith(prefix))
+            .collect(Collectors.toList());
+    }
+}
+```
+
+This code defines a function `filterByPrefix` that takes a list of strings and a prefix, and returns a new list that only contains the strings that start with the given prefix. The function uses Java 8's Stream API to do this. The `stream()` method converts the list to a stream, the `filter()` method filters out the strings that do not start with the given prefix, and the `collect()` method converts the result back into a list.

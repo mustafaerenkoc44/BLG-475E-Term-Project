@@ -1,0 +1,1 @@
+# Store the adapted base JUnit tests for this model here.

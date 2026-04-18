@@ -1,0 +1,39 @@
+/* @Authors
+* Student Names: <student_name>
+* Student IDs: <student_id>
+*/
+
+import java.util.*;
+import java.lang.*;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+class DatasetImprovedTest {
+    @Test
+    void datasetBaseTest() {
+        Solution s = new Solution();
+                List<Boolean> correct = Arrays.asList(
+                        s.separateParenGroups("(()()) ((())) () ((())()())").equals(Arrays.asList(
+                                "(()())", "((()))", "()", "((())()())"
+                        )),
+                        s.separateParenGroups("() (()) ((())) (((())))").equals(Arrays.asList(
+                                "()", "(())", "((()))", "(((())))"
+                        )),
+                        s.separateParenGroups("(()(())((())))").equals(Arrays.asList(
+                                "(()(())((())))"
+                        )),
+                        s.separateParenGroups("( ) (( )) (( )( ))").equals(Arrays.asList("()", "(())", "(()())"))
+                );
+                if (correct.contains(false)) {
+                    Assertions.fail("Dataset assertion failed");
+                }
+    }
+
+    @Test
+    void improvedHandlesCompactAndEmptyInput() {
+        Solution s = new Solution();
+        Assertions.assertEquals(List.of(), s.separateParenGroups(""));
+        Assertions.assertEquals(Arrays.asList("(()())"), s.separateParenGroups("(()())"));
+    }
+}

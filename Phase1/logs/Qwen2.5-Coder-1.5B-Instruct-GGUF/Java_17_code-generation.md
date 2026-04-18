@@ -1,0 +1,73 @@
+# Interaction Log
+
+- Model: Qwen2.5-Coder-1.5B-Instruct-GGUF
+- Task: Java/17
+- Step: code-generation
+
+## Full Prompt
+
+```text
+import java.util.*;
+import java.lang.*;
+
+class Solution {
+    /**
+    Input to this function is a string representing musical notes in a special ASCII format.
+    Your task is to parse this string and return list of integers corresponding to how many beats does each
+    not last.
+
+    Here is a legend:
+    "o" - whole note, lasts four beats
+    "o|" - half note, lasts two beats
+    ".|" - quater note, lasts one beat
+
+    >>> parseMusic("o o| .| o| o| .| .| .| .| o o")
+    [4, 2, 1, 2, 2, 1, 1, 1, 1, 4, 4]
+     */
+    public List<Integer> parseMusic(String string) {
+
+```
+
+## Raw Model Response
+
+```text
+import java.util.*;
+import java.lang.*;
+
+class Solution {
+    /**
+    Input to this function is a string representing musical notes in a special ASCII format.
+    Your task is to parse this string and return list of integers corresponding to how many beats does each
+    not last.
+
+    Here is a legend:
+    "o" - whole note, lasts four beats
+    "o|" - half note, lasts two beats
+    ".|" - quater note, lasts one beat
+
+    >>> parseMusic("o o| .| o| o| .| .| .| .| o o")
+    [4, 2, 1, 2, 2, 1, 1, 1, 1, 4, 4]
+     */
+    public List<Integer> parseMusic(String string) { 
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < string.length(); i++) {
+            switch (string.charAt(i)) {
+                case 'o':
+                    list.add(4);
+                    break;
+                case 'o|':
+                    list.add(2);
+                    break;
+                case '.|':
+                    list.add(1);
+                    break;
+            }
+        }
+        return list;
+    }
+}
+```
+
+## Usage Note
+
+Saved as raw code-generation output.
