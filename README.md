@@ -108,7 +108,7 @@ Phase 2 result summary:
 - Java files include the required author header block.
 - Both phases contain raw interaction logs that record prompts, model outputs,
   and a short usage note.
-- The report drafts contain the repository URL and workload distribution in the
+- The report drafts contain the repository URL and member role allocation in the
   acknowledgement section.
 - The commit history is intentionally descriptive so the repository tells the
   development story step by step.

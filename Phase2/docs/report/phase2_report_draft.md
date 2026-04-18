@@ -7,8 +7,8 @@ Prompt Combination, Prompt Refinement, and Coverage-Guided Validation
 
 ## Authors
 
-- Mustafa Eren KOC - 150190805 (approx. 65%)
-- Onat Baris ERCAN - 150210075 (approx. 35%)
+- Mustafa Eren KOC - 150190805
+- Onat Baris ERCAN - 150210075
 
 ## Abstract
 
@@ -232,9 +232,9 @@ demonstrates two complementary lessons:
 - GitHub repository URL:
   `https://github.com/mustafaerenkoc44/BLG-475E-Term-Project`
 - Group member roles and workload distribution:
-  - Mustafa Eren KOC (150190805, approx. 65%): repository setup, local model
+  - Mustafa Eren KOC (150190805): led repository setup, local model
     workflow, Phase 2 implementation, integration-test automation, prompt
-    comparison runner, coverage analysis, result aggregation.
-  - Onat Baris ERCAN (150210075, approx. 35%): prompt review, black-box
+    comparison runner, coverage analysis, and result aggregation.
+  - Onat Baris ERCAN (150210075): focused on prompt review, black-box
     assessment support, failure classification, report refinement, final
-    submission checks, CI cross-review.
+    submission checks, and CI cross-review.
