@@ -1,4 +1,4 @@
-﻿/* @Authors
+/* @Authors
 * Student Names: Mustafa Eren KOÇ, Onat Barış ERCAN
 * Student IDs: 150190805, 150210075
 */
@@ -26,11 +26,33 @@ class DatasetImprovedTest {
     }
 
     @Test
-    void improvedKeepsPalindromeAndHandlesSingleCharacter() {
+    void improvedAlreadyPalindromeIsUnchanged_V1() {
         Solution s = new Solution();
-        Assertions.assertEquals("racecar", s.makePalindrome("racecar"));
-        Assertions.assertEquals("a", s.makePalindrome("a"));
+        Assertions.assertEquals("racecar", s.makePalindrome("racecar"),
+                "Valid class V1: an already palindromic input matches at start=0 and appends an empty reversed prefix");
+        Assertions.assertEquals("aba", s.makePalindrome("aba"),
+                "Valid class V1: the same early-exit happens for the smallest non-trivial palindrome");
+    }
+
+    @Test
+    void improvedSingleCharacterIsOwnPalindrome_B2() {
+        Solution s = new Solution();
+        Assertions.assertEquals("x", s.makePalindrome("x"),
+                "Boundary B2: a single character is trivially palindromic so no suffix is appended");
+    }
+
+    @Test
+    void improvedNeedsOneAppendedCharacter_V2() {
+        Solution s = new Solution();
+        Assertions.assertEquals("catac", s.makePalindrome("cata"),
+                "Valid class V2: the shortest palindrome appends only one character from the reversed prefix");
+    }
+
+    @Test
+    void improvedMutationNullStringThrowsNpe_I1() {
+        Solution s = new Solution();
+        Assertions.assertThrows(NullPointerException.class,
+                () -> s.makePalindrome(null),
+                "Invalid class I1 (mutation): calling string.length() on null raises NPE");
     }
 }
-
-

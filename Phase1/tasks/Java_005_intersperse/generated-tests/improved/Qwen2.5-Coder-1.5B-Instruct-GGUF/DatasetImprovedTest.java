@@ -1,4 +1,4 @@
-﻿/* @Authors
+/* @Authors
 * Student Names: Mustafa Eren KOÇ, Onat Barış ERCAN
 * Student IDs: 150190805, 150210075
 */
@@ -22,6 +22,40 @@ class DatasetImprovedTest {
                     Assertions.fail("Dataset assertion failed");
                 }
     }
+
+    @Test
+    void improvedHandlesSingletonList_B1() {
+        Solution s = new Solution();
+        Assertions.assertEquals(
+                Arrays.asList(9),
+                s.intersperse(new ArrayList<>(Arrays.asList(9)), 4),
+                "Boundary B1: size-one list has no internal gap and must stay unchanged");
+    }
+
+    @Test
+    void improvedDelimiterAlreadyPresent_B2() {
+        Solution s = new Solution();
+        Assertions.assertEquals(
+                Arrays.asList(0, 0, 1, 0, 0),
+                s.intersperse(new ArrayList<>(Arrays.asList(0, 1, 0)), 0),
+                "Boundary B2: inserted and original zeros co-exist but positions must remain deterministic");
+    }
+
+    @Test
+    void improvedHandlesNegativeDelimiterAndValues_V3() {
+        Solution s = new Solution();
+        Assertions.assertEquals(
+                Arrays.asList(-3, -1, -5, -1, -7),
+                s.intersperse(new ArrayList<>(Arrays.asList(-3, -5, -7)), -1),
+                "Valid class V3: interleaving works for negative delimiters and negative elements alike");
+    }
+
+    @Test
+    void improvedMutationNullListThrowsNpe_I1() {
+        Solution s = new Solution();
+        Assertions.assertThrows(
+                NullPointerException.class,
+                () -> s.intersperse(null, 0),
+                "Invalid class I1 (mutation): dereferencing numbers.size() on null list must throw an NPE");
+    }
 }
-
-

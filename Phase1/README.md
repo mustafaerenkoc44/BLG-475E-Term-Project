@@ -66,8 +66,15 @@ The stored outputs in this repository correspond to the local GGUF execution var
   - `Qwen2.5-Coder-1.5B-Instruct-GGUF`: `123 covered / 5 missed` (`96.09%`)
   - `DeepSeek-Coder-1.3B-Instruct-GGUF`: `128 covered / 2 missed` (`98.46%`)
 - Aggregate improved branch coverage:
-  - `Qwen2.5-Coder-1.5B-Instruct-GGUF`: `124 covered / 4 missed` (`96.88%`)
-  - `DeepSeek-Coder-1.3B-Instruct-GGUF`: `129 covered / 1 missed` (`99.23%`)
+  - `Qwen2.5-Coder-1.5B-Instruct-GGUF`: `126 covered / 2 missed` (`98.44%`)
+  - `DeepSeek-Coder-1.3B-Instruct-GGUF`: `130 covered / 0 missed` (`100.00%`)
+- Mutation-based guardrails:
+  - Every (task, model) pair has at least one `improvedMutation...` JUnit
+    method pinned to a specific operator family (ROR / AOR / NPE / BND /
+    RV / LCR / UOI / EXC); the full inventory is in
+    `docs/analysis/mutation_testing_strategy.md`.
+  - All 60 improved suites (30 tasks x 2 models) now report
+    `compile_success=true` and `junit_success=true`.
 
 ## Suggested workflow
 
@@ -80,9 +87,11 @@ The stored outputs in this repository correspond to the local GGUF execution var
 ## Tooling assumptions
 
 - Java: JDK 21 or newer
-- Build tool: Maven 3.9 or newer
-- Test framework: JUnit 6
-- Coverage tool: JaCoCo
+- Pipeline driver: Python 3.11 + PowerShell (scripts in `scripts/` and
+  `scripts/python/`)
+- Test framework: JUnit 6 (`junit-platform-console-standalone-6.0.3.jar`)
+- Coverage tool: JaCoCo 0.8.12 (agent + CLI under `.tools/`)
+- Local inference runtime: `llama.cpp`
 
 ## Literature review note
 

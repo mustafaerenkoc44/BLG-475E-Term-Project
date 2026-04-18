@@ -1,4 +1,4 @@
-﻿/* @Authors
+/* @Authors
 * Student Names: Mustafa Eren KOÇ, Onat Barış ERCAN
 * Student IDs: 150190805, 150210075
 */
@@ -24,10 +24,31 @@ class DatasetImprovedTest {
     }
 
     @Test
-    void improvedPreservesDigitsAndPunctuation() {
+    void improvedPreservesDigitsAndPunctuation_V3() {
         Solution s = new Solution();
-        Assertions.assertEquals("123!aB", s.flipCase("123!Ab"));
+        Assertions.assertEquals("123!aB", s.flipCase("123!Ab"),
+                "Valid class V3: digits and punctuation fall through the else branch and are appended unchanged");
+    }
+
+    @Test
+    void improvedEmptyStringIsPassThrough_B1() {
+        Solution s = new Solution();
+        Assertions.assertEquals("", s.flipCase(""),
+                "Boundary B1: an empty input skips the for-each loop and yields an empty output");
+    }
+
+    @Test
+    void improvedPureDigitsAndSymbolsRemainIdentical_B2() {
+        Solution s = new Solution();
+        Assertions.assertEquals("123!?", s.flipCase("123!?"),
+                "Boundary B2: a string without alphabetic characters bypasses both case-flip branches");
+    }
+
+    @Test
+    void improvedMutationNullStringThrowsNpe_I1() {
+        Solution s = new Solution();
+        Assertions.assertThrows(NullPointerException.class,
+                () -> s.flipCase(null),
+                "Invalid class I1 (mutation): calling string.length() on null throws an NPE before the loop starts");
     }
 }
-
-

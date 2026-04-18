@@ -8,17 +8,17 @@ Method: `countDistinctCharacters`
 |---|---|---|---|---|
 | V1 | Mixed-case duplicates collapse to one distinct character. | `string="xyzXYZ"` | Yes | Prompt example returns `3`. |
 | V2 | Mixed repeated and unique characters. | `string="Jerry"` | Yes | Prompt example returns `4`. |
-| V3 | All characters are the same ignoring case. | `string="aAaA"` | No | Expected result is `1`. |
+| V3 | All characters are the same ignoring case. | `string="aAaA"` | Yes (improved) | Expected result is `1`. |
 
 ## Invalid Classes
 
 | Class ID | Description | Representative Input | Covered By Existing Test? | Notes |
 |---|---|---|---|---|
-| I1 | Null string. | `string=null` | No | Out of contract. |
+| I1 | Null string. | `string=null` | Yes (improved) | Out of contract. |
 
 ## Boundary Conditions
 
 | Class ID | Description | Representative Input | Covered By Existing Test? | Notes |
 |---|---|---|---|---|
-| B1 | Empty string. | `string=""` | No | Expected count is `0`. |
-| B2 | Single character. | `string="Q"` | No | Expected count is `1`. |
+| B1 | Empty string. | `string=""` | Yes (improved) | Expected count is `0`. |
+| B2 | Single character. | `string="Q"` | Yes (improved) | Expected count is `1`. |

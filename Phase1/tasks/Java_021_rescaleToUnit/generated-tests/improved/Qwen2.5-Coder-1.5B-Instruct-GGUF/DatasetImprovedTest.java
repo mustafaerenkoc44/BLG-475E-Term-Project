@@ -1,4 +1,4 @@
-﻿/* @Authors
+/* @Authors
 * Student Names: Mustafa Eren KOÇ, Onat Barış ERCAN
 * Student IDs: 150190805, 150210075
 */
@@ -24,6 +24,41 @@ class DatasetImprovedTest {
                     Assertions.fail("Dataset assertion failed");
                 }
     }
+
+    @Test
+    void improvedSpansNegativeAndPositive_V2() {
+        Solution s = new Solution();
+        Assertions.assertEquals(
+                Arrays.asList(0.0, 1.0, 0.6),
+                s.rescaleToUnit(new ArrayList<>(Arrays.asList(-2.0, 3.0, 1.0))),
+                "Valid class V2: min/max are correctly discovered when inputs straddle zero");
+    }
+
+    @Test
+    void improvedRepeatedInteriorMapsConsistently_V3() {
+        Solution s = new Solution();
+        Assertions.assertEquals(
+                Arrays.asList(0.0, 0.0, 1.0, 0.5),
+                s.rescaleToUnit(new ArrayList<>(Arrays.asList(1.0, 1.0, 5.0, 3.0))),
+                "Valid class V3: identical interior values keep identical rescaled positions");
+    }
+
+    @Test
+    void improvedAlreadySpansUnitInterval_B2() {
+        Solution s = new Solution();
+        Assertions.assertEquals(
+                Arrays.asList(0.0, 0.5, 1.0),
+                s.rescaleToUnit(new ArrayList<>(Arrays.asList(0.0, 0.5, 1.0))),
+                "Boundary B2: a list that already spans [0,1] must remain unchanged");
+    }
+
+    @Test
+    void improvedMutationAllEqualTriggersNaN_I1() {
+        Solution s = new Solution();
+        List<Double> out = s.rescaleToUnit(new ArrayList<>(Arrays.asList(2.0, 2.0, 2.0)));
+        for (Double value : out) {
+            Assertions.assertTrue(Double.isNaN(value),
+                    "Invalid class I1 (mutation): when max == min the divisor is zero and every entry becomes NaN");
+        }
+    }
 }
-
-

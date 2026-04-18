@@ -14,11 +14,11 @@ Method: `primeFib`
 
 | Class ID | Description | Representative Input | Covered By Existing Test? | Notes |
 |---|---|---|---|---|
-| I1 | Non-positive index. | `n=0` | No | Out of contract. |
+| I1 | Non-positive index. | `n=0` | Yes (improved) | Out of contract. |
 
 ## Boundary Conditions
 
 | Class ID | Description | Representative Input | Covered By Existing Test? | Notes |
 |---|---|---|---|---|
 | B1 | Boundary between first and second prime Fibonacci values. | `n=1 and n=2` | Yes | Confirms sequence indexing. |
-| B2 | Performance-sensitive moderate index. | `n=6` | No | Useful for detecting runaway search loops. |
+| B2 | Performance-sensitive moderate index. | `n=6` | Yes (improved) | Useful for detecting runaway search loops. |

@@ -6,25 +6,145 @@ on:
       - main
       - master
   pull_request:
+    paths:
+      - "Phase1/**"
+      - ".github/workflows/phase1-ci.yml"
+  workflow_dispatch:
 
 jobs:
   verify-phase1:
+    # Phase 1 is driven by a PowerShell + Python pipeline, not Maven,
+    # so the CI runner mirrors that toolchain on a GitHub-hosted Linux image.
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: Phase1
+    timeout-minutes: 30
+
+    env:
+      PHASE1_DIR: ${{ github.workspace }}/Phase1
+      PHASE1_TOOLS_DIR: ${{ github.workspace }}/.tools
+      PHASE1_RESULTS_DIR: ${{ github.workspace }}/Phase1/results
+      JUNIT_VERSION: "6.0.3"
+      JACOCO_VERSION: "0.8.12"
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up JDK 21
+      - name: Set up JDK 21 (Temurin)
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '21'
-          cache: maven
+          java-version: "21"
 
-      - name: Verify
-        run: mvn -B -ntp clean verify
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
+      - name: Install PowerShell Core
+        run: |
+          if ! command -v pwsh >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install -y --no-install-recommends powershell
+          fi
+          pwsh --version
+
+      - name: Cache Phase 1 Java tools
+        id: cache-phase1-tools
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.PHASE1_TOOLS_DIR }}
+          key: phase1-tools-junit-${{ env.JUNIT_VERSION }}-jacoco-${{ env.JACOCO_VERSION }}
+
+      - name: Download Phase 1 Java tools (JUnit 6 + JaCoCo 0.8.12)
+        if: steps.cache-phase1-tools.outputs.cache-hit != 'true'
+        run: |
+          set -euo pipefail
+          mkdir -p "$PHASE1_TOOLS_DIR"
+          curl -L -sS \
+            "https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/${JUNIT_VERSION}/junit-platform-console-standalone-${JUNIT_VERSION}.jar" \
+            -o "$PHASE1_TOOLS_DIR/junit-platform-console-standalone-${JUNIT_VERSION}.jar"
+          curl -L -sS \
+            "https://repo1.maven.org/maven2/org/jacoco/org.jacoco.agent/${JACOCO_VERSION}/org.jacoco.agent-${JACOCO_VERSION}-runtime.jar" \
+            -o "$PHASE1_TOOLS_DIR/org.jacoco.agent-${JACOCO_VERSION}-runtime.jar"
+          curl -L -sS \
+            "https://repo1.maven.org/maven2/org/jacoco/org.jacoco.cli/${JACOCO_VERSION}/org.jacoco.cli-${JACOCO_VERSION}-nodeps.jar" \
+            -o "$PHASE1_TOOLS_DIR/org.jacoco.cli-${JACOCO_VERSION}-nodeps.jar"
+          ls -lh "$PHASE1_TOOLS_DIR"
+
+      - name: Verify Java source files are BOM-free
+        shell: pwsh
+        run: |
+          $offending = @()
+          Get-ChildItem -Path "$env:PHASE1_DIR/tasks" -Recurse -Filter *.java | ForEach-Object {
+              $bytes = [System.IO.File]::ReadAllBytes($_.FullName)
+              if ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF) {
+                  $offending += $_.FullName
+              }
+          }
+          if ($offending.Count -gt 0) {
+              Write-Error ("Found {0} Java file(s) with a UTF-8 BOM. Remove them before compiling:`n{1}" -f $offending.Count, ($offending -join "`n"))
+              exit 1
+          }
+          Write-Host "All Java files are BOM-free."
+
+      - name: Run base-suite coverage (Python pipeline)
+        run: |
+          python "$PHASE1_DIR/scripts/python/run_base_coverage.py" \
+            --tasks-root "$PHASE1_DIR/tasks" \
+            --results   "$PHASE1_RESULTS_DIR/base_coverage_results.csv" \
+            --java      "$JAVA_HOME/bin/java" \
+            --javac     "$JAVA_HOME/bin/javac" \
+            --junit-console "$PHASE1_TOOLS_DIR/junit-platform-console-standalone-${JUNIT_VERSION}.jar" \
+            --jacoco-agent  "$PHASE1_TOOLS_DIR/org.jacoco.agent-${JACOCO_VERSION}-runtime.jar" \
+            --jacoco-cli    "$PHASE1_TOOLS_DIR/org.jacoco.cli-${JACOCO_VERSION}-nodeps.jar" \
+            --compile-timeout 30 \
+            --run-timeout 30
+
+      - name: Run improved-suite coverage (Python pipeline)
+        run: |
+          python "$PHASE1_DIR/scripts/python/run_base_coverage.py" \
+            --tasks-root "$PHASE1_DIR/tasks" \
+            --results   "$PHASE1_RESULTS_DIR/improved_coverage_results.csv" \
+            --java      "$JAVA_HOME/bin/java" \
+            --javac     "$JAVA_HOME/bin/javac" \
+            --junit-console "$PHASE1_TOOLS_DIR/junit-platform-console-standalone-${JUNIT_VERSION}.jar" \
+            --jacoco-agent  "$PHASE1_TOOLS_DIR/org.jacoco.agent-${JACOCO_VERSION}-runtime.jar" \
+            --jacoco-cli    "$PHASE1_TOOLS_DIR/org.jacoco.cli-${JACOCO_VERSION}-nodeps.jar" \
+            --compile-timeout 30 \
+            --run-timeout 30 \
+            --test-stage improved \
+            --test-file-name DatasetImprovedTest.java \
+            --test-class-name DatasetImprovedTest \
+            --artifacts-subdir improved-coverage
+
+      - name: Assert that every (task, model) pair compiled and ran successfully
+        shell: pwsh
+        run: |
+          $baseCsv     = Join-Path $env:PHASE1_RESULTS_DIR "base_coverage_results.csv"
+          $improvedCsv = Join-Path $env:PHASE1_RESULTS_DIR "improved_coverage_results.csv"
+
+          foreach ($csv in @($baseCsv, $improvedCsv)) {
+              if (-not (Test-Path $csv)) {
+                  Write-Error "Expected results CSV missing: $csv"
+                  exit 1
+              }
+              $rows = Import-Csv -Path $csv
+              $failed = $rows | Where-Object { $_.compile_success -ne 'true' -or $_.junit_success -ne 'true' }
+              if ($failed) {
+                  Write-Host "`n$csv has failing entries:" -ForegroundColor Yellow
+                  $failed | Format-Table task_folder, model_name, compile_success, junit_success, notes -AutoSize | Out-String | Write-Host
+                  exit 1
+              }
+              Write-Host "All ${($rows.Count)} rows in $csv passed."
+          }
+
+      - name: Upload coverage CSVs and per-run artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase1-coverage-results
+          path: |
+            Phase1/results/*.csv
+            Phase1/results/artifacts/**
+          if-no-files-found: warn
+          retention-days: 30

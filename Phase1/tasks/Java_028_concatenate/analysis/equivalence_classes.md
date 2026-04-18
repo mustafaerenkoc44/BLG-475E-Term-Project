@@ -14,11 +14,11 @@ Method: `concatenate`
 
 | Class ID | Description | Representative Input | Covered By Existing Test? | Notes |
 |---|---|---|---|---|
-| I1 | Null list. | `strings=null` | No | Out of contract. |
+| I1 | Null list. | `strings=null` | Yes (improved) | Out of contract. |
 
 ## Boundary Conditions
 
 | Class ID | Description | Representative Input | Covered By Existing Test? | Notes |
 |---|---|---|---|---|
-| B1 | Contains empty string elements. | `strings=["ab", "", "cd"]` | No | Order must be preserved without inserting separators. |
-| B2 | All elements empty. | `strings=["", ""]` | No | Checks neutral aggregation. |
+| B1 | Contains empty string elements. | `strings=["ab", "", "cd"]` | Yes (improved) | Order must be preserved without inserting separators. |
+| B2 | All elements empty. | `strings=["", ""]` | Yes (improved) | Checks neutral aggregation. |

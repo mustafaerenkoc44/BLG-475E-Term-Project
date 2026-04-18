@@ -14,11 +14,11 @@ Method: `intersperse`
 
 | Class ID | Description | Representative Input | Covered By Existing Test? | Notes |
 |---|---|---|---|---|
-| I1 | Null list. | `numbers=null, delimiter=0` | No | Out of contract. |
+| I1 | Null list. | `numbers=null, delimiter=0` | Yes (improved) | Out of contract. |
 
 ## Boundary Conditions
 
 | Class ID | Description | Representative Input | Covered By Existing Test? | Notes |
 |---|---|---|---|---|
 | B1 | Size exactly one. | `numbers=[9], delimiter=4` | Yes | Classic off-by-one boundary. |
-| B2 | Delimiter already appears in the list. | `numbers=[0, 1, 0], delimiter=0` | No | Checks whether inserted and original zeros are distinguished only by position. |
+| B2 | Delimiter already appears in the list. | `numbers=[0, 1, 0], delimiter=0` | Yes (improved) | Checks whether inserted and original zeros are distinguished only by position. |

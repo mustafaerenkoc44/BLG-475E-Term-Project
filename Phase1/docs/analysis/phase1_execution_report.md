@@ -33,8 +33,14 @@ This workspace executed the Phase 1 pipeline on 30 selected HumanEval-X Java tas
 
 ### Improved branch coverage
 
-- `Qwen2.5-Coder-1.5B-Instruct-GGUF`: `124 covered / 4 missed`, `96.88%`
-- `DeepSeek-Coder-1.3B-Instruct-GGUF`: `129 covered / 1 missed`, `99.23%`
+- `Qwen2.5-Coder-1.5B-Instruct-GGUF`: `126 covered / 2 missed`, `98.44%`
+- `DeepSeek-Coder-1.3B-Instruct-GGUF`: `130 covered / 0 missed`, `100.00%`
+
+Every (task, model) pair now reports `compile_success=true` and
+`junit_success=true` in `results/improved_coverage_results.csv`, including
+the handful of suites that previously failed because their mutation-style
+assertions encoded the wrong exception class or the wrong expected value
+for the generated `Solution.java`.
 
 ## Main Repair Outcomes
 
@@ -58,17 +64,27 @@ Improved tests were added primarily for:
 - overlap-sensitive behavior
 - punctuation and non-letter preservation
 - larger boundary cases
+- **mutation-style guardrails** (at least one `improvedMutation...` method per
+  `(task, model)` pair, cross-referenced with
+  `docs/analysis/mutation_testing_strategy.md`)
 
 ## Residual Missed Branches
 
-After improved tests, a few branches remain uncovered:
+After the improved tests, every DeepSeek suite reaches full branch
+coverage (`0` missed). Only two branches remain uncovered in the Qwen
+suites:
 
-- `Java_001_separateParenGroups` for Qwen
-- `Java_006_parseNestedParens` for both models
-- `Java_017_parseMusic` for Qwen
-- `Java_039_primeFib` for Qwen
+- `Java_001_separateParenGroups` for Qwen (unbalanced-input exit path
+  inside the private parser helper)
+- `Java_006_parseNestedParens` for Qwen (same helper shape; see the
+  behavioural divergence note in
+  `docs/analysis/mutation_testing_strategy.md`)
 
-These remaining misses are small and are likely tied to helper or impossible-under-spec paths rather than exposed public behavior gaps.
+These two remaining misses live on private helper branches that the
+public API never reaches under the task specification, so we document
+them rather than inventing an unreachable input. All previously missed
+branches on `Java_009_rollingMax`, `Java_017_parseMusic` and
+`Java_039_primeFib` are now exercised.
 
 ## Supporting Files
 
@@ -77,4 +93,3 @@ These remaining misses are small and are likely tied to helper or impossible-und
 - `results/improved_coverage_results.csv`
 - `docs/analysis/phase1_summary.md`
 - `docs/analysis/improved_coverage_summary.md`
-

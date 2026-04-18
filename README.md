@@ -21,10 +21,13 @@ Course repository for the BLG 475E Software Quality and Testing term project. Th
 - Final Phase 1 correctness:
   - `30/30` compiled and `30/30` base-test pass for both models
 - Aggregate branch coverage:
-  - Qwen base: `96.09%`
-  - Qwen improved: `96.88%`
-  - DeepSeek base: `98.46%`
-  - DeepSeek improved: `99.23%`
+  - Qwen base: `96.09%` (123 / 128)
+  - Qwen improved: `98.44%` (126 / 128)
+  - DeepSeek base: `98.46%` (128 / 130)
+  - DeepSeek improved: `100.00%` (130 / 130)
+- Every improved suite additionally contains at least one mutation-based
+  test method (`improvedMutation...`) pinned to a specific operator
+  family; see `Phase1/docs/analysis/mutation_testing_strategy.md`.
 
 ## Repository Layout
 
@@ -33,7 +36,10 @@ Course repository for the BLG 475E Software Quality and Testing term project. Th
 - `Phase2/`
   - `BookScan` implementation plan, integration-testing strategy, and Phase 2 starter structure
 - `.github/workflows/phase1-ci.yml`
-  - GitHub Actions workflow for validating the Phase 1 Maven project
+  - GitHub Actions workflow that reproduces the Phase 1 Python + PowerShell
+    pipeline on a Linux runner, verifies every `Solution.java` is
+    BOM-free, runs the base and improved coverage scripts end to end,
+    and fails the build if any `(task, model)` pair regresses
 
 ## Phase 1 Deliverables
 
@@ -66,7 +72,10 @@ The `Phase2` folder now contains a clearer implementation and testing roadmap so
 ## Reproducibility Notes
 
 - Java: JDK 21+
-- Build tool: Maven 3.9+
+- Phase 1 build tool: Python 3.11 + PowerShell (see
+  `Phase1/scripts/Run-BaseCoverage.ps1` and
+  `Phase1/scripts/Run-ImprovedCoverage.ps1`)
+- Phase 2 build tool: Maven 3.9+ (planned)
 - Test framework: JUnit 6
 - Coverage tool: JaCoCo
 - Local inference runtime used in Phase 1: `llama.cpp`
@@ -76,4 +85,3 @@ The `Phase2` folder now contains a clearer implementation and testing roadmap so
 - Java files include the required author header block.
 - The Phase 1 report draft contains the repository URL and workload distribution in the acknowledgment section.
 - The commit history is intentionally descriptive so the repository tells the development story step by step.
-

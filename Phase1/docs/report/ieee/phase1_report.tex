@@ -1,0 +1,382 @@
+\documentclass[conference]{IEEEtran}
+
+% ---------------------------------------------------------------------------
+%  BLG 475E Software Quality and Testing - Term Project
+%  Phase 1 Report (IEEE conference style)
+%  Authors: Mustafa Eren KOC (150190805), Onat Baris ERCAN (150210075)
+% ---------------------------------------------------------------------------
+
+\IEEEoverridecommandlockouts
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{url}
+\usepackage{hyperref}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=blue
+}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\begin{document}
+
+\title{Evaluating Local Code-LLMs on HumanEval-X Java Prompts:\\
+Semi-Agentic Generation, Improved Tests, and Mutation-Based Guardrails}
+
+\author{\IEEEauthorblockN{Mustafa Eren Ko\c{c}}
+\IEEEauthorblockA{\textit{Department of Computer Engineering} \\
+\textit{Istanbul Technical University}\\
+Istanbul, T\"urkiye \\
+150190805 \\
+\texttt{koc19@itu.edu.tr}}
+\and
+\IEEEauthorblockN{Onat Bar{\i}\c{s} Ercan}
+\IEEEauthorblockA{\textit{Department of Computer Engineering} \\
+\textit{Istanbul Technical University}\\
+Istanbul, T\"urkiye \\
+150210075 \\
+\texttt{ercano21@itu.edu.tr}}
+}
+
+\maketitle
+
+\begin{abstract}
+This paper reports on Phase 1 of the BLG 475E term project, which studies how
+two publicly available local code-oriented LLMs -- \texttt{Qwen2.5-Coder-1.5B}
+and \texttt{DeepSeek-Coder-1.3B}, both executed through the same
+\texttt{llama.cpp} runtime -- perform on a 30-prompt subset of the
+HumanEval-X Java corpus. Each prompt is processed through a
+\emph{semi-agentic} pipeline in which prompt submission, raw output, text
+normalization, dataset base tests, JUnit~6 improved tests, JaCoCo branch
+coverage and hand-crafted mutation-based tests are all recorded as
+reproducible artefacts. Both models eventually reach $30/30$ base-test
+success; the improved suites lift aggregate branch coverage from
+$96.09\,\%$ / $98.46\,\%$ (Qwen / DeepSeek) on the base suites to
+$98.44\,\%$ / $100.00\,\%$. In addition, every task-model pair in the corpus
+now carries at least one \texttt{improvedMutation\ldots} test that encodes a
+specific operator mutation (ROR, AOR, NPE, BND, RV, LCR or UOI), giving a
+per-suite mutation score of $100\,\%$ for the improved suites and $0\,\%$
+for the LLM-produced base suites. We argue that branch coverage alone is
+insufficient to evaluate LLM test generators and that a structured
+equivalence-partitioning plus mutation-kill trace materially improves the
+transparency of the benchmark. A group-of-two variance from the original
+three-person assignment rule is discussed in Section~\ref{sec:team}. We
+detail the workflow, the group-of-two compensations, threats to validity
+and a Phase~2 migration path to a fully automated Maven + PITest build.
+
+The full repository, interaction logs, CI workflow and per-task artefacts
+are available at the URL listed in the acknowledgement.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Large language models, unit testing, JUnit, JaCoCo, mutation testing,
+equivalence partitioning, HumanEval-X, semi-agentic workflow, software
+quality.
+\end{IEEEkeywords}
+
+% ---------------------------------------------------------------------------
+\section{Introduction}\label{sec:intro}
+
+Modern software teams increasingly use Large Language Models (LLMs) to draft
+both source code and its tests~\cite{chatunitest,metatestgen,lit_review}.
+The attraction is speed; the risk is that generated artefacts \emph{compile
+and pass} without actually asserting the behaviour that the specification
+requires. BLG~475E \emph{Software Quality and Testing} asks students to
+examine both sides of that trade-off on a controlled Java corpus.
+
+This report documents \textbf{Phase~1}, whose mandate is to
+
+\begin{enumerate}
+  \item select 30 HumanEval-X Java prompts balanced across
+    easy / moderate / hard categories;
+  \item generate both code and an initial test suite with two open-weight
+    code-LLMs under identical prompting conditions;
+  \item run the dataset base tests and extract JaCoCo branch coverage;
+  \item \emph{improve} the tests using equivalence-class reasoning,
+    boundary-value analysis, and mutation-style guards;
+  \item log every LLM interaction and document repairs.
+\end{enumerate}
+
+Our contribution is twofold. First, we show that an orthodox semi-agentic
+pipeline -- PowerShell + Python drivers, \texttt{llama.cpp} inference,
+JUnit~6 runtime, JaCoCo CLI -- is sufficient to reproduce every experiment
+on a student laptop. Second, we add a hand-crafted \emph{mutation-kill
+matrix} that complements branch coverage and explains why two LLMs with
+similar coverage numbers can still have visibly different robustness
+profiles (e.g.\ Qwen's \texttt{Math.floor} vs.\ DeepSeek's \texttt{(int)}
+cast for negative truncation; see Section~\ref{sec:results}).
+
+% ---------------------------------------------------------------------------
+\section{Team Composition Deviation}\label{sec:team}
+
+The course brief expects three-person groups. Our group ended with only
+two members after a classmate withdrew early in the semester; the course
+instructor was notified in writing. To compensate we
+
+\begin{itemize}
+  \item ran every experiment twice, once per author, with distinct seeds,
+    in order to detect non-deterministic \texttt{llama.cpp} artefacts;
+  \item split the task corpus $15$-$15$ between the authors during test
+    improvement and then cross-reviewed each other's equivalence classes
+    and mutants;
+  \item expanded the mutation-test inventory from the minimum one
+    per-task to a full operator table (Table~\ref{tab:mutation-catalogue}).
+\end{itemize}
+
+The workload breakdown is detailed in the Acknowledgement.
+
+% ---------------------------------------------------------------------------
+\section{Experimental Setup}
+
+\subsection{Dataset and Prompt Selection}
+
+We use the Java subset of HumanEval-X. A reproducible selector script
+pins the same 30 prompts for every run; the selection satisfies the
+required $10$ easy / $10$ moderate / $10$ hard split. Three prompts
+(\texttt{Java/18}, \texttt{Java/23}, \texttt{Java/27}) were picked
+because they support the Phase~2 \emph{BookScan} integration scenario.
+
+\subsection{Models}
+
+Both models are small enough to fit on a commodity laptop and to be
+executed via \texttt{llama.cpp} with identical sampling settings:
+
+\begin{itemize}
+  \item \texttt{Qwen/Qwen2.5-Coder-1.5B-Instruct-GGUF}
+  \item \texttt{deepseek-ai/DeepSeek-Coder-1.3B-Instruct-GGUF}
+\end{itemize}
+
+\subsection{Toolchain}
+
+The pipeline is driven by PowerShell 7 and Python~3.11. Compilation uses
+the Temurin JDK~21, tests use JUnit~6, coverage uses JaCoCo~0.8.12.
+GitHub Actions re-runs the pipeline on every push via the workflow in
+\texttt{.github/workflows/phase1-ci.yml}.
+
+\subsection{Workflow}
+
+The workflow is semi-agentic: the LLM is invoked locally but each of its
+outputs is filed, linted, normalised, and gated on a JUnit pass before
+being accepted. Repairs are recorded with the reason and the final
+diff. Figure~\ref{fig:pipeline}\footnote{The diagram is also rendered in
+\texttt{docs/analysis/phase1\_execution\_report.md}.} summarises the flow.
+
+\begin{figure}[h]
+  \centering
+  \framebox[\columnwidth]{\parbox[c][3.2cm][c]{0.9\columnwidth}{
+    \centering
+    \textbf{Semi-agentic pipeline.} \\
+    prompt $\to$ llama.cpp $\to$ raw.md $\to$ normalise $\to$
+    \texttt{Solution.java} \\
+    $\downarrow$ \\
+    \texttt{DatasetBaseTest.java} $\to$ JUnit+JaCoCo $\to$ coverage.csv \\
+    $\downarrow$ \\
+    equivalence\_classes.md $\to$ \texttt{DatasetImprovedTest.java} \\
+    $\to$ mutation-based guards
+  }}
+  \caption{Semi-agentic Phase~1 pipeline. Each arrow maps to a logged
+  artefact stored under \texttt{Phase1/logs} and \texttt{Phase1/results}.}
+  \label{fig:pipeline}
+\end{figure}
+
+% ---------------------------------------------------------------------------
+\section{Test Improvement Methodology}
+
+\subsection{Equivalence Partitioning}
+
+For every task we authored an \texttt{equivalence\_classes.md} document
+with three tables -- valid classes, invalid classes, and boundary
+conditions -- each annotated with whether the existing test already
+covers the class. Rows marked \emph{No} or \emph{Partially} become the
+driver for at least one extra JUnit method in the improved suite.
+
+\subsection{Test Smells}
+
+We hand-audited the LLM-generated suites against the Phase~1 test-smell
+checklist (\texttt{docs/analysis/test\_smell\_checklist.md}). The most
+frequent smells were: \emph{happy-path only}, \emph{conditional logic in
+tests}, \emph{missing boundary cases}, and \emph{assertion roulette}. The
+improved suites explicitly remove these smells (see
+Table~\ref{tab:coverage-summary}).
+
+\subsection{Mutation-Based Guardrails}
+
+Because Phase~1 forbids external tooling like PITest, we hand-craft
+mutants. Every improved suite has at least one JUnit method named
+\texttt{improvedMutation\ldots} that fails if a classical
+operator-level mutation were present in the code under test
+(Table~\ref{tab:mutation-catalogue}). The full mapping between tasks,
+operators, and method names is maintained in
+\texttt{docs/analysis/mutation\_testing\_strategy.md}.
+
+\begin{table}[h]
+\caption{Mutation operators exercised in Phase~1}
+\label{tab:mutation-catalogue}
+\centering
+\begin{tabular}{@{}llp{4.5cm}@{}}
+\toprule
+\textbf{Op} & \textbf{Family} & \textbf{Representative use} \\
+\midrule
+ROR & Relational operator & Java/3 balance check \(< 0\) vs \(\le 0\) \\
+AOR & Arithmetic operator & Java/2 \texttt{Math.floor} vs \texttt{(int)} \\
+LCR & Logical connector  & Java/9 null / size==0 short circuit \\
+UOI & Unary operator insertion & Java/31 negative primes \\
+BND & Boundary shift     & Java/25 / Java/36 literal guards \\
+SBR & Statement block removal & Java/0 \(i == j\) skip \\
+NPE & Null-argument replacement & Applied to nearly every I1 row \\
+RV  & Return-value replacement  & Java/39 non-positive index \\
+EXC & Exception expectation flip & Java/11 unequal string lengths \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ---------------------------------------------------------------------------
+\section{Results}\label{sec:results}
+
+\subsection{Base-Test Correctness}
+
+Both models compiled and passed their base tests on all 30 tasks, but
+seven tasks (Java/10, 12, 17, 19, 23, 27, 39) required a logged repair
+loop before reaching this state; the repairs and their reasons are
+enumerated in \texttt{phase1\_execution\_report.md}.
+
+\subsection{Aggregate Branch Coverage}
+
+Table~\ref{tab:coverage-summary} aggregates the per-task JaCoCo output
+from the CI workflow. The improved suites close every avoidable coverage
+gap; the remaining misses are concentrated in parsing-heavy tasks where
+dead branches are inherent to the LLM solution.
+
+\begin{table}[h]
+\caption{Aggregate branch coverage for the 30 HumanEval-X Java tasks}
+\label{tab:coverage-summary}
+\centering
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+\textbf{Model} & \textbf{Base covered} & \textbf{Base \%} & \textbf{Improved covered} & \textbf{Improved \%} \\
+\midrule
+Qwen2.5 1.5B  & 123 / 128 & 96.09 & 126 / 128 & 98.44 \\
+DeepSeek 1.3B & 128 / 130 & 98.46 & 130 / 130 & 100.00 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Mutation Score}
+
+Because the mutants are encoded as JUnit assertions, the improved suites
+trivially \emph{kill} every mutant we crafted and the base suites kill
+\emph{none}. The derived mutation-kill rate per task is therefore
+$0/N$ for the LLM-produced base suites and $N/N$ for the improved
+suites, where $N \in \{1,2\}$ is the number of mutants per task. The
+per-task breakdown is reproduced in
+\texttt{docs/analysis/mutation\_testing\_strategy.md} (Section~4).
+
+\subsection{Model-Specific Behaviour}
+
+Several tasks produced \emph{semantically distinct} implementations for
+Qwen and DeepSeek; see Table~\ref{tab:model-specific}. For these the
+improved suite carries \emph{different} assertions for each model so
+that the suite actually documents what each LLM did.
+
+\begin{table}[h]
+\caption{Tasks where Qwen and DeepSeek diverge}
+\label{tab:model-specific}
+\centering
+\begin{tabular}{@{}p{2.5cm}p{5.1cm}@{}}
+\toprule
+\textbf{Task} & \textbf{Behavioural disagreement} \\
+\midrule
+Java/2  & \texttt{Math.floor} (Qwen) vs \texttt{(int)} cast (DeepSeek) for negative input \\
+Java/4  & \texttt{orElse(0.0)} vs division-by-zero \(\to\) \texttt{NaN} for empty list \\
+Java/19 & \texttt{indexOf} \(= -1\) (Qwen) vs \texttt{HashMap.get} \(= null\) \(\to\) NPE (DeepSeek) \\
+Java/20 & first-tie semantics (Qwen) vs accumulate-all-ties (DeepSeek) \\
+Java/21 & returns new list (Qwen) vs mutates input in place (DeepSeek) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ---------------------------------------------------------------------------
+\section{Related Work}
+
+Our methodology closely mirrors the recommendations in recent academic
+and industrial work. ChatUniTest~\cite{chatunitest} argues for
+validation-plus-repair loops around LLM generations; Meta's
+TestGen-LLM~\cite{metatestgen} shows that only $25\,\%$ of raw LLM
+suggestions pass their acceptance filter, justifying our explicit
+triage step. Yang et al.~\cite{yang2024} benchmark the impact of
+prompt structure on Java unit-test quality, which we echo in our
+deterministic prompt template. Panta et al.~\cite{panta2024} combine
+static and dynamic feedback loops, similar in spirit to our semi-agentic
+workflow. Tasarsu, Tokmak and Catal~\cite{lit_review} provide the 2026
+systematic review we used to justify branch coverage and mutation as
+complementary metrics.
+
+% ---------------------------------------------------------------------------
+\section{Threats to Validity}
+
+Internal validity is limited by local-model non-determinism; we mitigate
+this by fixing the seed and by running every experiment twice. External
+validity is limited by the 30-prompt subset; HumanEval-X samples
+algorithmic puzzles rather than full-fledged Java systems. Construct
+validity depends on the coverage and mutation-kill proxies: coverage
+numbers are objective, but the mutation set is hand-picked and must be
+interpreted as a \emph{lower bound} on the improved suite's robustness.
+Finally, group-of-two execution may cause review blind spots that are
+normally caught by a third reviewer; we partially offset this by rotating
+code reviewers task-by-task.
+
+% ---------------------------------------------------------------------------
+\section{Conclusion and Phase 2 Roadmap}
+
+Phase~1 shows that small open-weight code-LLMs can drive a reproducible
+Java evaluation pipeline when they are surrounded by normalisation,
+repair, coverage and mutation-based guardrails. DeepSeek edges Qwen on
+aggregate branch coverage, but both models require similar amounts of
+manual remediation.
+
+Phase~2 will lift three of Phase~1's constraints:
+
+\begin{enumerate}
+  \item replace the PowerShell-driven JUnit runner with a Maven profile
+    so that PITest can produce machine-measured mutation scores;
+  \item integrate the 30-prompt solutions into the BookScan case study
+    to measure end-to-end quality under realistic system calls;
+  \item automate prompt variation so that we can study the sensitivity
+    of the two models to prompt engineering in a controlled manner.
+\end{enumerate}
+
+The hand-crafted mutants and equivalence classes from Phase~1 will be
+retained as behavioural guardrails even after PITest is turned on; they
+describe intent, not coverage.
+
+% ---------------------------------------------------------------------------
+\section*{Acknowledgement}
+
+The source repository, including reproducibility scripts, is available
+at \url{https://github.com/mustafaerenkoc44/BLG-475E-Term-Project}. The
+group is composed of two members after one teammate withdrew;
+\textbf{Mustafa Eren KO\c{C}} (150190805, \(\approx 65\,\%\)): repository
+setup, automation scripts, local LLM execution, normalisation and repair
+workflow, coverage analysis, result aggregation, Git history management,
+mutation-testing strategy; \textbf{Onat Bar{\i}\c{s} ERCAN} (150210075,
+\(\approx 35\,\%\)): prompt selection review, black-box test assessment
+support, literature review validation, report refinement, IEEE LaTeX
+formatting, final submission cross-checks.
+
+% ---------------------------------------------------------------------------
+\bibliographystyle{IEEEtran}
+\bibliography{phase1_report}
+
+\end{document}

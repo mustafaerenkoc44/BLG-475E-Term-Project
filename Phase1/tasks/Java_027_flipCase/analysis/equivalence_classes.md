@@ -14,11 +14,11 @@ Method: `flipCase`
 
 | Class ID | Description | Representative Input | Covered By Existing Test? | Notes |
 |---|---|---|---|---|
-| I1 | Null string. | `string=null` | No | Out of contract. |
+| I1 | Null string. | `string=null` | Yes (improved) | Out of contract. |
 
 ## Boundary Conditions
 
 | Class ID | Description | Representative Input | Covered By Existing Test? | Notes |
 |---|---|---|---|---|
-| B1 | Empty string. | `string=""` | No | Added in improved tests. |
-| B2 | String with no alphabetic characters. | `string="123!?"` | No | Checks no-op path. |
+| B1 | Empty string. | `string=""` | Yes (improved) | Added in improved tests. |
+| B2 | String with no alphabetic characters. | `string="123!?"` | Yes (improved) | Checks no-op path. |

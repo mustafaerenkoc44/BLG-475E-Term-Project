@@ -1,4 +1,4 @@
-﻿/* @Authors
+/* @Authors
 * Student Names: Mustafa Eren KOÇ, Onat Barış ERCAN
 * Student IDs: 150190805, 150210075
 */
@@ -22,6 +22,40 @@ class DatasetImprovedTest {
                     Assertions.fail("Dataset assertion failed");
                 }
     }
+
+    @Test
+    void improvedSingletonReturnsItsOwnValue_B1() {
+        Solution s = new Solution();
+        Assertions.assertEquals(
+                Optional.of("solo"),
+                s.longest(new ArrayList<>(Arrays.asList("solo"))),
+                "Boundary B1: a singleton must wrap its only element in Optional.of");
+    }
+
+    @Test
+    void improvedTieKeepsFirstLongest_B2() {
+        Solution s = new Solution();
+        Assertions.assertEquals(
+                Optional.of("bb"),
+                s.longest(new ArrayList<>(Arrays.asList("a", "bb", "cc"))),
+                "Boundary B2: strict '>' comparison keeps the earliest occurrence of the maximum length");
+    }
+
+    @Test
+    void improvedMultipleMaxKeepsFirstSeen_V2() {
+        Solution s = new Solution();
+        Assertions.assertEquals(
+                Optional.of("delta"),
+                s.longest(new ArrayList<>(Arrays.asList("a", "delta", "omega", "gamma"))),
+                "Valid class V2: when three strings share max length, the first in encounter order wins");
+    }
+
+    @Test
+    void improvedMutationNullListThrowsNpe_I1() {
+        Solution s = new Solution();
+        Assertions.assertThrows(
+                NullPointerException.class,
+                () -> s.longest(null),
+                "Invalid class I1 (mutation): calling isEmpty on null must raise NPE");
+    }
 }
-
-

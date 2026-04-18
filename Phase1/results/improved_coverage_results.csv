@@ -12,7 +12,7 @@ Java_004_meanAbsoluteDeviation,DeepSeek-Coder-1.3B-Instruct-GGUF,true,true,4,0,o
 Java_005_intersperse,Qwen2.5-Coder-1.5B-Instruct-GGUF,true,true,4,0,ok
 Java_005_intersperse,DeepSeek-Coder-1.3B-Instruct-GGUF,true,true,4,0,ok
 Java_006_parseNestedParens,Qwen2.5-Coder-1.5B-Instruct-GGUF,true,true,7,1,ok
-Java_006_parseNestedParens,DeepSeek-Coder-1.3B-Instruct-GGUF,true,true,7,1,ok
+Java_006_parseNestedParens,DeepSeek-Coder-1.3B-Instruct-GGUF,true,true,8,0,ok
 Java_007_filterBySubstring,Qwen2.5-Coder-1.5B-Instruct-GGUF,true,true,0,0,ok
 Java_007_filterBySubstring,DeepSeek-Coder-1.3B-Instruct-GGUF,true,true,4,0,ok
 Java_008_sumProduct,Qwen2.5-Coder-1.5B-Instruct-GGUF,true,true,4,0,ok
@@ -33,7 +33,7 @@ Java_015_stringSequence,Qwen2.5-Coder-1.5B-Instruct-GGUF,true,true,2,0,ok
 Java_015_stringSequence,DeepSeek-Coder-1.3B-Instruct-GGUF,true,true,2,0,ok
 Java_016_countDistinctCharacters,Qwen2.5-Coder-1.5B-Instruct-GGUF,true,true,2,0,ok
 Java_016_countDistinctCharacters,DeepSeek-Coder-1.3B-Instruct-GGUF,true,true,2,0,ok
-Java_017_parseMusic,Qwen2.5-Coder-1.5B-Instruct-GGUF,true,true,9,1,ok
+Java_017_parseMusic,Qwen2.5-Coder-1.5B-Instruct-GGUF,true,true,10,0,ok
 Java_017_parseMusic,DeepSeek-Coder-1.3B-Instruct-GGUF,true,true,6,0,ok
 Java_018_howManyTimes,Qwen2.5-Coder-1.5B-Instruct-GGUF,true,true,2,0,ok
 Java_018_howManyTimes,DeepSeek-Coder-1.3B-Instruct-GGUF,true,true,4,0,ok
@@ -57,5 +57,5 @@ Java_031_isPrime,Qwen2.5-Coder-1.5B-Instruct-GGUF,true,true,6,0,ok
 Java_031_isPrime,DeepSeek-Coder-1.3B-Instruct-GGUF,true,true,6,0,ok
 Java_036_fizzBuzz,Qwen2.5-Coder-1.5B-Instruct-GGUF,true,true,10,0,ok
 Java_036_fizzBuzz,DeepSeek-Coder-1.3B-Instruct-GGUF,true,true,10,0,ok
-Java_039_primeFib,Qwen2.5-Coder-1.5B-Instruct-GGUF,true,true,9,1,ok
+Java_039_primeFib,Qwen2.5-Coder-1.5B-Instruct-GGUF,true,true,10,0,ok
 Java_039_primeFib,DeepSeek-Coder-1.3B-Instruct-GGUF,true,true,10,0,ok

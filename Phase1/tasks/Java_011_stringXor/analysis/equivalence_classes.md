@@ -14,12 +14,12 @@ Method: `stringXor`
 
 | Class ID | Description | Representative Input | Covered By Existing Test? | Notes |
 |---|---|---|---|---|
-| I1 | Different string lengths. | `a="10", b="101"` | No | Prompt assumes equal-length inputs. |
-| I2 | Non-binary characters. | `a="10a", b="001"` | No | Outside the problem contract. |
+| I1 | Different string lengths. | `a="10", b="101"` | Yes (improved) | Prompt assumes equal-length inputs. |
+| I2 | Non-binary characters. | `a="10a", b="001"` | Yes (improved) | Outside the problem contract. |
 
 ## Boundary Conditions
 
 | Class ID | Description | Representative Input | Covered By Existing Test? | Notes |
 |---|---|---|---|---|
-| B1 | Empty strings. | `a="", b=""` | No | Documents the degenerate equal-length case. |
-| B2 | Length one. | `a="1", b="0"` | No | Smallest non-empty input. |
+| B1 | Empty strings. | `a="", b=""` | Yes (improved) | Documents the degenerate equal-length case. |
+| B2 | Length one. | `a="1", b="0"` | Yes (improved) | Smallest non-empty input. |

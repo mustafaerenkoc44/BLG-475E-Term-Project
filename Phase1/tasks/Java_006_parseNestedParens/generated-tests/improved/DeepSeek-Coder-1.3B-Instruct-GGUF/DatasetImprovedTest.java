@@ -1,4 +1,4 @@
-﻿/* @Authors
+/* @Authors
 * Student Names: Mustafa Eren KOÇ, Onat Barış ERCAN
 * Student IDs: 150190805, 150210075
 */
@@ -24,10 +24,37 @@ class DatasetImprovedTest {
     }
 
     @Test
-    void improvedHandlesSingleDeepGroup() {
+    void improvedHandlesSingleDeepGroup_V3() {
         Solution s = new Solution();
-        Assertions.assertEquals(Arrays.asList(4), s.parseNestedParens("(((())))"));
+        Assertions.assertEquals(Arrays.asList(4), s.parseNestedParens("(((())))"),
+                "Valid class V3: single deeply nested group must report its maximum depth");
+    }
+
+    @Test
+    void improvedDepthOneVsTwoAlternation_B2() {
+        Solution s = new Solution();
+        Assertions.assertEquals(
+                Arrays.asList(1, 2),
+                s.parseNestedParens("() (())"),
+                "Boundary B2: depth counter must reset between groups and observe maxima independently");
+    }
+
+    @Test
+    void improvedEmptyInputProducesSingleZero_B1() {
+        Solution s = new Solution();
+        Assertions.assertEquals(
+                Arrays.asList(0),
+                s.parseNestedParens(""),
+                "Boundary B1: split(\" \") on an empty string yields a single empty token whose max depth is 0");
+    }
+
+    @Test
+    void improvedMutationNonParenthesisTokensAreIgnored_I2() {
+        Solution s = new Solution();
+        // Both implementations filter only '(' and ')' characters, so a stray 'abc' inside a group is ignored.
+        Assertions.assertEquals(
+                Arrays.asList(1, 0, 2),
+                s.parseNestedParens("() abc (())"),
+                "Invalid class I2 (mutation): non-parenthesis tokens split by whitespace still produce a zero-depth entry");
     }
 }
-
-

@@ -14,12 +14,12 @@ Method: `howManyTimes`
 
 | Class ID | Description | Representative Input | Covered By Existing Test? | Notes |
 |---|---|---|---|---|
-| I1 | Empty substring. | `string="abc", substring=""` | No | Important undefined case. |
-| I2 | Null arguments. | `string=null, substring="a"` | No | Out of contract. |
+| I1 | Empty substring. | `string="abc", substring=""` | Yes (improved) | Important undefined case. |
+| I2 | Null arguments. | `string=null, substring="a"` | Yes (improved) | Out of contract. |
 
 ## Boundary Conditions
 
 | Class ID | Description | Representative Input | Covered By Existing Test? | Notes |
 |---|---|---|---|---|
-| B1 | Substring longer than the source. | `string="ab", substring="abc"` | No | Should return `0`. |
+| B1 | Substring longer than the source. | `string="ab", substring="abc"` | Yes (improved) | Should return `0`. |
 | B2 | Source and substring are identical. | `string="john", substring="john"` | Yes | Expected single full-length match. |

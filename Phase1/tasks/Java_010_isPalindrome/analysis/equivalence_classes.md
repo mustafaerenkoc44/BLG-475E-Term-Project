@@ -14,11 +14,11 @@ Method: `isPalindrome`
 
 | Class ID | Description | Representative Input | Covered By Existing Test? | Notes |
 |---|---|---|---|---|
-| I1 | Null string. | `string=null` | No | Out of contract. |
+| I1 | Null string. | `string=null` | Yes (improved) | Out of contract. |
 
 ## Boundary Conditions
 
 | Class ID | Description | Representative Input | Covered By Existing Test? | Notes |
 |---|---|---|---|---|
 | B1 | Empty string. | `string=""` | Yes | Expected output remains empty. |
-| B2 | Single character. | `string="x"` | No | Shortest already-palindromic input. |
+| B2 | Single character. | `string="x"` | Yes (improved) | Shortest already-palindromic input. |

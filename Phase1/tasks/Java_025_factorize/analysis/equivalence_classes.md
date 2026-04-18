@@ -14,12 +14,12 @@ Method: `factorize`
 
 | Class ID | Description | Representative Input | Covered By Existing Test? | Notes |
 |---|---|---|---|---|
-| I1 | Number less than two. | `n=1` | No | Prime factorization is undefined or empty depending on policy. |
-| I2 | Negative integer. | `n=-8` | No | Out of contract. |
+| I1 | Number less than two. | `n=1` | Yes (improved) | Prime factorization is undefined or empty depending on policy. |
+| I2 | Negative integer. | `n=-8` | Yes (improved) | Out of contract. |
 
 ## Boundary Conditions
 
 | Class ID | Description | Representative Input | Covered By Existing Test? | Notes |
 |---|---|---|---|---|
-| B1 | Smallest prime. | `n=2` | No | Expected factor list is `[2]`. |
-| B2 | Large repeated factor count. | `n=32` | No | Exercises repeated division in the loop. |
+| B1 | Smallest prime. | `n=2` | Yes (improved) | Expected factor list is `[2]`. |
+| B2 | Large repeated factor count. | `n=32` | Yes (improved) | Exercises repeated division in the loop. |

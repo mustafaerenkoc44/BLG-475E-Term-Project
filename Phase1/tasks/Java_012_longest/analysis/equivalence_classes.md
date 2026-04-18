@@ -14,11 +14,11 @@ Method: `longest`
 
 | Class ID | Description | Representative Input | Covered By Existing Test? | Notes |
 |---|---|---|---|---|
-| I1 | Null list. | `strings=null` | No | Out of contract. |
+| I1 | Null list. | `strings=null` | Yes (improved) | Out of contract. |
 
 ## Boundary Conditions
 
 | Class ID | Description | Representative Input | Covered By Existing Test? | Notes |
 |---|---|---|---|---|
-| B1 | Singleton list. | `strings=["solo"]` | No | Smallest non-empty collection. |
-| B2 | Tie appears after a shorter prefix. | `strings=["a", "bb", "cc"]` | No | Checks stable first-longest behavior. |
+| B1 | Singleton list. | `strings=["solo"]` | Yes (improved) | Smallest non-empty collection. |
+| B2 | Tie appears after a shorter prefix. | `strings=["a", "bb", "cc"]` | Yes (improved) | Checks stable first-longest behavior. |
