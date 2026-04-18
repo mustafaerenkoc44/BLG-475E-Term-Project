@@ -305,8 +305,8 @@ longer words (e.g.\ \texttt{echo} inside \texttt{echoic}) cannot fire.
 % ---------------------------------------------------------------------------
 \section{Integration Test Strategy}\label{sec:tests}
 
-The Phase~2 JUnit suite contains $11$ integration tests and $4$ focused
-regression tests, for a total of $15$ tests shared by all five
+The Phase~2 JUnit suite contains $12$ integration tests and $6$ focused
+regression / hardening tests, for a total of $18$ tests shared by all five
 configurations. The integration tests are summarized in
 Table~\ref{tab:int-tests} and the regression tests in
 Table~\ref{tab:reg-tests}.
@@ -330,6 +330,7 @@ Table~\ref{tab:reg-tests}.
 \texttt{scanWordDoesNotMatchInsideLongerWords} & partial-match rejection \\
 \texttt{scanWordCanonicalizesUppercaseQueriesBeforeWholeWordMatching} & uppercase queries normalized via \texttt{flipCase} \\
 \texttt{scanWordHandlesAlphanumericWholeWordQueries} & alphanumeric whole-word tokens \\
+\texttt{scanWordNormalizesMixedCaseTokensWithoutFlipArtifacts} & mixed-case normalization remains stable \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -346,6 +347,8 @@ Table~\ref{tab:reg-tests}.
 \texttt{howManyTimesReturnsZeroForEmptyNullOrOversizedNeedles} & \texttt{Java/18} guard on blank / oversized needles \\
 \texttt{flipCasePreservesSymbolsWhileTogglingLetters} & \texttt{Java/27} case-flip on symbols and digits \\
 \texttt{strlenThrowsOnNullAndReturnsLengthOtherwise} & \texttt{Java/23} null contract and length \\
+\texttt{tokenizeWordsReturnsFreshMutableEmptyListForNullInput} & helper hardening for null tokenization \\
+\texttt{privateCanonicalizeWordRejectsBlankTokens} & helper hardening for blank-token collapse \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -366,8 +369,9 @@ genuinely implies integration correctness, not just one scalar equality.
 Table~\ref{tab:compare} aggregates the raw CSV in
 \texttt{Phase2/results/prompt\_comparison\_results.csv}. The original
 prompt lets both models compile but produces significant JUnit failures;
-the edited prompt restores full pass rates for both models; the selected
-final implementation slightly improves branch coverage again.
+the edited prompt removes all public-integration failures but still leaves
+one helper-hardening regression in each model; the selected final
+implementation closes that gap and reaches full coverage.
 
 \begin{table}[h]
 \caption{Prompt-comparison results. Coverage is reported for the
@@ -458,8 +462,8 @@ EXC)~\cite{phase1report}. Three of those task suites -- \texttt{Java/18},
 \texttt{BookScan} now reuses, and their semantics are re-verified by the
 four Phase~2 regression tests in Table~\ref{tab:reg-tests}. In other
 words, the Phase~1 mutation-based guardrails continue to protect Phase~2
-at the helper level, even though Phase~2 focuses on integration-level
-behaviour.
+at the helper level, even though Phase~2 now adds two extra hardening
+regressions on top of those inherited contracts.
 
 To complement those hand-written guardrails we also wire PITest
 (\texttt{org.pitest:pitest-maven}~1.20.5 with
