@@ -33,14 +33,13 @@ The starter set in `selected_prompts.csv` was chosen to create a balanced Phase 
 
 ## Selected model pair
 
-The scaffold assumes the following public model cards:
+The executed Phase 1 workflow uses the following public base models and their local GGUF deployments:
 
-- Qwen coder model: <https://huggingface.co/Qwen/Qwen2.5-Coder-7B-Instruct>
-- DeepSeek coder model: <https://huggingface.co/deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct>
+- Qwen coder model: <https://huggingface.co/Qwen/Qwen2.5-Coder-1.5B-Instruct>
+- DeepSeek coder model: <https://huggingface.co/deepseek-ai/deepseek-coder-1.3b-instruct>
 
-This pair is suitable because both are public and code-focused, while still representing different architectural tradeoffs.
+This pair is suitable because both are public, code-focused, and small enough to execute locally with the same `llama.cpp` pipeline while still exposing different generation habits under identical prompts.
 
 ## Expected review
 
-Before final submission, review the starter labels and adjust any task difficulty if your empirical results suggest a better classification.
-
+The empirical run kept the original `10 easy / 10 moderate / 10 hard` balance. The `review_status` column in `selected_prompts.csv` is now marked as `completed` for all 30 selected tasks.

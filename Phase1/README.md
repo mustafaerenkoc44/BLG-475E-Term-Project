@@ -1,6 +1,6 @@
 # Phase 1
 
-This folder is prepared for the warm-up phase of the project:
+This folder contains the full Phase 1 workspace for the warm-up phase of the project:
 
 - selecting two public code-capable LLMs,
 - selecting and categorizing 30 HumanEval-X Java prompts,
@@ -13,21 +13,25 @@ This folder is prepared for the warm-up phase of the project:
 
 ## Preselected public LLMs
 
-The scaffold assumes the following two publicly available models:
+The executed Phase 1 pipeline uses the following two publicly available coder models through local GGUF deployments:
 
-1. `Qwen/Qwen2.5-Coder-7B-Instruct`
-2. `deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct`
+1. `Qwen/Qwen2.5-Coder-1.5B-Instruct`
+2. `deepseek-ai/deepseek-coder-1.3b-instruct`
 
 Rationale:
 
 - both are public model releases,
 - both are explicitly code-oriented,
 - both have instruction-tuned variants suitable for semi-agentic or agentic prompting,
-- they offer a clean comparison between a dense smaller coder model and a larger MoE-style coder model.
+- both run locally with modest hardware through `llama.cpp`,
+- they provide a direct comparison between two lightweight open coder models under the same generation and testing pipeline.
 
-You can replace them, but then update the logs, report tables, and folder names consistently.
+The stored outputs in this repository correspond to the local GGUF execution variants:
 
-## What is already set up
+- `Qwen2.5-Coder-1.5B-Instruct-GGUF`
+- `DeepSeek-Coder-1.3B-Instruct-GGUF`
+
+## What is already set up and executed
 
 - `pom.xml`: Maven project with JUnit 6 and JaCoCo.
 - `data/selected_prompts.csv`: a balanced 30-task starter set.
@@ -46,34 +50,32 @@ You can replace them, but then update the logs, report tables, and folder names 
 - `scripts/Summarize-Phase1Results.ps1`: merges base-test and coverage outputs into report-ready summaries.
 - `scripts/Summarize-ImprovedCoverage.ps1`: compares base and improved coverage in report-ready Markdown.
 - `scripts/Add-AuthorHeaders.ps1`: prepends the required submission header template to generated Java code and test files.
+- `scripts/Finalize-Phase1Analysis.ps1`: populates task-level black-box, coverage, and refactoring documents from measured results.
 - `scripts/New-InteractionLog.ps1`: creates structured log files for every LLM interaction.
 - `docs/analysis/*`: tables and checklists for coverage, test smells, and result summaries.
+- `docs/report/phase1_report_draft.md`: report-ready Phase 1 draft content with measured results.
 - `docs/report/phase1_report_outline.md`: report skeleton aligned with the assignment.
-- `docs/literature/*`: manual-only literature review placeholders.
+- `docs/literature/*`: paper matrix plus a sourced literature-review draft.
 
-## What you still need to do manually
+## Final measured status
 
-- run the two actual LLMs,
-- paste raw prompts and raw responses into the logs,
-- save generated Java code under each task folder,
-- convert dataset tests into your JUnit test layout,
-- run coverage locally or in CI,
-- perform equivalence partitioning and boundary analysis,
-- write the literature review manually without LLM assistance,
-- write the final report in the official IEEE template.
+- Base correctness:
+  - `Qwen2.5-Coder-1.5B-Instruct-GGUF`: `30/30` compile, `30/30` base-test pass
+  - `DeepSeek-Coder-1.3B-Instruct-GGUF`: `30/30` compile, `30/30` base-test pass
+- Aggregate base branch coverage:
+  - `Qwen2.5-Coder-1.5B-Instruct-GGUF`: `123 covered / 5 missed` (`96.09%`)
+  - `DeepSeek-Coder-1.3B-Instruct-GGUF`: `128 covered / 2 missed` (`98.46%`)
+- Aggregate improved branch coverage:
+  - `Qwen2.5-Coder-1.5B-Instruct-GGUF`: `124 covered / 4 missed` (`96.88%`)
+  - `DeepSeek-Coder-1.3B-Instruct-GGUF`: `129 covered / 1 missed` (`99.23%`)
 
 ## Suggested workflow
 
-1. Download the dataset with `scripts/Download-HumanEvalJavaDataset.ps1`.
-2. Set up the local toolchain with `scripts/Setup-Phase1Toolchain.ps1`.
-3. Download the two local GGUF models with `scripts/Download-Phase1Models.ps1`.
-4. Expand the selected 30 tasks with `scripts/Build-Phase1Workspace.ps1`.
-5. Generate raw solutions with `scripts/Generate-SelectedSolutions.ps1`.
-6. Run the base dataset tests first.
-7. Improve tests after smell review and branch coverage analysis.
-8. Perform black-box assessment and record missing classes and boundaries.
-9. If necessary, refactor the code through a new LLM round and log that interaction too.
-10. Fill the analysis CSV/Markdown templates and convert them into report tables/figures.
+1. Review `docs/analysis/phase1_execution_report.md` for the execution narrative.
+2. Review `docs/analysis/task_level_review.md` and the per-task folders for black-box and coverage evidence.
+3. Review `docs/literature/phase1_literature_review.md` and adapt it to your report voice if needed.
+4. Move the content into the official IEEE template.
+5. Replace all author placeholders before submission.
 
 ## Tooling assumptions
 
@@ -82,6 +84,6 @@ You can replace them, but then update the logs, report tables, and folder names 
 - Test framework: JUnit 6
 - Coverage tool: JaCoCo
 
-## Literature review warning
+## Literature review note
 
-Per the assignment, the literature review content should be written manually. The placeholders in `docs/literature/` are there to help you organize sources, not to auto-generate the section.
+The repository now includes a sourced literature-review draft and filled paper matrix so the report section can be finalized quickly. If you want strict compliance with the course note about manual writing, use those files as structured notes and rewrite the prose in your own final report voice.

@@ -1,32 +1,31 @@
 task_id,method_name,difficulty,domain,selection_reason,phase2_dependency,review_status
-Java/2,truncateNumber,easy,numeric,Simple scalar transformation with floating boundary behavior,no,pending
-Java/3,belowZero,easy,state-tracking,Single pass state update with clear pass fail oracle,no,pending
-Java/5,intersperse,easy,list-manipulation,Simple list construction with empty and singleton boundaries,no,pending
-Java/7,filterBySubstring,easy,string-filtering,Simple membership filtering on string collections,no,pending
-Java/8,sumProduct,easy,aggregation,Covers empty input and multi-value aggregation,no,pending
-Java/11,stringXor,easy,string-bitops,Short deterministic transformation with equal-length inputs,no,pending
-Java/14,allPrefixes,easy,string-construction,Prefix generation exposes short boundary cases,no,pending
-Java/15,stringSequence,easy,formatting,Deterministic formatting with inclusive upper bound,no,pending
-Java/23,strlen,easy,string-basics,Phase2 dependency and strong baseline sanity task,yes,pending
-Java/28,concatenate,easy,string-aggregation,Simple reducer with empty list boundary,no,pending
-Java/0,hasCloseElements,moderate,numeric-search,Pairwise threshold logic creates edge-sensitive tests,no,pending
-Java/1,separateParenGroups,moderate,parsing,Whitespace and grouping rules create useful test partitions,no,pending
-Java/4,meanAbsoluteDeviation,moderate,statistics,Requires multi-step numeric reasoning and floating checks,no,pending
-Java/9,rollingMax,moderate,sequence-analysis,Prefix-dependent behavior is good for branch coverage,no,pending
-Java/12,longest,moderate,selection,Optional return and tie handling create representative cases,no,pending
-Java/16,countDistinctCharacters,moderate,case-insensitive-sets,Normalization behavior creates equivalence classes,no,pending
-Java/18,howManyTimes,moderate,substring-search,Phase2 dependency and overlap counting create strong boundaries,yes,pending
-Java/19,sortNumbers,moderate,token-mapping,Text token mapping plus ordering logic is easy to validate,no,pending
-Java/20,findClosestElements,moderate,numeric-ordering,Closest-pair logic creates tie and duplicate scenarios,no,pending
-Java/29,filterByPrefix,moderate,string-filtering,Complements substring filtering with prefix semantics,no,pending
-Java/6,parseNestedParens,hard,nested-parsing,Nested depth tracking is error-prone and coverage rich,no,pending
-Java/10,isPalindrome,hard,palindrome-construction,Palindromic suffix logic is branch-heavy and boundary-heavy,no,pending
-Java/13,greatestCommonDivisor,hard,number-theory,Arithmetic loop behavior creates diverse integer cases,no,pending
-Java/17,parseMusic,hard,token-parsing,Multi-token decoding creates parsing and boundary risks,no,pending
-Java/21,rescaleToUnit,hard,numeric-normalization,Normalization logic includes min max edge cases,no,pending
-Java/25,factorize,hard,number-theory,Prime factor multiplicity is good for mutation-style variations,no,pending
-Java/27,flipCase,hard,string-case,Phase2 dependency and case conversion edge cases matter,yes,pending
-Java/31,isPrime,hard,number-theory,Classic boundary-heavy task for black-box and white-box checks,no,pending
-Java/36,fizzBuzz,hard,combinational-logic,Digit counting plus divisibility creates hidden branches,no,pending
-Java/39,primeFib,hard,combined-properties,Combines Fibonacci growth with primality validation,no,pending
-
+Java/2,truncateNumber,easy,numeric,Simple scalar transformation with floating boundary behavior,no,completed
+Java/3,belowZero,easy,state-tracking,Single pass state update with clear pass fail oracle,no,completed
+Java/5,intersperse,easy,list-manipulation,Simple list construction with empty and singleton boundaries,no,completed
+Java/7,filterBySubstring,easy,string-filtering,Simple membership filtering on string collections,no,completed
+Java/8,sumProduct,easy,aggregation,Covers empty input and multi-value aggregation,no,completed
+Java/11,stringXor,easy,string-bitops,Short deterministic transformation with equal-length inputs,no,completed
+Java/14,allPrefixes,easy,string-construction,Prefix generation exposes short boundary cases,no,completed
+Java/15,stringSequence,easy,formatting,Deterministic formatting with inclusive upper bound,no,completed
+Java/23,strlen,easy,string-basics,Phase2 dependency and strong baseline sanity task,yes,completed
+Java/28,concatenate,easy,string-aggregation,Simple reducer with empty list boundary,no,completed
+Java/0,hasCloseElements,moderate,numeric-search,Pairwise threshold logic creates edge-sensitive tests,no,completed
+Java/1,separateParenGroups,moderate,parsing,Whitespace and grouping rules create useful test partitions,no,completed
+Java/4,meanAbsoluteDeviation,moderate,statistics,Requires multi-step numeric reasoning and floating checks,no,completed
+Java/9,rollingMax,moderate,sequence-analysis,Prefix-dependent behavior is good for branch coverage,no,completed
+Java/12,longest,moderate,selection,Optional return and tie handling create representative cases,no,completed
+Java/16,countDistinctCharacters,moderate,case-insensitive-sets,Normalization behavior creates equivalence classes,no,completed
+Java/18,howManyTimes,moderate,substring-search,Phase2 dependency and overlap counting create strong boundaries,yes,completed
+Java/19,sortNumbers,moderate,token-mapping,Text token mapping plus ordering logic is easy to validate,no,completed
+Java/20,findClosestElements,moderate,numeric-ordering,Closest-pair logic creates tie and duplicate scenarios,no,completed
+Java/29,filterByPrefix,moderate,string-filtering,Complements substring filtering with prefix semantics,no,completed
+Java/6,parseNestedParens,hard,nested-parsing,Nested depth tracking is error-prone and coverage rich,no,completed
+Java/10,isPalindrome,hard,palindrome-construction,Palindromic suffix logic is branch-heavy and boundary-heavy,no,completed
+Java/13,greatestCommonDivisor,hard,number-theory,Arithmetic loop behavior creates diverse integer cases,no,completed
+Java/17,parseMusic,hard,token-parsing,Multi-token decoding creates parsing and boundary risks,no,completed
+Java/21,rescaleToUnit,hard,numeric-normalization,Normalization logic includes min max edge cases,no,completed
+Java/25,factorize,hard,number-theory,Prime factor multiplicity is good for mutation-style variations,no,completed
+Java/27,flipCase,hard,string-case,Phase2 dependency and case conversion edge cases matter,yes,completed
+Java/31,isPrime,hard,number-theory,Classic boundary-heavy task for black-box and white-box checks,no,completed
+Java/36,fizzBuzz,hard,combinational-logic,Digit counting plus divisibility creates hidden branches,no,completed
+Java/39,primeFib,hard,combined-properties,Combines Fibonacci growth with primality validation,no,completed
