@@ -1,4 +1,4 @@
-# BLG 475E - Term Project
+﻿# BLG 475E - Term Project
 
 [![Phase 1 CI](https://github.com/mustafaerenkoc44/BLG-475E-Term-Project/actions/workflows/phase1-ci.yml/badge.svg)](https://github.com/mustafaerenkoc44/BLG-475E-Term-Project/actions/workflows/phase1-ci.yml)
 
@@ -10,7 +10,7 @@ Course repository for the BLG 475E Software Quality and Testing term project. Th
 ## Team
 
 - Mustafa Eren KOC - `150190805`
-- Onat Baris ERCAN - `150201075`
+- Onat Baris ERCAN - `150210075`
 
 ## Project Snapshot
 
@@ -76,3 +76,4 @@ The `Phase2` folder now contains a clearer implementation and testing roadmap so
 - Java files include the required author header block.
 - The Phase 1 report draft contains the repository URL and workload distribution in the acknowledgment section.
 - The commit history is intentionally descriptive so the repository tells the development story step by step.
+

@@ -152,7 +152,7 @@ Phase 1 shows that public lightweight coder models can solve a substantial Human
 ## Acknowledgment
 
 - GitHub repository URL: `https://github.com/mustafaerenkoc44/BLG-475E-Term-Project`
-- Group member roles and workload distribution: `Mustafa Eren KOÇ (150190805, approx. 65%): repository setup, automation scripts, local LLM execution, normalization and repair workflow, coverage analysis, result aggregation, and Git history management. Onat Barış ERCAN (150201075, approx. 35%): prompt selection review, black-box test assessment support, literature review validation, report refinement, and final submission cross-checks.`
+- Group member roles and workload distribution: `Mustafa Eren KOÇ (150190805, approx. 65%): repository setup, automation scripts, local LLM execution, normalization and repair workflow, coverage analysis, result aggregation, and Git history management. Onat Barış ERCAN (150210075, approx. 35%): prompt selection review, black-box test assessment support, literature review validation, report refinement, and final submission cross-checks.`
 
 ## References for the Literature Section
 
@@ -161,4 +161,5 @@ Phase 1 shows that public lightweight coder models can solve a substantial Human
 3. Lin Yang, Chen Yang, Shutao Gao, Weijing Wang, Bo Wang, Qihao Zhu, Xiao Chu, Jianyi Zhou, Guangtai Liang, Qianxiang Wang, Junjie Chen. *On the Evaluation of Large Language Models in Unit Test Generation*. ASE 2024, 2024.
 4. Sijia Gu, Noor Nashid, Ali Mesbah. *LLM Test Generation via Iterative Hybrid Program Analysis*. CoRR abs/2503.13580, accepted to ICSE 2026.
 5. Murat Tasarsu, Ahmet Vedat Tokmak, Cagatay Catal. *Test case generation using large language models: a systematic literature review*. Cluster Computing, 2026.
+
 
