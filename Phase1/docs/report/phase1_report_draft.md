@@ -149,6 +149,11 @@ Another threat is that some black-box judgments remain analyst-driven. Even when
 
 Phase 1 shows that public lightweight coder models can solve a substantial HumanEval-X Java subset with high correctness and high branch coverage when they are placed inside a careful engineering workflow. The decisive factors were not just model choice, but also normalization, test execution, coverage measurement, black-box analysis, and repair when failures were exposed. The final Phase 1 artifact is therefore not simply a collection of generated solutions; it is a documented evaluation pipeline that can be extended directly into Phase 2 integration testing.
 
+## Acknowledgment
+
+- GitHub repository URL: `<repo_url>`
+- Group member roles and workload distribution: `<group_roles>`
+
 ## References for the Literature Section
 
 1. Zhuokui Xie, Yinghao Chen, Chen Zhi, Shuiguang Deng, Jianwei Yin. *ChatUniTest: a ChatGPT-based automated unit test generation tool*. CoRR abs/2305.04764, 2023.
