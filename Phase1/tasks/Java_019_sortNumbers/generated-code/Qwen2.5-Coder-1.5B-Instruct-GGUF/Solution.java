@@ -1,6 +1,6 @@
-/* @Authors
-* Student Names: <student_name>
-* Student IDs: <student_id>
+﻿/* @Authors
+* Student Names: Mustafa Eren KOÇ, Onat Barış ERCAN
+* Student IDs: 150190805, 150201075
 */
 
 import java.util.*;
@@ -35,3 +35,4 @@ class Solution {
         return String.join(" ", values);
     }
 }
+

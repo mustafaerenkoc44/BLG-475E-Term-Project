@@ -1,6 +1,6 @@
-/* @Authors
-* Student Names: <student_name>
-* Student IDs: <student_id>
+﻿/* @Authors
+* Student Names: Mustafa Eren KOÇ, Onat Barış ERCAN
+* Student IDs: 150190805, 150201075
 */
 
 import java.util.*;
@@ -41,3 +41,4 @@ class Solution {
         System.out.println(solution.findClosestElements(Arrays.asList(1.0, 2.0, 3.0, 4.0, 5.0, 2.0))); // [2.0, 2.0]
     }
 }
+

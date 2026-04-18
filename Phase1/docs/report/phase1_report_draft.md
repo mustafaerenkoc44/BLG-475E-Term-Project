@@ -1,4 +1,4 @@
-# Phase 1 Report Draft
+﻿# Phase 1 Report Draft
 
 ## Title
 
@@ -131,7 +131,7 @@ The recent literature supports the structure used in this phase. ChatUniTest sho
 
 DeepSeek was slightly stronger than Qwen on aggregate branch coverage, both before and after the improved tests. Qwen still produced very strong final results, but it needed more residual branch follow-up on a small number of parsing and search-heavy tasks. The difference is not large enough to claim that one model is categorically superior for all selected problems; instead, the results suggest that both public lightweight models are viable under a disciplined validation workflow.
 
-Another important result is that base-test success and branch coverage are strongly related but not interchangeable. Both models reached perfect base-test success, yet manual black-box analysis still found meaningful missing classes. In other words, a suite can be “good enough to pass the benchmark” while still leaving real specification boundaries weakly documented.
+Another important result is that base-test success and branch coverage are strongly related but not interchangeable. Both models reached perfect base-test success, yet manual black-box analysis still found meaningful missing classes. In other words, a suite can be â€œgood enough to pass the benchmarkâ€ while still leaving real specification boundaries weakly documented.
 
 ## X. Threats to Validity
 
@@ -151,8 +151,8 @@ Phase 1 shows that public lightweight coder models can solve a substantial Human
 
 ## Acknowledgment
 
-- GitHub repository URL: `<repo_url>`
-- Group member roles and workload distribution: `<group_roles>`
+- GitHub repository URL: `https://github.com/mustafaerenkoc44/BLG-475E-Term-Project`
+- Group member roles and workload distribution: `Mustafa Eren KOÇ (150190805, approx. 65%): repository setup, automation scripts, local LLM execution, normalization and repair workflow, coverage analysis, result aggregation, and Git history management. Onat Barış ERCAN (150201075, approx. 35%): prompt selection review, black-box test assessment support, literature review validation, report refinement, and final submission cross-checks.`
 
 ## References for the Literature Section
 
@@ -161,3 +161,4 @@ Phase 1 shows that public lightweight coder models can solve a substantial Human
 3. Lin Yang, Chen Yang, Shutao Gao, Weijing Wang, Bo Wang, Qihao Zhu, Xiao Chu, Jianyi Zhou, Guangtai Liang, Qianxiang Wang, Junjie Chen. *On the Evaluation of Large Language Models in Unit Test Generation*. ASE 2024, 2024.
 4. Sijia Gu, Noor Nashid, Ali Mesbah. *LLM Test Generation via Iterative Hybrid Program Analysis*. CoRR abs/2503.13580, accepted to ICSE 2026.
 5. Murat Tasarsu, Ahmet Vedat Tokmak, Cagatay Catal. *Test case generation using large language models: a systematic literature review*. Cluster Computing, 2026.
+

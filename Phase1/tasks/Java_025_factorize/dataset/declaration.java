@@ -1,6 +1,6 @@
-/* @Authors
-* Student Names: <student_name>
-* Student IDs: <student_id>
+﻿/* @Authors
+* Student Names: Mustafa Eren KOÇ, Onat Barış ERCAN
+* Student IDs: 150190805, 150201075
 */
 
 import java.util.*;
@@ -8,3 +8,4 @@ import java.lang.*;
 
 class Solution {
     public List<Integer> factorize(int n) {
+
