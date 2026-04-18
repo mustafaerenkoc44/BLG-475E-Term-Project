@@ -1,11 +1,17 @@
-﻿# BLG 475E - Term Project
+# BLG 475E - Term Project
 
 [![Phase 1 CI](https://github.com/mustafaerenkoc44/BLG-475E-Term-Project/actions/workflows/phase1-ci.yml/badge.svg)](https://github.com/mustafaerenkoc44/BLG-475E-Term-Project/actions/workflows/phase1-ci.yml)
+[![Phase 2 CI](https://github.com/mustafaerenkoc44/BLG-475E-Term-Project/actions/workflows/phase2-ci.yml/badge.svg)](https://github.com/mustafaerenkoc44/BLG-475E-Term-Project/actions/workflows/phase2-ci.yml)
 
-Course repository for the BLG 475E Software Quality and Testing term project. The repository is organized around two project phases:
+Course repository for the BLG 475E Software Quality and Testing term project.
+The repository is organized around two connected deliverables:
 
-- `Phase1`: LLM-based Java code generation, unit-test generation, black-box assessment, and branch-coverage analysis on 30 selected HumanEval-X Java prompts.
-- `Phase2`: integration-testing extension centered on the `BookScan` class and prompt-combination experiments.
+- `Phase1`: LLM-based Java code generation, unit-test generation, black-box
+  assessment, mutation guardrails, and branch-coverage analysis on 30 selected
+  HumanEval-X Java prompts.
+- `Phase2`: integration-testing extension centered on a composite `BookScan`
+  class that reuses the semantics of HumanEval-X tasks `Java/18`, `Java/23`,
+  and `Java/27`.
 
 ## Team
 
@@ -15,73 +21,83 @@ Course repository for the BLG 475E Software Quality and Testing term project. Th
 ## Project Snapshot
 
 - Phase 1 is complete and versioned with descriptive step-by-step commits.
-- Two public local coder models were evaluated:
+- Phase 2 is complete and includes both prompt-comparison experiments and a
+  selected final implementation validated through Maven, JUnit 6, and JaCoCo.
+- Two public local coder models were evaluated across both phases:
   - `Qwen2.5-Coder-1.5B-Instruct-GGUF`
   - `DeepSeek-Coder-1.3B-Instruct-GGUF`
-- Final Phase 1 correctness:
-  - `30/30` compiled and `30/30` base-test pass for both models
-- Aggregate branch coverage:
-  - Qwen base: `96.09%` (123 / 128)
-  - Qwen improved: `98.44%` (126 / 128)
-  - DeepSeek base: `98.46%` (128 / 130)
-  - DeepSeek improved: `100.00%` (130 / 130)
-- Every improved suite additionally contains at least one mutation-based
-  test method (`improvedMutation...`) pinned to a specific operator
-  family; see `Phase1/docs/analysis/mutation_testing_strategy.md`.
+
+### Phase 1 Highlights
+
+- `30/30` selected tasks compiled and passed dataset base tests for both models
+- aggregate branch coverage:
+  - Qwen base: `96.09%` (`123 / 128`)
+  - Qwen improved: `98.44%` (`126 / 128`)
+  - DeepSeek base: `98.46%` (`128 / 130`)
+  - DeepSeek improved: `100.00%` (`130 / 130`)
+- every improved suite contains at least one mutation-guardrail method
+  (`improvedMutation...`)
+
+### Phase 2 Highlights
+
+- final `BookScan` implementation passed `15/15` integration and regression
+  tests
+- final `BookScan` branch coverage: `97.22%` (`70 / 72`)
+- prompt-combination experiment results:
+  - original combined prompt, Qwen: `7/15` tests passed
+  - original combined prompt, DeepSeek: `9/15` tests passed
+  - edited combined prompt, Qwen: `15/15` tests passed, `97.06%` branch coverage
+  - edited combined prompt, DeepSeek: `15/15` tests passed, `95.31%` branch coverage
+- the selected final implementation outperforms both raw original-prompt
+  variants and slightly exceeds the best edited-prompt coverage result
 
 ## Repository Layout
 
 - `Phase1/`
-  - selected prompts, raw LLM logs, generated Java solutions, generated JUnit tests, coverage outputs, black-box assessment files, refactoring logs, and report material
+  - selected prompts, raw LLM logs, generated Java solutions, generated JUnit
+    tests, coverage outputs, black-box assessment files, refactoring logs, and
+    report material
 - `Phase2/`
-  - `BookScan` implementation plan, integration-testing strategy, and Phase 2 starter structure
+  - final `BookScan` implementation, integration and regression test suites,
+    prompt-comparison candidate implementations, result CSVs, interaction logs,
+    analysis docs, and Phase 2 report draft
 - `.github/workflows/phase1-ci.yml`
-  - GitHub Actions workflow that reproduces the Phase 1 Python + PowerShell
-    pipeline on a Linux runner, verifies every `Solution.java` is
-    BOM-free, runs the base and improved coverage scripts end to end,
-    and fails the build if any `(task, model)` pair regresses
+  - reproduces the Phase 1 Python + PowerShell coverage pipeline on GitHub
+    Actions
+- `.github/workflows/phase2-ci.yml`
+  - runs `mvn clean verify`, executes the prompt-comparison harness, summarizes
+    the CSV results, and uploads Phase 2 artefacts
 
-## Phase 1 Deliverables
+## Start Here
 
-Phase 1 already includes:
-
-- prompt selection and difficulty categorization for 30 HumanEval-X Java tasks
-- raw prompt/response logging for both LLMs
-- generated Java solutions and generated JUnit test suites
-- dataset base-test execution results
-- improved tests driven by branch coverage and black-box reasoning
-- per-task equivalence partitioning, boundary analysis, and refactoring notes
-- Phase 1 literature review draft and report draft
-
-Start here if you want the Phase 1 result summary:
+Phase 1 result summary:
 
 - `Phase1/docs/analysis/phase1_execution_report.md`
 - `Phase1/docs/analysis/task_level_review.md`
 - `Phase1/docs/report/phase1_report_draft.md`
 
-## Phase 2 Direction
+Phase 2 result summary:
 
-Phase 2 focuses on integration testing for a new `BookScan` class that combines the logic associated with:
-
-- `Java/18` substring counting
-- `Java/23` string length
-- `Java/27` upper-lower case conversion
-
-The `Phase2` folder now contains a clearer implementation and testing roadmap so the second phase can continue without restructuring the repository.
+- `Phase2/docs/analysis/phase2_execution_report.md`
+- `Phase2/docs/analysis/prompt_strategy_comparison.md`
+- `Phase2/docs/report/phase2_report_draft.md`
 
 ## Reproducibility Notes
 
 - Java: JDK 21+
-- Phase 1 build tool: Python 3.11 + PowerShell (see
-  `Phase1/scripts/Run-BaseCoverage.ps1` and
-  `Phase1/scripts/Run-ImprovedCoverage.ps1`)
-- Phase 2 build tool: Maven 3.9+ (planned)
+- Phase 1 orchestration: PowerShell 7 + Python 3.11
+- Phase 2 build tool: Maven 3.9+
 - Test framework: JUnit 6
-- Coverage tool: JaCoCo
-- Local inference runtime used in Phase 1: `llama.cpp`
+- Coverage tool: JaCoCo 0.8.12
+- Local inference runtime used for the prompt-comparison artefacts:
+  `llama.cpp`
 
 ## Submission Notes
 
 - Java files include the required author header block.
-- The Phase 1 report draft contains the repository URL and workload distribution in the acknowledgment section.
-- The commit history is intentionally descriptive so the repository tells the development story step by step.
+- Both phases contain raw interaction logs that record prompts, model outputs,
+  and a short usage note.
+- The report drafts contain the repository URL and workload distribution in the
+  acknowledgement section.
+- The commit history is intentionally descriptive so the repository tells the
+  development story step by step.

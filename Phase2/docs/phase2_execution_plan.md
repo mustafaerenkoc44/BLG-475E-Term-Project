@@ -1,5 +1,11 @@
 # Phase 2 Execution Plan
 
+> Archived planning note. The plan in this file was executed; for the completed
+> artefacts and measured outcomes, see:
+> `docs/analysis/phase2_execution_report.md`,
+> `docs/analysis/prompt_strategy_comparison.md`, and
+> `docs/report/phase2_report_draft.md`.
+
 ## Goal
 
 Build and evaluate a `BookScan` class under realistic integration-testing scenarios.

@@ -1,0 +1,77 @@
+
+Failures (6):
+  JUnit Jupiter:BookScanIntegrationTest:scanByWordLengthTreatsApostrophesAndHyphensAsSingleWords()
+    MethodSource [className = 'BookScanIntegrationTest', methodName = 'scanByWordLengthTreatsApostrophesAndHyphensAsSingleWords', methodParameterTypes = '']
+    => org.opentest4j.AssertionFailedError: expected: <3> but was: <1>
+       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:158)
+       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:139)
+       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:201)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:152)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:147)
+       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:558)
+       BookScanIntegrationTest.scanByWordLengthTreatsApostrophesAndHyphensAsSingleWords(BookScanIntegrationTest.java:44)
+  JUnit Jupiter:BookScanIntegrationTest:scanWordCanonicalizesUppercaseQueriesBeforeWholeWordMatching()
+    MethodSource [className = 'BookScanIntegrationTest', methodName = 'scanWordCanonicalizesUppercaseQueriesBeforeWholeWordMatching', methodParameterTypes = '']
+    => org.opentest4j.AssertionFailedError: expected: <3> but was: <4>
+       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:158)
+       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:139)
+       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:201)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:152)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:147)
+       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:558)
+       BookScanIntegrationTest.scanWordCanonicalizesUppercaseQueriesBeforeWholeWordMatching(BookScanIntegrationTest.java:170)
+  JUnit Jupiter:BookScanIntegrationTest:scanWordCountsWholeWordMatchesIgnoringCaseAcrossLines()
+    MethodSource [className = 'BookScanIntegrationTest', methodName = 'scanWordCountsWholeWordMatchesIgnoringCaseAcrossLines', methodParameterTypes = '']
+    => org.opentest4j.AssertionFailedError: expected: <3> but was: <4>
+       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:158)
+       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:139)
+       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:201)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:152)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:147)
+       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:558)
+       BookScanIntegrationTest.scanWordCountsWholeWordMatchesIgnoringCaseAcrossLines(BookScanIntegrationTest.java:95)
+  JUnit Jupiter:BookScanIntegrationTest:scanWordDoesNotMatchInsideLongerWords()
+    MethodSource [className = 'BookScanIntegrationTest', methodName = 'scanWordDoesNotMatchInsideLongerWords', methodParameterTypes = '']
+    => org.opentest4j.AssertionFailedError: expected: <3> but was: <5>
+       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:158)
+       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:139)
+       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:201)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:152)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:147)
+       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:558)
+       BookScanIntegrationTest.scanWordDoesNotMatchInsideLongerWords(BookScanIntegrationTest.java:154)
+  JUnit Jupiter:BookScanIntegrationTest:scanWordFindsTrimmedQueriesNextToPunctuation()
+    MethodSource [className = 'BookScanIntegrationTest', methodName = 'scanWordFindsTrimmedQueriesNextToPunctuation', methodParameterTypes = '']
+    => org.opentest4j.AssertionFailedError: expected: <3> but was: <0>
+       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:158)
+       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:139)
+       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:201)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:152)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:147)
+       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:558)
+       BookScanIntegrationTest.scanWordFindsTrimmedQueriesNextToPunctuation(BookScanIntegrationTest.java:107)
+  JUnit Jupiter:BookScanIntegrationTest:scanWordHandlesAlphanumericWholeWordQueries()
+    MethodSource [className = 'BookScanIntegrationTest', methodName = 'scanWordHandlesAlphanumericWholeWordQueries', methodParameterTypes = '']
+    => org.opentest4j.AssertionFailedError: expected: <2> but was: <3>
+       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:158)
+       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:139)
+       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:201)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:152)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:147)
+       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:558)
+       BookScanIntegrationTest.scanWordHandlesAlphanumericWholeWordQueries(BookScanIntegrationTest.java:186)
+
+Test run finished after 624 ms
+[         5 containers found      ]
+[         0 containers skipped    ]
+[         5 containers started    ]
+[         0 containers aborted    ]
+[         5 containers successful ]
+[         0 containers failed     ]
+[        15 tests found           ]
+[         0 tests skipped         ]
+[        15 tests started         ]
+[         0 tests aborted         ]
+[         9 tests successful      ]
+[         6 tests failed          ]
+

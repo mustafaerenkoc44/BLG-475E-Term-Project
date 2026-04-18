@@ -1,72 +1,91 @@
 # Phase 2 - Integration Testing Extension
 
-This folder contains the starting point for the second phase of the term project. The focus of Phase 2 is to design, implement, and integration-test a Java class named `BookScan`.
+Phase 2 is complete. This folder contains the final `BookScan`
+implementation, the integration/regression test suites that validate it, the
+prompt-comparison experiment artefacts, and the supporting analysis/report
+documents required by the assignment.
 
 ## Objective
 
-`BookScan` should analyze a text and determine:
+`BookScan` determines:
 
-- how many times words of a given length appear,
-- on which lines those words appear,
-- how shared helper behavior affects integration across multiple responsibilities.
+- how many words of a given length appear in a text,
+- on which lines those matches appear,
+- how many times a requested whole word appears across lines, and
+- how the helper behavior from HumanEval-X tasks `Java/18`, `Java/23`, and
+  `Java/27` behaves inside a single integrated class.
 
-The class must incorporate the behaviors related to the following HumanEval-X tasks already studied in Phase 1:
+The final implementation preserves those three helper semantics through:
 
-- `Java/18` - substring counting
-- `Java/23` - string length
-- `Java/27` - upper-lower case conversion
+- `howManyTimes(String, String)` for substring counting,
+- `strlen(String)` for length calculation,
+- `flipCase(String)` for case normalization support.
 
-## Expected Deliverables
+## Deliverables
 
-- `BookScan` production implementation
-- integration test suite
-- prompt-combination experiments:
-  - unmodified and combined prompts
-  - edited and combined prompts
-- comparative analysis of the two prompt strategies
-- Phase 1 and Phase 2 combined report material
+- `src/main/java/BookScan.java`
+  - selected final implementation used in the report and CI
+- `src/test/java/BookScanIntegrationTest.java`
+  - cross-method integration scenarios for line scanning, tokenization,
+    case-insensitive matching, punctuation handling, and alphanumeric words
+- `src/test/java/BookScanRegressionTest.java`
+  - focused regression tests for helper-method semantics
+- `generated-code/`
+  - four candidate `BookScan` implementations generated from
+    original-combined and edited-combined prompts for both models
+- `results/`
+  - prompt-comparison CSVs, summary markdown, and raw JUnit/JaCoCo artefacts
+- `logs/`
+  - prompt/response logs for code generation and integration-test generation
+- `docs/analysis/`
+  - execution report, prompt-strategy comparison, black-box assessment, and
+    coverage summary
+- `docs/report/`
+  - Phase 2 report draft ready to merge into the final combined report
 
-## Recommended Structure
+## Final Metrics
 
-- `src/main/java/`
-  - `BookScan.java`
-  - helper classes only if they are justified by the design
-- `src/test/java/`
-  - integration tests for cross-method behavior
-  - any focused regression tests for bugs found during integration
-- `docs/`
-  - prompt-improvement notes
-  - Phase 2 analysis and report fragments
+### Selected Final Implementation
 
-## Proposed BookScan Responsibilities
+- JUnit success: `15 / 15`
+- branch coverage: `70 / 72 = 97.22%`
+- line coverage: `109 / 110 = 99.09%`
 
-The implementation can be organized around three core responsibilities:
+### Prompt-Comparison Results
 
-1. normalize input text for consistent scanning and case handling
-2. compute word length information and substring-based occurrences
-3. aggregate per-line match information into a testable result format
+| Strategy | Model | JUnit Pass | Branch Coverage |
+|---|---|---:|---:|
+| original-combined | Qwen2.5-Coder-1.5B-Instruct-GGUF | `7 / 15` | n/a |
+| original-combined | DeepSeek-Coder-1.3B-Instruct-GGUF | `9 / 15` | n/a |
+| edited-combined | Qwen2.5-Coder-1.5B-Instruct-GGUF | `15 / 15` | `66 / 68 = 97.06%` |
+| edited-combined | DeepSeek-Coder-1.3B-Instruct-GGUF | `15 / 15` | `61 / 64 = 95.31%` |
+| selected-final | Manual-Selected | `15 / 15` | `70 / 72 = 97.22%` |
 
-## Integration Test Focus
+## Main Findings
 
-Phase 2 should not stop at isolated unit behavior. The most important scenarios are:
+- The original combined prompt was too vague about line numbering, token
+  boundaries, punctuation, and case normalization; both models produced
+  integration bugs as a result.
+- The edited combined prompt fixed those ambiguities and immediately lifted
+  both models to full JUnit success.
+- The final selected implementation keeps the edited-prompt behavior but adds a
+  few manual refinements that make the public API clearer and slightly improve
+  branch coverage.
+- The only remaining uncovered branches are defensive private-helper paths that
+  are not reachable through the public specification.
 
-- line-by-line scanning over multi-line text
-- case-insensitive matching paths that reuse the `flipCase`-style behavior
-- word-length filtering paths that reuse the `strlen`-style behavior
-- occurrence counting paths that reuse the `howManyTimes`-style behavior
-- combined prompts versus manually improved prompts for `BookScan`
+## Recommended Reading Order
 
-## Recommended Workflow
+1. `docs/analysis/phase2_execution_report.md`
+2. `docs/analysis/prompt_strategy_comparison.md`
+3. `results/prompt_comparison_summary.md`
+4. `docs/report/phase2_report_draft.md`
 
-1. define a clear `BookScan` API before prompting the models
-2. generate the first implementation with both LLM strategies
-3. run integration tests before polishing the code
-4. analyze failures and document whether the issue is in the code, the prompt, or the test oracle
-5. compare prompt strategies with correctness and coverage evidence
-6. merge the final findings into the combined Phase 1 + Phase 2 report
+## Reproducibility
 
-## Current Status
-
-- Phase 1 dependencies are already available in the repository
-- Phase 2 planning is now documented
-- implementation and integration tests are the next concrete step
+- local verification:
+  - `mvn -f Phase2/pom.xml clean verify`
+  - `powershell -ExecutionPolicy Bypass -File .\Phase2\scripts\Run-Phase2PromptComparison.ps1`
+  - `powershell -ExecutionPolicy Bypass -File .\Phase2\scripts\Summarize-Phase2Results.ps1`
+- CI:
+  - `.github/workflows/phase2-ci.yml`

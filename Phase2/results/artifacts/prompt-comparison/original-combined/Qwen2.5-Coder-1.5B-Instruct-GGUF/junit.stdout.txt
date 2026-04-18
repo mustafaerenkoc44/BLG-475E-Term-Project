@@ -1,0 +1,97 @@
+
+Failures (8):
+  JUnit Jupiter:BookScanIntegrationTest:scanByWordLengthKeepsMatchingLinesUniqueEvenWithManyHits()
+    MethodSource [className = 'BookScanIntegrationTest', methodName = 'scanByWordLengthKeepsMatchingLinesUniqueEvenWithManyHits', methodParameterTypes = '']
+    => org.opentest4j.AssertionFailedError: expected: <[1, 2]> but was: <[0, 0, 0, 1]>
+       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:158)
+       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:139)
+       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:201)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:184)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:179)
+       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1188)
+       BookScanIntegrationTest.scanByWordLengthKeepsMatchingLinesUniqueEvenWithManyHits(BookScanIntegrationTest.java:80)
+  JUnit Jupiter:BookScanIntegrationTest:scanByWordLengthTreatsApostrophesAndHyphensAsSingleWords()
+    MethodSource [className = 'BookScanIntegrationTest', methodName = 'scanByWordLengthTreatsApostrophesAndHyphensAsSingleWords', methodParameterTypes = '']
+    => org.opentest4j.AssertionFailedError: expected: <[1, 2]> but was: <[0, 1, 1]>
+       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:158)
+       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:139)
+       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:201)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:184)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:179)
+       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1188)
+       BookScanIntegrationTest.scanByWordLengthTreatsApostrophesAndHyphensAsSingleWords(BookScanIntegrationTest.java:45)
+  JUnit Jupiter:BookScanIntegrationTest:scanWordCanonicalizesUppercaseQueriesBeforeWholeWordMatching()
+    MethodSource [className = 'BookScanIntegrationTest', methodName = 'scanWordCanonicalizesUppercaseQueriesBeforeWholeWordMatching', methodParameterTypes = '']
+    => org.opentest4j.AssertionFailedError: expected: <echo> but was: <ECHO>
+       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:158)
+       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:139)
+       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:201)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:184)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:179)
+       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1188)
+       BookScanIntegrationTest.scanWordCanonicalizesUppercaseQueriesBeforeWholeWordMatching(BookScanIntegrationTest.java:169)
+  JUnit Jupiter:BookScanIntegrationTest:scanWordCountsWholeWordMatchesIgnoringCaseAcrossLines()
+    MethodSource [className = 'BookScanIntegrationTest', methodName = 'scanWordCountsWholeWordMatchesIgnoringCaseAcrossLines', methodParameterTypes = '']
+    => org.opentest4j.AssertionFailedError: expected: <3> but was: <2>
+       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:158)
+       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:139)
+       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:201)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:152)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:147)
+       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:558)
+       BookScanIntegrationTest.scanWordCountsWholeWordMatchesIgnoringCaseAcrossLines(BookScanIntegrationTest.java:95)
+  JUnit Jupiter:BookScanIntegrationTest:scanWordDoesNotMatchInsideLongerWords()
+    MethodSource [className = 'BookScanIntegrationTest', methodName = 'scanWordDoesNotMatchInsideLongerWords', methodParameterTypes = '']
+    => org.opentest4j.AssertionFailedError: expected: <3> but was: <4>
+       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:158)
+       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:139)
+       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:201)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:152)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:147)
+       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:558)
+       BookScanIntegrationTest.scanWordDoesNotMatchInsideLongerWords(BookScanIntegrationTest.java:154)
+  JUnit Jupiter:BookScanIntegrationTest:scanWordFindsTrimmedQueriesNextToPunctuation()
+    MethodSource [className = 'BookScanIntegrationTest', methodName = 'scanWordFindsTrimmedQueriesNextToPunctuation', methodParameterTypes = '']
+    => org.opentest4j.AssertionFailedError: expected: <3> but was: <0>
+       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:158)
+       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:139)
+       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:201)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:152)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:147)
+       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:558)
+       BookScanIntegrationTest.scanWordFindsTrimmedQueriesNextToPunctuation(BookScanIntegrationTest.java:107)
+  JUnit Jupiter:BookScanIntegrationTest:scanByWordLengthAggregatesCountsAndLinesAcrossText()
+    MethodSource [className = 'BookScanIntegrationTest', methodName = 'scanByWordLengthAggregatesCountsAndLinesAcrossText', methodParameterTypes = '']
+    => org.opentest4j.AssertionFailedError: expected: <7> but was: <5>
+       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:158)
+       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:139)
+       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:201)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:152)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:147)
+       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:558)
+       BookScanIntegrationTest.scanByWordLengthAggregatesCountsAndLinesAcrossText(BookScanIntegrationTest.java:23)
+  JUnit Jupiter:BookScanIntegrationTest:scanWordHandlesAlphanumericWholeWordQueries()
+    MethodSource [className = 'BookScanIntegrationTest', methodName = 'scanWordHandlesAlphanumericWholeWordQueries', methodParameterTypes = '']
+    => org.opentest4j.AssertionFailedError: expected: <abc123> but was: <ABC123>
+       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:158)
+       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:139)
+       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:201)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:184)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:179)
+       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1188)
+       BookScanIntegrationTest.scanWordHandlesAlphanumericWholeWordQueries(BookScanIntegrationTest.java:185)
+
+Test run finished after 931 ms
+[         5 containers found      ]
+[         0 containers skipped    ]
+[         5 containers started    ]
+[         0 containers aborted    ]
+[         5 containers successful ]
+[         0 containers failed     ]
+[        15 tests found           ]
+[         0 tests skipped         ]
+[        15 tests started         ]
+[         0 tests aborted         ]
+[         7 tests successful      ]
+[         8 tests failed          ]
+

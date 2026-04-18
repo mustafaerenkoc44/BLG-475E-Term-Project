@@ -1,0 +1,150 @@
+name: phase2-ci
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    paths:
+      - "Phase2/**"
+      - ".github/workflows/phase2-ci.yml"
+  workflow_dispatch:
+
+jobs:
+  verify-phase2:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    env:
+      PHASE2_DIR: ${{ github.workspace }}/Phase2
+      PHASE2_RESULTS_DIR: ${{ github.workspace }}/Phase2/results
+      TOOLS_DIR: ${{ github.workspace }}/.tools
+      JUNIT_VERSION: "6.0.3"
+      JACOCO_VERSION: "0.8.12"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install PowerShell Core
+        run: |
+          if ! command -v pwsh >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install -y --no-install-recommends powershell
+          fi
+          pwsh --version
+
+      - name: Cache shared Phase 2 tools
+        id: cache-phase2-tools
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.TOOLS_DIR }}
+          key: phase2-tools-junit-${{ env.JUNIT_VERSION }}-jacoco-${{ env.JACOCO_VERSION }}
+
+      - name: Download JUnit and JaCoCo jars
+        if: steps.cache-phase2-tools.outputs.cache-hit != 'true'
+        run: |
+          set -euo pipefail
+          mkdir -p "$TOOLS_DIR"
+          curl -L -sS \
+            "https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/${JUNIT_VERSION}/junit-platform-console-standalone-${JUNIT_VERSION}.jar" \
+            -o "$TOOLS_DIR/junit-platform-console-standalone-${JUNIT_VERSION}.jar"
+          curl -L -sS \
+            "https://repo1.maven.org/maven2/org/jacoco/org.jacoco.agent/${JACOCO_VERSION}/org.jacoco.agent-${JACOCO_VERSION}-runtime.jar" \
+            -o "$TOOLS_DIR/org.jacoco.agent-${JACOCO_VERSION}-runtime.jar"
+          curl -L -sS \
+            "https://repo1.maven.org/maven2/org/jacoco/org.jacoco.cli/${JACOCO_VERSION}/org.jacoco.cli-${JACOCO_VERSION}-nodeps.jar" \
+            -o "$TOOLS_DIR/org.jacoco.cli-${JACOCO_VERSION}-nodeps.jar"
+
+      - name: Verify Phase 2 BOM-free Java sources
+        shell: pwsh
+        run: |
+          $offending = @()
+          Get-ChildItem -Path "$env:PHASE2_DIR" -Recurse -Filter *.java | ForEach-Object {
+              $bytes = [System.IO.File]::ReadAllBytes($_.FullName)
+              if ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF) {
+                  $offending += $_.FullName
+              }
+          }
+          if ($offending.Count -gt 0) {
+              Write-Error ("Found {0} Java file(s) with a UTF-8 BOM:`n{1}" -f $offending.Count, ($offending -join "`n"))
+              exit 1
+          }
+          Write-Host "All Phase 2 Java files are BOM-free."
+
+      - name: Run Maven clean verify
+        run: |
+          mvn -Dmaven.repo.local="$PHASE2_DIR/.m2" -f "$PHASE2_DIR/pom.xml" clean verify
+
+      - name: Run prompt-comparison experiment
+        run: |
+          python "$PHASE2_DIR/scripts/python/run_phase2_prompt_comparison.py" \
+            --phase2-root "$PHASE2_DIR" \
+            --results "$PHASE2_RESULTS_DIR/prompt_comparison_results.csv" \
+            --java "$JAVA_HOME/bin/java" \
+            --javac "$JAVA_HOME/bin/javac" \
+            --junit-console "$TOOLS_DIR/junit-platform-console-standalone-${JUNIT_VERSION}.jar" \
+            --jacoco-agent "$TOOLS_DIR/org.jacoco.agent-${JACOCO_VERSION}-runtime.jar" \
+            --jacoco-cli "$TOOLS_DIR/org.jacoco.cli-${JACOCO_VERSION}-nodeps.jar" \
+            --compile-timeout 30 \
+            --run-timeout 30
+
+      - name: Summarize prompt-comparison CSV
+        shell: pwsh
+        run: |
+          & "$env:PHASE2_DIR/scripts/Summarize-Phase2Results.ps1"
+
+      - name: Assert edited strategies and final selection stay green
+        shell: pwsh
+        run: |
+          $csv = Join-Path $env:PHASE2_RESULTS_DIR "prompt_comparison_results.csv"
+          if (-not (Test-Path $csv)) {
+              Write-Error "Missing prompt comparison results CSV: $csv"
+              exit 1
+          }
+
+          $rows = Import-Csv -Path $csv
+
+          $compileFailures = $rows | Where-Object { $_.compile_success -ne 'true' }
+          if ($compileFailures) {
+              Write-Host "Prompt comparison compile failures detected:" -ForegroundColor Yellow
+              $compileFailures | Format-Table strategy, model_name, notes -AutoSize | Out-String | Write-Host
+              exit 1
+          }
+
+          $mustPass = $rows | Where-Object {
+              $_.strategy -eq 'edited-combined' -or $_.strategy -eq 'selected-final'
+          }
+
+          $runtimeFailures = $mustPass | Where-Object { $_.junit_success -ne 'true' }
+          if ($runtimeFailures) {
+              Write-Host "Edited/final variants regressed:" -ForegroundColor Yellow
+              $runtimeFailures | Format-Table strategy, model_name, tests_found, tests_failed, notes -AutoSize | Out-String | Write-Host
+              exit 1
+          }
+
+          Write-Host "Edited prompt variants and selected final implementation all passed."
+
+      - name: Upload Phase 2 artefacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase2-results
+          path: |
+            Phase2/results/**
+            Phase2/target/site/jacoco/**
+            Phase2/target/surefire-reports/**
+          if-no-files-found: warn
+          retention-days: 30
