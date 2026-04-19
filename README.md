@@ -69,8 +69,9 @@ The repository is organized around two connected deliverables:
   - reproduces the Phase 1 Python + PowerShell coverage pipeline on GitHub
     Actions
 - `.github/workflows/phase2-ci.yml`
-  - runs `mvn clean verify`, executes the prompt-comparison harness, summarizes
-    the CSV results, and uploads Phase 2 artefacts
+  - runs `mvn clean verify`, executes the prompt-comparison harness,
+    summarizes the CSV results, runs an optional PITest profile summary, and
+    uploads Phase 2 artefacts
 
 ## Start Here
 

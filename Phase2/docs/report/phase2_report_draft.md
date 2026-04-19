@@ -26,11 +26,12 @@ contracts implicit and both models therefore fail multiple test cases. The
 edited prompt makes token boundaries, line-number semantics, whole-word
 matching, and invalid-input behavior explicit; both models then reach `17/18`
 under the strengthened suite. The selected final implementation closes the
-remaining private-helper normalization gap, passes `18/18` JUnit 6 tests, and
+remaining private-helper normalization gap, passes `18/18` JUnit 6 tests,
 achieves `72/72 = 100.00%` branch coverage with `110/110 = 100.00%` line
-coverage in JaCoCo. The results show that for integration-heavy classes,
-prompt clarity and coverage-guided validation are at least as important as the
-underlying model choice.
+coverage in JaCoCo, and records a `79/93 = 84.95%` PITest mutation score. The
+results show that for integration-heavy classes, prompt clarity and
+coverage-guided validation are at least as important as the underlying model
+choice.
 
 ## I. Introduction
 
