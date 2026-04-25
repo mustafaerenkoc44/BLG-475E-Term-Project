@@ -753,7 +753,7 @@ def _find_tectonic() -> Path | None:
 
 
 def _build_pdf_with_tectonic(tectonic: Path, spec: ReportSpec, copied_paths: dict[str, Path]) -> None:
-    """Compile the polished .tex via tectonic, producing the canonical article-class PDF."""
+    """Compile the polished .tex via tectonic, producing the canonical IEEE journal PDF."""
     import subprocess
 
     result = subprocess.run(
@@ -811,10 +811,10 @@ def _build_pdf_with_reportlab(spec: ReportSpec, styles: StyleSheet1, copied_path
 def build_pdf(spec: ReportSpec, styles: StyleSheet1, copied_paths: dict[str, Path]) -> None:
     """Produce the polished PDF for one report.
 
-    The canonical deliverable is the article-class LaTeX manuscript at
+    The canonical deliverable is the IEEEtran journal LaTeX manuscript at
     ``copied_paths['tex']``. When the portable tectonic engine is available
     under ``.tools/tectonic/`` the script invokes it to produce a real
-    article-class PDF that matches the assignment template. As a fallback
+    IEEE journal PDF that matches the assignment template. As a fallback
     (e.g. on a CI runner without LaTeX) we keep the legacy ReportLab
     markdown-preview path so the script still produces *some* PDF.
     """

@@ -86,7 +86,7 @@ The stored outputs in this repository correspond to the local GGUF execution var
    review notes.
 5. `docs/report/phase1_report_draft.md` for the Markdown report draft and
    `docs/report/ieee/phase1_report.tex` (with `phase1_report.bib`) for the
-   camera-ready IEEE conference submission.
+   camera-ready IEEE journal submission.
 
 ## Tooling assumptions
 

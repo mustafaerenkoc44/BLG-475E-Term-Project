@@ -47,7 +47,7 @@ The final implementation preserves those three helper semantics through:
 - `docs/report/phase2_report_draft.md`
   - Markdown Phase 2 report draft
 - `docs/report/ieee/phase2_report.tex` + `phase2_report.bib`
-  - camera-ready Phase 2 report in the IEEE conference template, sharing
+  - camera-ready Phase 2 report in the IEEE journal template, sharing
     its bibliography style with the Phase 1 IEEE report
 
 ## Final Metrics
@@ -92,7 +92,7 @@ The final implementation preserves those three helper semantics through:
 4. `docs/analysis/black_box_assessment.md`
 5. `results/prompt_comparison_summary.md`
 6. `docs/report/phase2_report_draft.md` (Markdown) or
-   `docs/report/ieee/phase2_report.tex` (IEEE conference template)
+   `docs/report/ieee/phase2_report.tex` (IEEE journal template)
 
 ## Reproducibility
 

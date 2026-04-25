@@ -97,7 +97,7 @@ Phase 1 result summary:
 - `Phase1/docs/analysis/mutation_testing_strategy.md`
 - `Phase1/docs/report/phase1_report_draft.md` (Markdown draft)
 - `Phase1/docs/report/ieee/phase1_report.tex` +
-  `phase1_report.bib` (IEEE conference template)
+  `phase1_report.bib` (IEEE journal template)
 
 Phase 2 result summary:
 
@@ -107,7 +107,7 @@ Phase 2 result summary:
 - `Phase2/docs/analysis/black_box_assessment.md`
 - `Phase2/docs/report/phase2_report_draft.md` (Markdown draft)
 - `Phase2/docs/report/ieee/phase2_report.tex` +
-  `phase2_report.bib` (IEEE conference template)
+  `phase2_report.bib` (IEEE journal template)
 
 ## Reproducibility Notes
 
