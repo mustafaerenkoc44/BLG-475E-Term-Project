@@ -3,6 +3,7 @@ from __future__ import annotations
 import html
 import re
 import shutil
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -740,7 +741,42 @@ def copy_report_sources(spec: ReportSpec) -> dict[str, Path]:
     }
 
 
-def build_pdf(spec: ReportSpec, styles: StyleSheet1, copied_paths: dict[str, Path]) -> None:
+def _find_tectonic() -> Path | None:
+    """Locate the bundled portable tectonic LaTeX engine, if present."""
+    candidate = REPO_ROOT / ".tools" / "tectonic" / "tectonic.exe"
+    if candidate.is_file():
+        return candidate
+    candidate = REPO_ROOT / ".tools" / "tectonic" / "tectonic"
+    if candidate.is_file():
+        return candidate
+    return None
+
+
+def _build_pdf_with_tectonic(tectonic: Path, spec: ReportSpec, copied_paths: dict[str, Path]) -> None:
+    """Compile the polished .tex via tectonic, producing the canonical article-class PDF."""
+    import subprocess
+
+    result = subprocess.run(
+        [
+            str(tectonic),
+            "--keep-logs",
+            "--outdir",
+            str(spec.output_dir),
+            str(copied_paths["tex"]),
+        ],
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        sys.stderr.write(result.stdout)
+        sys.stderr.write(result.stderr)
+        raise RuntimeError(
+            f"tectonic failed to compile {copied_paths['tex']}; see log above."
+        )
+
+
+def _build_pdf_with_reportlab(spec: ReportSpec, styles: StyleSheet1, copied_paths: dict[str, Path]) -> None:
+    """Markdown-driven preview renderer kept as a fallback when tectonic is unavailable."""
     chart_path = spec.output_dir / f"{spec.output_basename}_chart.png"
     if spec.chart_builder == "phase1":
         make_phase1_chart(chart_path)
@@ -770,6 +806,23 @@ def build_pdf(spec: ReportSpec, styles: StyleSheet1, copied_paths: dict[str, Pat
         onFirstPage=lambda canvas, doc: add_page_chrome(canvas, doc, spec.phase_label),
         onLaterPages=lambda canvas, doc: add_page_chrome(canvas, doc, spec.phase_label),
     )
+
+
+def build_pdf(spec: ReportSpec, styles: StyleSheet1, copied_paths: dict[str, Path]) -> None:
+    """Produce the polished PDF for one report.
+
+    The canonical deliverable is the article-class LaTeX manuscript at
+    ``copied_paths['tex']``. When the portable tectonic engine is available
+    under ``.tools/tectonic/`` the script invokes it to produce a real
+    article-class PDF that matches the assignment template. As a fallback
+    (e.g. on a CI runner without LaTeX) we keep the legacy ReportLab
+    markdown-preview path so the script still produces *some* PDF.
+    """
+    tectonic = _find_tectonic()
+    if tectonic is not None:
+        _build_pdf_with_tectonic(tectonic, spec, copied_paths)
+    else:
+        _build_pdf_with_reportlab(spec, styles, copied_paths)
 
 
 def build_specs() -> list[ReportSpec]:

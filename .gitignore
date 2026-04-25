@@ -19,3 +19,10 @@ Phase1/results/artifacts/
 
 coverage/
 jacoco.exec
+
+# Tectonic LaTeX side-files (the compiled PDFs are checked in, the build
+# logs and intermediate .aux/.toc/.out are not).
+reports/**/*.log
+reports/**/*.aux
+reports/**/*.toc
+reports/**/*.out
