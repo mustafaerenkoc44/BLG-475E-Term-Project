@@ -15,8 +15,23 @@ The repository is organized around two connected deliverables:
 
 ## Team
 
-- Mustafa Eren KOC - `150190805`
-- Onat Baris ERCAN - `150210075`
+The two-person group split the workload along two complementary tracks
+and cross-reviewed each other's deliverables before merging them. The
+same split applied to both Phase 1 and Phase 2.
+
+- **Mustafa Eren KOC** - `150190805` - *engineering and automation
+  track*: repository scaffolding, GitHub Actions CI workflows, PowerShell
+  + Python driver layer, local `llama.cpp` pipeline, dataset-to-JUnit
+  adapters, JaCoCo automation, Maven and PITest configuration, `BookScan`
+  reference implementation, prompt-comparison harness, Git commit
+  discipline.
+- **Onat Baris ERCAN** - `150210075` - *quality and analysis track*:
+  30-prompt selection rationale and difficulty categorisation, per-task
+  equivalence-partitioning and boundary-value documents, test-smell audit,
+  hand-crafted mutation-operator catalogue and `improvedMutation...`
+  JUnit method authoring, `BookScan` black-box assessment, original-versus
+  -edited prompt-strategy design, failure-mode classification, five-paper
+  literature review, and IEEE journal manuscript drafting.
 
 ## Project Snapshot
 

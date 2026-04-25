@@ -382,16 +382,27 @@ originally intended them to be used.
 % ---------------------------------------------------------------------------
 \section*{Acknowledgement}
 
-The source repository, including reproducibility scripts, is available
-at \url{https://github.com/mustafaerenkoc44/BLG-475E-Term-Project}. The
-group is composed of two members after one teammate withdrew;
-\textbf{Mustafa Eren KO\c{C}} (150190805) led repository setup,
-automation scripts, local LLM execution, normalisation and repair
-workflow, coverage analysis, result aggregation, Git history management,
-and mutation-testing strategy; \textbf{Onat Bar{\i}\c{s} ERCAN}
-(150210075) focused on prompt selection review, black-box test assessment
-support, literature review validation, report refinement, IEEE LaTeX
-formatting, final submission cross-checks.
+The source repository, including reproducibility scripts, CI workflows,
+interaction logs and per-task artefacts, is available at
+\url{https://github.com/mustafaerenkoc44/BLG-475E-Term-Project}. The
+two-person group split the Phase~1 workload along two complementary
+tracks; both authors contributed equally and continuously cross-reviewed
+each other's deliverables.
+
+\textbf{Mustafa Eren KO\c{C}} (150190805) led the
+\emph{engineering and automation} track: the repository scaffolding,
+the GitHub Actions CI workflow, the PowerShell + Python~3.11 driver
+layer, the local \texttt{llama.cpp} execution pipeline, the
+dataset-to-JUnit adapters, the JaCoCo automation and result CSV
+aggregation, the repair-loop driver, and the Git commit discipline.
+
+\textbf{Onat Bar{\i}\c{s} ERCAN} (150210075) led the \emph{quality and
+analysis} track: the 30-prompt selection rationale and easy / moderate /
+hard categorisation, the per-task equivalence-partitioning and
+boundary-value documents, the test-smell audit against the Phase~1
+checklist, the hand-crafted mutation-operator catalogue and the
+\texttt{improvedMutation\ldots} JUnit method authoring, the
+five-paper literature review, and the IEEE journal manuscript.
 
 % ---------------------------------------------------------------------------
 \bibliographystyle{IEEEtran}

@@ -368,14 +368,21 @@ describe *intent*, not *coverage*.
 ## Acknowledgement
 
 - GitHub repository URL: `https://github.com/mustafaerenkoc44/BLG-475E-Term-Project`
+- The two-person group split the Phase 1 workload along two complementary
+  tracks. Both authors contributed equally and cross-reviewed each other's
+  deliverables before they were merged.
 - Group member roles and workload distribution:
-  - Mustafa Eren KOÇ (150190805): led repository setup, automation scripts,
-    local LLM execution, normalization and repair workflow, coverage
-    analysis, result aggregation, Git history management, and mutation
-    testing strategy.
-  - Onat Barış ERCAN (150210075): focused on prompt selection review,
-    black-box test assessment support, literature review validation, report
-    refinement, IEEE LaTeX formatting, and final submission cross-checks.
+  - **Mustafa Eren KOÇ (150190805) — engineering and automation track**:
+    repository scaffolding, GitHub Actions CI workflow, PowerShell + Python 3.11
+    driver layer, local `llama.cpp` execution pipeline, dataset-to-JUnit
+    adapters, JaCoCo automation and result CSV aggregation, repair-loop driver,
+    Git commit discipline.
+  - **Onat Barış ERCAN (150210075) — quality and analysis track**:
+    30-prompt selection rationale and easy / moderate / hard categorisation,
+    per-task equivalence-partitioning and boundary-value documents, test-smell
+    audit, hand-crafted mutation-operator catalogue and `improvedMutation...`
+    JUnit method authoring, five-paper literature review, IEEE journal
+    manuscript.
 
 ## References for the Literature Section
 

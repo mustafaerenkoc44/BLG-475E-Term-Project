@@ -535,19 +535,27 @@ engineering does more work than model selection}.
 % ---------------------------------------------------------------------------
 \section*{Acknowledgement}
 
-The source repository, including the full prompt-comparison harness,
-Maven build, GitHub Actions workflow and raw JaCoCo artefacts, is
-available at
-\url{https://github.com/mustafaerenkoc44/BLG-475E-Term-Project}. Group
-role allocation:
-\textbf{Mustafa Eren KO\c{C}} (150190805) led
-\texttt{BookScan} design, prompt-comparison harness, Maven configuration,
-integration-test automation, coverage analysis, result aggregation, CI
-workflow, Git history management;
-\textbf{Onat Bar{\i}\c{s} ERCAN} (150210075) focused on
-prompt review, black-box assessment support, failure classification,
-report refinement, IEEE LaTeX formatting, final submission
-cross-checks.
+The source repository, including the prompt-comparison harness, the
+Maven build, the PITest profile, the GitHub Actions workflow and the
+raw JaCoCo artefacts, is available at
+\url{https://github.com/mustafaerenkoc44/BLG-475E-Term-Project}. The
+Phase~1 split into engineering and analysis tracks carried over to
+Phase~2; both authors contributed equally and cross-reviewed each
+other's deliverables.
+
+\textbf{Mustafa Eren KO\c{C}} (150190805) led the
+\emph{engineering and automation} track: the Maven and PITest
+configuration, the prompt-comparison harness
+(\texttt{run\_phase2\_prompt\_comparison.py}), the \texttt{BookScan}
+reference implementation and helper hardening, the JaCoCo automation,
+the GitHub Actions workflow, and the integration-test driver.
+
+\textbf{Onat Bar{\i}\c{s} ERCAN} (150210075) led the \emph{quality and
+analysis} track: the original-versus-edited prompt-strategy design,
+the \texttt{BookScan} black-box assessment with per-method equivalence
+classes, the failure-mode classification for the original-prompt
+variants, the integration-test specification, and the IEEE journal
+manuscript.
 
 % ---------------------------------------------------------------------------
 \bibliographystyle{IEEEtran}

@@ -232,10 +232,17 @@ demonstrates two complementary lessons:
 
 - GitHub repository URL:
   `https://github.com/mustafaerenkoc44/BLG-475E-Term-Project`
+- The Phase 1 split into engineering and analysis tracks carried over to
+  Phase 2. Both authors contributed equally and cross-reviewed each
+  other's deliverables before they were merged.
 - Group member roles and workload distribution:
-  - Mustafa Eren KOC (150190805): led repository setup, local model
-    workflow, Phase 2 implementation, integration-test automation, prompt
-    comparison runner, coverage analysis, and result aggregation.
-  - Onat Baris ERCAN (150210075): focused on prompt review, black-box
-    assessment support, failure classification, report refinement, final
-    submission checks, and CI cross-review.
+  - **Mustafa Eren KOÇ (150190805) — engineering and automation track**:
+    Maven and PITest configuration, prompt-comparison harness
+    (`run_phase2_prompt_comparison.py`), `BookScan` reference implementation
+    and helper hardening, JaCoCo automation, GitHub Actions workflow,
+    integration-test driver.
+  - **Onat Barış ERCAN (150210075) — quality and analysis track**:
+    original-versus-edited prompt-strategy design, `BookScan` black-box
+    assessment with per-method equivalence classes, failure-mode
+    classification for the original-prompt variants, integration-test
+    specification, IEEE journal manuscript.
