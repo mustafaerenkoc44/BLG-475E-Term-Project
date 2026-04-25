@@ -1,44 +1,43 @@
-\documentclass[12pt,a4paper]{article}
+%% =====================================================================
+%% BLG 475E Software Quality and Testing - Term Project
+%% Final Submission Report (Phase 1 + Phase 2)
+%% IEEE Journal Template (per assignment brief)
+%% Authors: Mustafa Eren KOC (150190805), Onat Baris Ercan (150210075)
+%% =====================================================================
+\documentclass[journal]{IEEEtran}
 
-% --- Preamble ---
-\usepackage{graphicx}
-\usepackage[margin=2.5cm]{geometry}
-\usepackage{breakcites}
-\usepackage{indentfirst}
-\usepackage{float}
-\usepackage[cmex10]{amsmath}
-\usepackage{multirow}
-\usepackage{fancyvrb}
-\usepackage{mathtools}
-\usepackage{hyperref}
+\usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{graphicx}
 \usepackage{booktabs}
+\usepackage{multirow}
 \usepackage{array}
+\usepackage{url}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
 \hypersetup{
     colorlinks=true,
     linkcolor=blue,
-    filecolor=magenta,
+    citecolor=blue,
     urlcolor=cyan,
-    pdftitle={BLG 475E Term Project Report - Final Submission},
-    pdfpagemode=UseOutlines,
+    pdftitle={BLG 475E Term Project - Final Submission Report}
 }
-\usepackage[T1]{fontenc}
-\usepackage{listings}
-\usepackage{color}
 
-% Code listing settings
+% --- Code listing style (compact for two-column IEEE layout) ---
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\definecolor{backcolour}{rgb}{0.96,0.96,0.92}
 
-\lstdefinestyle{mystyle}{
+\lstdefinestyle{ieeeJava}{
     backgroundcolor=\color{backcolour},
     commentstyle=\color{codegreen},
     keywordstyle=\color{magenta},
     numberstyle=\tiny\color{codegray},
     stringstyle=\color{codepurple},
-    basicstyle=\ttfamily\footnotesize,
+    basicstyle=\ttfamily\scriptsize,
     breakatwhitespace=false,
     breaklines=true,
     captionpos=b,
@@ -48,139 +47,151 @@
     showspaces=false,
     showstringspaces=false,
     showtabs=false,
-    tabsize=2
+    tabsize=2,
+    columns=fullflexible,
+    xleftmargin=10pt,
+    aboveskip=4pt,
+    belowskip=4pt
 }
-\lstset{style=mystyle}
+\lstset{style=ieeeJava}
 
-% --- Settings ---
-\renewcommand{\refname}{REFERENCES}
-\linespread{1.3}
+\hyphenation{op-tical net-works semi-conduc-tor Hu-man-Eval Java-Script Power-Shell Book-Scan}
 
 \begin{document}
 
-% --- Title Page ---
-\begin{titlepage}
-\begin{center}
-\textbf{}\\
-\textbf{\Large{ISTANBUL TECHNICAL UNIVERSITY}}\\
-\vspace{0.5cm}
-\textbf{\Large{COMPUTER ENGINEERING DEPARTMENT}}\\
-\vspace{2cm}
-\textbf{\Large{BLG 475E\\ SOFTWARE QUALITY AND TESTING\\ TERM PROJECT REPORT --- FINAL SUBMISSION\\ (PHASE 1 + PHASE 2)}}\\
-\vspace{2cm}
-\begin{table}[ht]
-\centering
-\Large{
-\begin{tabular}{lcl}
-\textbf{COURSE}     & : & BLG 475E \\
-\textbf{LECTURER}   & : & Ay\c{s}e Tosun K\"uhn \\
-\textbf{TERM}       & : & 2025--2026 Spring \\
-\end{tabular}}
-\end{table}
-\vspace{1.5cm}
-\begin{center}
-\Large{
-\textbf{Mustafa Eren KO\c{C}}\\
-150190805\\[0.6cm]
-\textbf{Onat Bar{\i}\c{s} Ercan}\\
-150210075
-}
-\end{center}
-\vspace{1.5cm}
-\textbf{\Large{SPRING 2026}}
-\end{center}
-\thispagestyle{empty}
-\end{titlepage}
+\title{LLM-Based Code and Test Generation for Java:\\
+From HumanEval-X Warm-Up to a Composite \texttt{BookScan} Integration Suite}
 
-% --- Table of Contents ---
-\thispagestyle{empty}
-\addtocontents{toc}{\protect\contentsline{section}{\protect\numberline{}FRONT COVER}{}{}}
-\addtocontents{toc}{\protect\contentsline{section}{\protect\numberline{}CONTENTS}{}{}}
-\setcounter{tocdepth}{4}
-\tableofcontents
-\clearpage
+\author{Mustafa~Eren~Ko\c{c}~(150190805),~and~Onat~Bar{\i}\c{s}~Ercan~(150210075)% <-this % stops a space
+\thanks{The authors are with the Department of Computer Engineering,
+Istanbul Technical University, Istanbul, T\"urkiye, e-mail:
+\{koc20, ercano21\}@itu.edu.tr.}% <-this % stops a space
+\thanks{This is the final submission report (Phase~1 + Phase~2) of the
+BLG~475E Software Quality and Testing term project (2025--2026 Spring
+term), supervised by Dr.~Ay\c{s}e~Tosun~K\"uhn. The authors form a
+two-person group with the explicit acknowledgement of the course
+instructor. Source code, scripts, interaction logs and CI artefacts are
+publicly available at
+\url{https://github.com/mustafaerenkoc44/BLG-475E-Term-Project}.}}
 
-% --- Main Content Start ---
-\setcounter{page}{1}
-\pagenumbering{arabic}
+\markboth{BLG~475E Software Quality and Testing, Final Submission Report, Spring 2026}%
+{Ko\c{c} and Ercan: LLM-Based Code and Test Generation for Java}
 
-% =============================================================
-% INTRODUCTION
-% =============================================================
-\section{INTRODUCTION}
-\label{sec:introduction}
+\maketitle
 
-This is the final combined submission report for the BLG~475E Software Quality and Testing term project at Istanbul Technical University. It consolidates Phase~1 (warm-up) and Phase~2 (extension) of the project into a single coherent document. The project investigates how two publicly available, code-oriented Large Language Models (LLMs) --- \texttt{Qwen2.5-Coder-1.5B-Instruct} and \texttt{DeepSeek-Coder-1.3B-Instruct} --- behave when asked to generate Java code and tests, first on isolated HumanEval-X prompts (Phase~1) and then on a composite class called \texttt{BookScan} that integrates three of those prompts (Phase~2).
+\begin{abstract}
+This is the final submission report for the BLG~475E Software Quality and
+Testing term project. It consolidates Phase~1 (warm-up) and Phase~2
+(extension) into a single coherent paper. The project investigates how
+two publicly available, code-oriented Large Language Models (LLMs)
+--- \texttt{Qwen2.5-Coder-1.5B-Instruct} and
+\texttt{DeepSeek-Coder-1.3B-Instruct} --- behave when asked to generate
+Java code and tests, first on isolated HumanEval-X prompts (Phase~1) and
+then on a composite class \texttt{BookScan} that integrates three of those
+prompts (Phase~2). Phase~1 establishes the methodology, the toolchain and
+the baseline measurements: both LLMs reach $30/30$ base-test success on a
+balanced 30-prompt subset, the improved suites raise aggregate JaCoCo
+branch coverage from $96.09\,\%$ / $98.46\,\%$ (Qwen / DeepSeek) on the
+base suites to $98.44\,\%$ / $100.00\,\%$, and every (task, model) pair
+carries at least one hand-crafted \texttt{improvedMutation\ldots} JUnit
+method. Phase~2 lifts the helpers behind Java/18 (\texttt{howManyTimes}),
+Java/23 (\texttt{strlen}) and Java/27 (\texttt{flipCase}) into a single
+composite \texttt{BookScan} class and compares four LLM-generated
+variants (two prompt strategies $\times$ two models) against a manually
+selected final implementation. The original combined prompt yields
+$6/18$ (Qwen) and $8/18$ (DeepSeek) test passes; the edited combined
+prompt that adds eight integration contracts lifts both models to
+$17/18$; the manually selected final implementation passes $18/18$,
+reaches $72/72=100\,\%$ branch and $110/110=100\,\%$ line coverage under
+JaCoCo, and records a $79/93=84.95\,\%$ mutation score under PITest. The
+most important Phase~2 finding is that, at the integration level, prompt
+clarity does more work than model selection.
+\end{abstract}
 
-Phase~1 establishes the methodology, the toolchain and the baseline measurements. Both LLMs reach 30 / 30 base-test success on a balanced 30-prompt subset of the HumanEval-X Java corpus \cite{humaneval}; the improved suites raise aggregate JaCoCo branch coverage from 96.09\,\% / 98.46\,\% (Qwen / DeepSeek) on the base suites to 98.44\,\% / 100.00\,\%, and every (task, model) pair carries at least one hand-crafted \texttt{improvedMutation\ldots} JUnit method.
+\begin{IEEEkeywords}
+Large language models, integration testing, JUnit, JaCoCo, mutation
+testing, PITest, prompt engineering, HumanEval-X, software quality.
+\end{IEEEkeywords}
 
-Phase~2 lifts the helpers behind three Phase~1 tasks --- Java/18 (\texttt{howManyTimes}), Java/23 (\texttt{strlen}) and Java/27 (\texttt{flipCase}) --- into a single composite \texttt{BookScan} class that must determine how many words of a requested length appear in a text and on which lines they appear, and how many times a requested whole word appears across lines. We then compare four LLM-generated implementations (two prompt strategies $\times$ two models) against a manually selected final implementation and validate the final implementation through a Maven build with Surefire, JaCoCo and PITest. The final \texttt{BookScan} passes 18 / 18 integration and regression tests, reaches 100\,\% branch and line coverage and records an 84.95\,\% PITest mutation score. The most important Phase~2 finding is that explicit prompt contracts move both models from $\sim\!\!33\!-\!\!44\,\%$ pass-rate up to $\sim\!\!94\,\%$ on the same suite, while switching between the two models inside a fixed prompt strategy moves the pass-rate by no more than two test cases.
+% =====================================================================
+\section{Introduction}\label{sec:intro}
+% =====================================================================
+\IEEEPARstart{L}{arge} Language Models (LLMs) are increasingly used to
+draft both source code and unit tests~\cite{chatunitest,metatestgen,
+yang2024,panta2024,lit_review}. The economic appeal is obvious --- a model
+can produce compilable code and candidate tests in seconds --- but the
+engineering risk is equally clear: generated code can compile and pass a
+happy-path test without actually meeting the specification, and generated
+tests can execute without exercising any meaningful behaviour. BLG~475E
+\emph{Software Quality and Testing} asks students to investigate both
+sides of that trade-off on a controlled Java corpus.
 
-\subsection{Project Objectives}
+This paper is the final submission report. It folds the Phase~1 warm-up
+report and the Phase~2 extension report into a single paper. Phase~1
+establishes the methodology, the toolchain and the baseline
+measurements; Phase~2 builds on these foundations to study integration
+testing of a composite class derived from three Phase~1 prompts.
 
-The combined Phase~1 + Phase~2 objectives are:
-\begin{itemize}
-    \item Select two publicly available code-oriented LLMs that can be deployed locally (no paid APIs) and use them under a semi-agentic workflow that records every artefact.
-    \item Select 30 HumanEval-X Java prompts balanced across easy / moderate / hard categories and use them as the Phase~1 corpus.
-    \item Generate Java solutions with both LLMs, convert the dataset reference tests into JUnit~6, and measure branch coverage with JaCoCo.
-    \item Improve the generated suites using test-smell auditing, equivalence-class partitioning, boundary-value analysis and hand-crafted mutation guards.
-    \item Reuse the helpers behind Java/18, Java/23 and Java/27 to build a composite \texttt{BookScan} class in Phase~2 and write integration tests for it.
-    \item Compare the LLMs under an \emph{original combined prompt} and an \emph{edited combined prompt} that adds explicit integration contracts, and validate the final implementation through Maven, JaCoCo and PITest.
-    \item Survey five recent peer-reviewed papers on LLM-based test generation, hand-written without LLM assistance.
-    \item Produce this final combined report (at least eight pages) that documents methodology, results, threats to validity and the literature review for both phases.
-\end{itemize}
+The contribution of this paper is threefold. First, we show that an
+orthodox semi-agentic pipeline driven by PowerShell, Python,
+\texttt{llama.cpp}, JUnit~6 and JaCoCo is sufficient to reproduce every
+experiment on a student laptop and on a GitHub Actions runner. Second, we
+add a hand-crafted \emph{mutation-kill matrix} that complements branch
+coverage in Phase~1 and pair it with PITest-driven automated mutation
+analysis on the composite class in Phase~2. Third, we provide a
+controlled prompt-comparison experiment that demonstrates --- with raw
+JUnit logs --- that, at the integration level, explicit prompt contracts
+close many more failing tests than switching between the two underlying
+models does.
 
-\subsection{Report Structure}
+The remainder of the paper is organised as follows.
+Section~\ref{sec:phase1-method} summarises the Phase~1 methodology, and
+Section~\ref{sec:phase1-results} the Phase~1 measured results.
+Section~\ref{sec:phase2-method} introduces the \texttt{BookScan} class,
+the Maven build and the original-vs-edited prompt comparison.
+Section~\ref{sec:phase2-challenges} documents the Phase~2 technical
+challenges. Section~\ref{sec:phase2-results} reports the Phase~2
+measured results: prompt-comparison outcomes, JaCoCo coverage and PITest
+mutation score. Section~\ref{sec:discuss} discusses both phases together.
+Section~\ref{sec:lit} contains the five-paper literature review.
+Section~\ref{sec:conclusion} concludes the project.
 
-Section~\ref{sec:phase1-method} summarises the Phase~1 methodology (LLM selection, semi-agentic workflow, prompt selection, test improvement, mutation guards). Section~\ref{sec:phase1-results} presents the Phase~1 measured results. Section~\ref{sec:phase2-method} introduces the \texttt{BookScan} class, the Maven build and the original-vs-edited prompt comparison. Section~\ref{sec:phase2-challenges} documents the Phase~2 technical challenges (PITest under non-ASCII workspace paths, JaCoCo / PITest coexistence). Section~\ref{sec:phase2-results} reports the Phase~2 measured results: prompt-comparison outcomes, JaCoCo coverage and PITest mutation score. Section~\ref{sec:discussion} discusses both phases together. Section~\ref{sec:literature} contains the five-paper literature review. Section~\ref{sec:conclusion} concludes the project. Acknowledgement, references and appendices follow.
-
-% =============================================================
-% PHASE 1 METHODOLOGY (CONDENSED)
-% =============================================================
-\section{PHASE 1 METHODOLOGY}
-\label{sec:phase1-method}
+% =====================================================================
+\section{Phase 1 Methodology}\label{sec:phase1-method}
+% =====================================================================
 
 \subsection{LLM Selection and Workflow}
 
-We chose a \textbf{semi-agentic} workflow: every transition between steps remains observable, each step writes its inputs and outputs into the repository, and a fully autonomous loop is not necessary because the local \texttt{llama.cpp} runtime would have required additional infrastructure that is unrelated to the research question.
-
-The two selected models are:
-\begin{itemize}
-    \item \texttt{Qwen/Qwen2.5-Coder-1.5B-Instruct}, deployed as \texttt{Qwen2.5-Coder-1.5B-Instruct-GGUF}.
-    \item \texttt{deepseek-ai/deepseek-coder-1.3b-instruct}, deployed as \texttt{DeepSeek-Coder-1.3B-Instruct-GGUF}.
-\end{itemize}
-Both models are loaded into the same local \texttt{llama.cpp} runtime with identical sampling parameters; the only varying factor between two paired experiments is the model itself. Both models are public, code-oriented, instruction-tuned and small enough ($<$8\,GB) to run on a student laptop. The Phase~1 pipeline is driven by PowerShell~7 and Python~3.11 scripts and re-runs end-to-end on every push via GitHub Actions (\texttt{.github/workflows/phase1-ci.yml}).
+We adopted a \emph{semi-agentic} workflow because every transition between
+steps remains observable, which makes the experiment reproducible. The
+two selected models satisfy five constraints (public; code-oriented;
+locally deployable in $<$8\,GB; instruction-tuned; distinct lineage):
+\texttt{Qwen/Qwen2.5-Coder-1.5B-Instruct} and
+\texttt{deepseek-ai/deepseek-coder-1.3b-instruct}, both deployed as GGUF
+checkpoints under the same local \texttt{llama.cpp} runtime with identical
+sampling parameters. The Phase~1 pipeline is driven by PowerShell~7 and
+Python~3.11 scripts and re-runs end-to-end on every push via GitHub
+Actions (\texttt{phase1-ci.yml}).
 
 \subsection{Prompt Selection and Difficulty Distribution}
 
-We selected exactly 30 prompts from the HumanEval-X Java corpus and recorded the rationale for each in \texttt{Phase1/data/selected\_prompts.csv}. The selection covers multiple input/output styles (numeric scalars, lists, strings, mixed types) and is balanced across difficulty categories:
-
-\begin{table}[H]
-\centering
-\caption{Phase 1 difficulty distribution.}
-\label{tab:difficulty}
-\begin{tabular}{lc}
-\toprule
-\textbf{Difficulty} & \textbf{Count} \\
-\midrule
-easy     & 10 \\
-moderate & 10 \\
-hard     & 10 \\
-\midrule
-\textbf{total} & \textbf{30} \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-Three of the selected prompts (Java/18 \texttt{howManyTimes}, Java/23 \texttt{strlen}, Java/27 \texttt{flipCase}) are explicitly retained because Phase~2 lifts their helpers into a composite \texttt{BookScan} class. The full task list is reproduced in Appendix~\ref{app:prompts}.
+We selected exactly 30 prompts from the HumanEval-X Java corpus, balanced
+as 10~easy / 10~moderate / 10~hard. Three of the selected prompts
+(Java/18 \texttt{howManyTimes}, Java/23 \texttt{strlen}, Java/27
+\texttt{flipCase}) are explicitly retained because Phase~2 lifts their
+helpers into the composite \texttt{BookScan} class. The full task list is
+reproduced in Appendix~\ref{app:prompts}.
 
 \subsection{Code Generation and Base Test Conversion}
 
-For every selected prompt, the verbatim HumanEval-X declaration is sent to the model. The course brief forbids editing the prompt itself, so the only post-processing applied is structural normalization: removing Markdown fences, stripping a re-stated prompt that some models echo, and dropping malformed fragments that would prevent compilation. Semantic normalization is forbidden at this step; if a normalized solution still fails the base test, that failure is recorded and the repair happens in the refactoring loop, not silently in the normalizer.
+For each prompt the verbatim HumanEval-X declaration is sent to the
+model. The course brief forbids editing the prompt at the generation
+stage, so the only post-processing is structural normalization (Markdown
+fences, prompt echo, malformed fragments). The dataset's reference test
+is re-encoded as a JUnit~6 \texttt{DatasetBaseTest.java} so that JaCoCo
+can be attached.
 
-The dataset's \texttt{Main.java} reference test is also re-encoded as a JUnit~6 \texttt{DatasetBaseTest.java} so that JaCoCo can be attached.
-
-\begin{lstlisting}[language=Java, caption=Header block prepended to every generated solution and test]
+\begin{lstlisting}[language=Java, caption=Required header block prepended to every generated solution and test file.]
 /* @Authors
  * Student Names: Mustafa Eren KOC, Onat Baris ERCAN
  * Student IDs: 150190805, 150210075
@@ -189,53 +200,70 @@ The dataset's \texttt{Main.java} reference test is also re-encoded as a JUnit~6 
 
 \subsection{Test Improvement and Hand-Crafted Mutation Guards}
 
-For every (task, model) pair an improved JUnit suite \texttt{DatasetImprovedTest.java} is authored on top of the base test. The improvement comes from three orthogonal sources:
-\begin{itemize}
-    \item A \emph{test-smell audit} against the Phase~1 checklist that catches happy-path-only suites, conditional logic in tests, missing boundary cases and assertion roulette.
-    \item An \emph{equivalence-partitioning} document with valid classes, invalid classes and boundary conditions; rows that are not already covered by the base test become the driver for at least one new \texttt{@Test} method.
-    \item Hand-crafted \emph{mutation guards}: each improved suite has at least one \texttt{improvedMutation\ldots} method that fails if a specific operator-level mutation (ROR, AOR, LCR, UOI, BND, SBR, RV, NPE, EXC) is introduced into the solution. Phase~1 forbids automated mutation tooling, so the guards are encoded as JUnit assertions.
-\end{itemize}
+For every (task, model) pair an improved JUnit suite
+\texttt{DatasetImprovedTest.java} is authored on top of the base test.
+The improvement comes from three orthogonal sources: (i)~a test-smell
+audit against the Phase~1 checklist that catches happy-path-only suites,
+conditional logic in tests, missing boundary cases and assertion
+roulette; (ii)~an equivalence-partitioning document with valid classes,
+invalid classes and boundary conditions, where rows that are not already
+covered by the base test become the driver for at least one new
+\texttt{@Test} method; (iii)~hand-crafted mutation guards. Each improved
+suite has at least one \texttt{improvedMutation\ldots} method that fails
+if a specific operator-level mutation (Table~\ref{tab:mutation-catalogue})
+is introduced into the solution.
 
-\begin{table}[H]
-\centering
+\begin{table}[!t]
+\renewcommand{\arraystretch}{1.15}
 \caption{Hand-crafted mutation operators exercised in Phase 1.}
 \label{tab:mutation-catalogue}
-\begin{tabular}{p{0.07\linewidth}p{0.25\linewidth}p{0.55\linewidth}}
+\centering
+\footnotesize
+\begin{tabular}{@{}lp{1.9cm}p{3.5cm}@{}}
 \toprule
-\textbf{Op} & \textbf{Family} & \textbf{Representative Phase 1 use} \\
+\textbf{Op} & \textbf{Family} & \textbf{Representative use} \\
 \midrule
-ROR & Relational operator        & Java/3 balance check \verb|< 0| versus \verb|<= 0| \\
-AOR & Arithmetic operator        & Java/2 \texttt{Math.floor} versus \texttt{(int)} truncation \\
-LCR & Logical connector          & Java/9 short-circuit \verb|null  ||  size==0| \\
-UOI & Unary operator insertion   & Java/31 negative-prime guard \\
-BND & Boundary literal shift     & Java/25 / Java/36 numeric guards \\
-SBR & Statement block removal    & Java/0 self-pair skip ($i == j$) \\
-RV  & Return-value replacement   & Java/39 non-positive index \\
-NPE & Null-argument replacement  & Applied to almost every I1 invalid class \\
-EXC & Exception expectation flip & Java/11 unequal-length string inputs \\
+ROR & Relational op.        & Java/3 \verb|< 0| vs \verb|<= 0| \\
+AOR & Arithmetic op.        & Java/2 \texttt{Math.floor} vs \texttt{(int)} \\
+LCR & Logical connector     & Java/9 \verb|null  ||  size==0| \\
+UOI & Unary insertion       & Java/31 negative-prime guard \\
+BND & Boundary literal      & Java/25 / 36 numeric guards \\
+SBR & Statement removal     & Java/0 self-pair skip \\
+RV  & Return-value swap     & Java/39 non-positive index \\
+NPE & Null replacement      & every I1 invalid class \\
+EXC & Exception flip        & Java/11 unequal-length inputs \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \subsection{Refactoring Loop}
 
-If a normalized solution fails the dataset base test, the workflow does not silently fix the code: it issues a refactoring prompt to the same model, attaches the failure log and the broken solution, and stores the resulting patch as the new solution. Seven tasks --- Java/10, Java/12, Java/17, Java/19, Java/23, Java/27, Java/39 --- needed exactly one refactoring round before reaching base-test success on at least one model; all seven were eventually fixed and now compile and pass on both models.
+If a normalized solution fails the dataset base test, the workflow does
+not silently fix the code: it issues a refactoring prompt to the same
+model, attaches the failure log and the broken solution, and stores the
+resulting patch as the new solution. Seven tasks (Java/10, /12, /17, /19,
+/23, /27, /39) needed exactly one refactoring round before reaching
+base-test success on at least one model; all seven were eventually fixed
+and now compile and pass on both models.
 
-% =============================================================
-% PHASE 1 RESULTS (CONDENSED)
-% =============================================================
-\section{PHASE 1 RESULTS}
-\label{sec:phase1-results}
+% =====================================================================
+\section{Phase 1 Results}\label{sec:phase1-results}
+% =====================================================================
 
 \subsection{Code Generation Outcomes}
 
-\begin{table}[H]
-\centering
-\caption{Phase 1 code generation outcomes (after the refactoring loop).}
+After the refactoring loop, both models compile and pass their base
+tests on all 30 prompts (Table~\ref{tab:codegen-final}).
+
+\begin{table}[!t]
+\renewcommand{\arraystretch}{1.15}
+\caption{Phase 1 code generation outcomes after the refactoring loop.}
 \label{tab:codegen-final}
-\begin{tabular}{lcc}
+\centering
+\footnotesize
+\begin{tabular}{@{}lcc@{}}
 \toprule
-\textbf{Model} & \textbf{Compiled} & \textbf{Base tests passed} \\
+\textbf{Model} & \textbf{Compiled} & \textbf{Base passed} \\
 \midrule
 Qwen2.5-Coder-1.5B-Instruct-GGUF    & 30 / 30 & 30 / 30 \\
 DeepSeek-Coder-1.3B-Instruct-GGUF   & 30 / 30 & 30 / 30 \\
@@ -245,124 +273,184 @@ DeepSeek-Coder-1.3B-Instruct-GGUF   & 30 / 30 & 30 / 30 \\
 
 \subsection{Branch Coverage}
 
-\begin{table}[H]
-\centering
+\begin{table}[!t]
+\renewcommand{\arraystretch}{1.15}
 \caption{Phase 1 aggregate branch coverage (base versus improved).}
 \label{tab:phase1-cov}
-\begin{tabular}{lrrrrrr}
+\centering
+\footnotesize
+\begin{tabular}{@{}lcccc@{}}
 \toprule
-& \multicolumn{3}{c}{\textbf{Base suite}} & \multicolumn{3}{c}{\textbf{Improved suite}} \\
-\cmidrule(lr){2-4}\cmidrule(lr){5-7}
-\textbf{Model} & Cov. & Total & \% & Cov. & Total & \% \\
+& \multicolumn{2}{c}{\textbf{Base suite}} & \multicolumn{2}{c}{\textbf{Improved suite}} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+\textbf{Model}    & \textbf{Cov./Tot.} & \textbf{\%} & \textbf{Cov./Tot.} & \textbf{\%} \\
 \midrule
-Qwen2.5-Coder-1.5B-Instruct-GGUF    & 123 & 128 & 96.09 & 126 & 128 &  98.44 \\
-DeepSeek-Coder-1.3B-Instruct-GGUF   & 128 & 130 & 98.46 & 130 & 130 & 100.00 \\
+Qwen 1.5B     & 123 / 128 & 96.09 & 126 / 128 &  98.44 \\
+DeepSeek 1.3B & 128 / 130 & 98.46 & 130 / 130 & 100.00 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The two remaining Qwen-side misses are concentrated on Java/001 \texttt{separateParenGroups} and Java/006 \texttt{parseNestedParens}, where the Qwen-generated parser contains a private helper-exit branch that is not reachable through the public API under the dataset contract. We document these residual misses in Section~\ref{sec:discussion}.
+The two remaining Qwen-side misses sit on Java/001 \texttt{separateParenGroups}
+and Java/006 \texttt{parseNestedParens}, where the Qwen-generated parser
+contains a private helper-exit branch that is not reachable through the
+public API under the dataset contract. We document these residual misses
+in Section~\ref{sec:discuss}.
 
 \subsection{Hand-Crafted Mutation-Kill Status}
 
-By construction, the improved suites kill 100\,\% of the hand-crafted Phase~1 mutants and the LLM-produced base suites kill 0\,\% of them. Phase~2 supplements this with PITest measurements on \texttt{BookScan} (Section~\ref{sec:phase2-results}).
+By construction, the improved suites kill $100\,\%$ of the hand-crafted
+Phase~1 mutants and the LLM-produced base suites kill $0\,\%$ of them.
+Phase~2 supplements this with PITest measurements on the composite
+\texttt{BookScan} class.
 
 \subsection{Model-Specific Behavioural Divergence}
 
-For several Phase~1 tasks the two models produced semantically distinct implementations. Table~\ref{tab:divergence} lists the most informative examples; the improved suites carry different assertions for those tasks so that the suite documents what each LLM actually did.
+For several Phase~1 tasks the two models produced semantically distinct
+implementations (Table~\ref{tab:divergence}); the improved suites carry
+different assertions for those tasks so the suite documents what each LLM
+actually did.
 
-\begin{table}[H]
-\centering
+\begin{table}[!t]
+\renewcommand{\arraystretch}{1.15}
 \caption{Phase 1 tasks where Qwen and DeepSeek diverge on observable behaviour.}
 \label{tab:divergence}
-\begin{tabular}{p{0.10\linewidth}p{0.85\linewidth}}
+\centering
+\footnotesize
+\begin{tabular}{@{}lp{6.0cm}@{}}
 \toprule
 \textbf{Task} & \textbf{Behavioural disagreement} \\
 \midrule
-Java/2  & Qwen uses \texttt{Math.floor} for negative input; DeepSeek uses an \texttt{(int)} cast (which truncates toward zero, not toward $-\infty$). \\
-Java/4  & Qwen returns \texttt{Optional.orElse(0.0)} on the empty-list case; DeepSeek divides by zero and returns \texttt{NaN}. \\
-Java/19 & Qwen falls back to \texttt{indexOf == -1} when a token is not in the dictionary; DeepSeek calls \texttt{HashMap.get} and dereferences the resulting \texttt{null}, throwing an NPE. \\
-Java/20 & Qwen returns the first tied pair; DeepSeek accumulates all ties into a list and returns the lexicographically smallest. \\
-Java/21 & Qwen returns a fresh list; DeepSeek mutates the input list in place. \\
+Java/2  & \texttt{Math.floor} (Qwen) vs \texttt{(int)} cast (DeepSeek) for negative input. \\
+Java/4  & \texttt{Optional.orElse(0.0)} (Qwen) vs division-by-zero \(\to\) \texttt{NaN} (DeepSeek) on empty list. \\
+Java/19 & \texttt{indexOf == -1} (Qwen) vs \texttt{HashMap.get == null} \(\to\) NPE (DeepSeek). \\
+Java/20 & First tied pair (Qwen) vs accumulate-all-ties (DeepSeek). \\
+Java/21 & Returns a fresh list (Qwen) vs mutates input in place (DeepSeek). \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-% =============================================================
-% PHASE 2 METHODOLOGY
-% =============================================================
-\section{PHASE 2 METHODOLOGY}
-\label{sec:phase2-method}
+% =====================================================================
+\section{Phase 2 Methodology}\label{sec:phase2-method}
+% =====================================================================
 
 \subsection{The \texttt{BookScan} Class}
 
-Phase~2 lifts three Phase~1 helpers (Java/18 \texttt{howManyTimes}, Java/23 \texttt{strlen}, Java/27 \texttt{flipCase}) into a single composite class \texttt{BookScan} that must:
-\begin{itemize}
-    \item count how many words of a requested length appear in a multi-line text and on which lines they appear (\texttt{scanByWordLength}),
-    \item count how many times a requested whole word appears across lines, case-insensitively (\texttt{scanWord}),
-    \item preserve the Phase~1 helper semantics so that \texttt{howManyTimes}, \texttt{strlen} and \texttt{flipCase} remain individually callable and individually testable.
-\end{itemize}
+Phase~2 lifts three Phase~1 helpers (Java/18 \texttt{howManyTimes}, Java/23
+\texttt{strlen}, Java/27 \texttt{flipCase}) into a single composite class
+\texttt{BookScan} that must (i)~count how many words of a requested length
+appear in a multi-line text and on which lines they appear; (ii)~count how
+many times a requested whole word appears across lines, case-insensitively;
+and (iii)~preserve the Phase~1 helper semantics so that the three helpers
+remain individually callable and individually testable.
 
-The class lives at \texttt{Phase2/src/main/java/BookScan.java} and exposes two immutable result records and five public methods:
-
-\begin{lstlisting}[language=Java, caption=Public surface of the final BookScan class]
+\begin{lstlisting}[language=Java, caption=Public surface of the final BookScan class.]
 public record ScanResult(
-        int targetLength,
-        int totalOccurrences,
-        List<Integer> matchingLines,
-        Map<Integer,Integer> occurrencesByLine,
-        Map<Integer,List<String>> matchedWordsByLine) { }
+    int targetLength,
+    int totalOccurrences,
+    List<Integer> matchingLines,
+    Map<Integer,Integer> occurrencesByLine,
+    Map<Integer,List<String>> matchedWordsByLine) { }
 
 public record WordSearchResult(
-        String word,
-        int totalOccurrences,
-        List<Integer> matchingLines,
-        Map<Integer,Integer> occurrencesByLine) { }
+    String word,
+    int totalOccurrences,
+    List<Integer> matchingLines,
+    Map<Integer,Integer> occurrencesByLine) { }
 
-public ScanResult       scanByWordLength(String text, int targetLength);
-public WordSearchResult scanWord       (String text, String word);
-public int              howManyTimes   (String string, String substring);
-public int              strlen         (String string);
-public String           flipCase       (String string);
+public ScanResult scanByWordLength(String text, int targetLength);
+public WordSearchResult scanWord(String text, String word);
+public int    howManyTimes(String string, String substring);
+public int    strlen      (String string);
+public String flipCase    (String string);
 \end{lstlisting}
 
-The tokenisation regex is \verb|[A-Za-z0-9]+(?:['-][A-Za-z0-9]+)*|, which keeps apostrophes and hyphens \emph{inside} a token (so that \texttt{can't} and \texttt{co-op} count as one word each) but rejects them as leading or trailing characters. Whole-word matching is implemented by canonicalising each line into a space-separated list of lowercase tokens and then padding the needle with spaces, so that partial matches inside longer words (e.g.\ ``echo'' inside ``echoic'') cannot fire.
+The tokenisation regex is \verb|[A-Za-z0-9]+(?:['-][A-Za-z0-9]+)*|, which
+keeps apostrophes and hyphens \emph{inside} a token (so that
+\texttt{can't} and \texttt{co-op} count as one word each) but rejects
+them as leading or trailing characters. Whole-word matching is
+implemented by canonicalising each line into a space-separated list of
+lowercase tokens and then padding the needle with spaces, so that
+partial matches inside longer words (e.g.\ ``echo'' inside ``echoic'')
+cannot fire.
+
+Listing~\ref{lst:scanlength} reproduces the core
+\texttt{scanByWordLength} method, which illustrates the three-helper
+integration: \texttt{tokenizeWords} delivers the regex-driven token
+list; the loop accumulates per-line counters and matched words; the
+result is wrapped in an immutable \texttt{ScanResult} record.
+
+\begin{lstlisting}[language=Java, label=lst:scanlength,
+   caption=Core scanByWordLength method (essential shape).]
+public ScanResult scanByWordLength(
+        String text, int targetLength) {
+    if (text == null || text.isBlank()
+            || targetLength <= 0) {
+        return emptyScanResult(targetLength);
+    }
+    List<Integer> matchingLines  = new ArrayList<>();
+    Map<Integer,Integer> byLine  = new LinkedHashMap<>();
+    Map<Integer,List<String>> ws = new LinkedHashMap<>();
+    int total = 0;
+    String[] lines = text.split("\\R", -1);
+    for (int i = 0; i < lines.length; i++) {
+        int ln = i + 1;
+        List<String> hits = new ArrayList<>();
+        for (String tok : tokenizeWords(lines[i])) {
+            if (strlen(tok) == targetLength) hits.add(tok);
+        }
+        if (!hits.isEmpty()) {
+            matchingLines.add(ln);
+            byLine.put(ln, hits.size());
+            ws.put(ln, List.copyOf(hits));
+            total += hits.size();
+        }
+    }
+    return new ScanResult(targetLength, total,
+        List.copyOf(matchingLines),
+        Map.copyOf(byLine), Map.copyOf(ws));
+}
+\end{lstlisting}
 
 \subsection{Maven + Surefire + JaCoCo + PITest Pipeline}
 
-Phase~2 replaces the Phase~1 PowerShell+Python harness with a Maven build for the production code:
-\begin{itemize}
-    \item \textbf{JDK 21} (Temurin) and \textbf{Java release target 21} via \texttt{maven-compiler-plugin}.
-    \item \textbf{JUnit 6} (\texttt{junit-jupiter} 6.0.3) on \texttt{maven-surefire-plugin} 3.5.3.
-    \item \textbf{JaCoCo 0.8.12} via \texttt{jacoco-maven-plugin} (prepare-agent + report).
-    \item \textbf{PITest 1.20.5} with \texttt{pitest-junit5-plugin 1.2.3} exposed through an opt-in Maven profile \texttt{mutation} so that the default \texttt{mvn clean verify} stays fast.
-\end{itemize}
-
-The PowerShell + Python driver is retained as a lightweight \emph{prompt-comparison harness}: \texttt{Phase2/scripts/python/run\_phase2\_prompt\_comparison.py}, wrapped by \texttt{Run-Phase2PromptComparison.ps1}, copies each candidate \texttt{BookScan.java} into an isolated work directory, compiles with \texttt{javac}, runs JUnit under the JaCoCo agent, renders a JaCoCo CSV from the resulting \texttt{jacoco.exec} and extracts branch coverage for the \texttt{BookScan} class. All raw artefacts (\texttt{compile.stdout}, \texttt{compile.stderr}, \texttt{junit.stdout}, \texttt{jacoco.exec}, \texttt{jacoco.csv} and the copied source files) are stored under \texttt{Phase2/results/artifacts/prompt-comparison/}.
-
-GitHub Actions re-runs the entire Phase~2 build on every push (\texttt{.github/workflows/phase2-ci.yml}): \texttt{mvn clean verify}, the prompt-comparison harness, the PITest profile (best effort) and the polished Phase~2 artefact upload.
+Phase~2 replaces the Phase~1 PowerShell+Python harness with a Maven build
+for the production code: JDK~21 (Temurin) with Java release target~21,
+JUnit~6 (\texttt{junit-jupiter} 6.0.3) on \texttt{maven-surefire-plugin}
+3.5.3, JaCoCo~0.8.12 via \texttt{jacoco-maven-plugin} (prepare-agent +
+report), and PITest~1.20.5 with \texttt{pitest-junit5-plugin}~1.2.3
+exposed through an opt-in Maven profile \texttt{mutation} so that the
+default \texttt{mvn clean verify} stays fast. The PowerShell + Python
+driver is retained as the prompt-comparison harness
+(\texttt{run\_phase2\_prompt\_comparison.py}). GitHub Actions re-runs the
+Phase~2 build on every push (\texttt{phase2-ci.yml}).
 
 \subsection{Original-vs-Edited Prompt Strategies}
 
-The headline experimental question of Phase~2 is: ``once the prompt has to specify a whole class rather than a single function, which matters more --- the underlying model, or the structure of the prompt itself?'' We answer it by running the same two models (Qwen2.5-Coder-1.5B and DeepSeek-Coder-1.3B) against two prompt strategies, plus a manually selected final implementation, all evaluated against the same JUnit suite.
+The headline experimental question of Phase~2 is: ``once the prompt has
+to specify a whole class rather than a single function, which matters
+more --- the underlying model, or the structure of the prompt itself?'' We
+answer it by running the same two models against two prompt strategies,
+plus a manually selected final implementation, all evaluated against the
+same JUnit suite.
 
 \subsubsection{Original Combined Prompt}
-
-The \emph{original combined prompt} simply concatenates the three HumanEval-X task descriptions and asks the model to build a class around them:
-
-\begin{quote}\itshape
-Create a Java class named \texttt{BookScan}. The class should determine how many times words of a given length appear in a text and on which lines they appear. The class must also contain methods related to HumanEval-X tasks \texttt{\#18 substring}, \texttt{\#23 string length} and \texttt{\#27 upper-lower case}. Return a single compilable Java file. Keep the implementation simple and self-contained.
-\end{quote}
+The original combined prompt simply concatenates the three HumanEval-X
+task descriptions and asks the model to build a class around them.
 
 \subsubsection{Edited Combined Prompt}
+The edited combined prompt adds the integration contracts that the
+original prompt leaves implicit (Table~\ref{tab:prompt-edits}); these are
+the contracts the integration suite would otherwise have to discover by
+trial and error.
 
-The \emph{edited combined prompt} adds the integration contracts that the original prompt leaves implicit. Table~\ref{tab:prompt-edits} lists the eight added requirements; they are the contracts that the integration suite would otherwise have to discover by trial and error.
-
-\begin{table}[H]
-\centering
+\begin{table}[!t]
+\renewcommand{\arraystretch}{1.15}
 \caption{Integration contracts added in the edited combined prompt.}
 \label{tab:prompt-edits}
-\begin{tabular}{p{0.27\linewidth}p{0.65\linewidth}}
+\centering
+\footnotesize
+\begin{tabular}{@{}p{2.6cm}p{4.6cm}@{}}
 \toprule
 \textbf{Topic} & \textbf{Added requirement} \\
 \midrule
@@ -372,323 +460,473 @@ Whole-word search & must not match inside a longer word \\
 Case policy       & search is case-insensitive; uppercase-only queries canonicalised \\
 Query hygiene     & trim the query, reject blank or multi-token queries \\
 Invalid inputs    & null or blank text returns empty-result records \\
-Result shape      & immutable \texttt{ScanResult} / \texttt{WordSearchResult} records \\
-Helper reuse      & \texttt{howManyTimes}, \texttt{strlen}, \texttt{flipCase} remain callable with Phase 1 semantics \\
+Result shape      & immutable \texttt{ScanResult} / \texttt{WordSearchResult} \\
+Helper reuse      & \texttt{howManyTimes}, \texttt{strlen}, \texttt{flipCase} remain callable \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \subsubsection{Manually Selected Final Implementation}
+Neither edited-prompt variant clears the full strengthened suite (each
+loses exactly one helper-hardening regression test). The repository
+therefore also stores a manually selected final implementation
+(\texttt{Phase2/src/main/java/BookScan.java}) that closes the last gap.
+The Maven build, the JaCoCo report and the PITest profile target this
+implementation.
 
-After the prompt-comparison rounds, neither edited-prompt variant clears the full strengthened suite (each loses exactly one helper-hardening regression test, see Section~\ref{sec:phase2-results}). The repository therefore also stores a manually selected final implementation (\texttt{Phase2/src/main/java/BookScan.java}) that closes the last gap. This final implementation is the one that the Maven build, the JaCoCo report and the PITest profile target.
+\subsection{Integration and Regression Test Suites}
 
-\subsection{Integration Test Suite}
+The Phase~2 suite contains 12 integration tests
+(\texttt{BookScanIntegrationTest}) and 6 focused regression / hardening
+tests (\texttt{BookScanRegressionTest}), 18 tests in total, shared by all
+five configurations. Tables~\ref{tab:int-tests} and \ref{tab:reg-tests}
+enumerate each test method together with the integration contract or
+helper semantic it exercises.
 
-The Phase~2 suite contains 12 integration tests (\texttt{BookScanIntegrationTest}) and 6 focused regression / hardening tests (\texttt{BookScanRegressionTest}), for a total of 18 tests shared by all five configurations. Tables~\ref{tab:int-tests} and \ref{tab:reg-tests} summarise them.
-
-\begin{table}[H]
-\centering
+\begin{table}[!t]
+\renewcommand{\arraystretch}{1.15}
 \caption{Integration tests in BookScanIntegrationTest.}
 \label{tab:int-tests}
-\begin{tabular}{p{0.42\linewidth}p{0.5\linewidth}}
+\centering
+\footnotesize
+\begin{tabular}{@{}p{3.3cm}p{4.3cm}@{}}
 \toprule
 \textbf{Test method} & \textbf{Integration contract} \\
 \midrule
-\texttt{scanByWordLengthAggregatesCounts\-AndLinesAcrossText}     & multi-line aggregation and per-line matched words \\
-\texttt{scanByWordLengthTreatsApostrophesAnd\-HyphensAsSingleWords}     & token-boundary preservation \\
-\texttt{scanByWordLengthReturnsEmptyResult\-ForInvalidInputs}     & null / blank / non-positive length \\
-\texttt{scanByWordLengthKeepsMatchingLines\-UniqueEvenWithManyHits}     & line-list uniqueness under repeated hits \\
-\texttt{scanWordCountsWholeWordMatches\-IgnoringCaseAcrossLines}     & case-insensitive whole-word matching \\
-\texttt{scanWordFindsTrimmedQueriesNextTo\-Punctuation}     & trimmed queries, punctuation handling \\
-\texttt{scanWordRejectsBlankOrMultiTokenQueries}     & query validation (blank, multi-token) \\
-\texttt{scanWordReturnsEmptyResultForNullInputs\-AndBlankTexts}     & null / blank inputs produce stable empty results \\
-\texttt{scanWordDoesNotMatchInsideLongerWords}     & partial-match rejection \\
-\texttt{scanWordCanonicalizesUppercaseQueries\-BeforeWholeWordMatching}     & uppercase queries normalised via \texttt{flipCase} \\
-\texttt{scanWordHandlesAlphanumericWholeWordQueries}     & alphanumeric whole-word tokens \\
-\texttt{scanWordNormalizesMixedCaseTokens\-WithoutFlipArtifacts}     & mixed-case normalisation remains stable \\
+\texttt{scanByWordLengthAggregates}\-\texttt{CountsAndLinesAcrossText} & multi-line aggregation, per-line matched words \\
+\texttt{scanByWordLengthTreats}\-\texttt{ApostrophesAndHyphensAs}\-\texttt{SingleWords} & token-boundary preservation \\
+\texttt{scanByWordLengthReturns}\-\texttt{EmptyResultForInvalidInputs} & null / blank / non-positive length \\
+\texttt{scanByWordLengthKeeps}\-\texttt{MatchingLinesUniqueEvenWith}\-\texttt{ManyHits} & line-list uniqueness under repeated hits \\
+\texttt{scanWordCountsWholeWord}\-\texttt{MatchesIgnoringCaseAcrossLines} & case-insensitive whole-word matching \\
+\texttt{scanWordFindsTrimmed}\-\texttt{QueriesNextToPunctuation} & trimmed queries, punctuation handling \\
+\texttt{scanWordRejectsBlankOr}\-\texttt{MultiTokenQueries} & query validation \\
+\texttt{scanWordReturnsEmpty}\-\texttt{ResultForNullInputsAnd}\-\texttt{BlankTexts} & null / blank inputs produce stable empty results \\
+\texttt{scanWordDoesNotMatch}\-\texttt{InsideLongerWords} & partial-match rejection (e.g.\ ``echo'' inside ``echoic'') \\
+\texttt{scanWordCanonicalizes}\-\texttt{UppercaseQueriesBefore}\-\texttt{WholeWordMatching} & uppercase queries normalised via \texttt{flipCase} \\
+\texttt{scanWordHandlesAlphanumeric}\-\texttt{WholeWordQueries} & alphanumeric whole-word tokens \\
+\texttt{scanWordNormalizesMixed}\-\texttt{CaseTokensWithoutFlipArtifacts} & mixed-case normalisation remains stable \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
-\centering
-\caption{Regression tests in BookScanRegressionTest.}
+\begin{table}[!t]
+\renewcommand{\arraystretch}{1.15}
+\caption{Regression / hardening tests in BookScanRegressionTest.}
 \label{tab:reg-tests}
-\begin{tabular}{p{0.42\linewidth}p{0.5\linewidth}}
+\centering
+\footnotesize
+\begin{tabular}{@{}p{3.3cm}p{4.3cm}@{}}
 \toprule
 \textbf{Test method} & \textbf{Phase 1 helper under test} \\
 \midrule
-\texttt{howManyTimesCountsOverlappingSubstrings}             & Java/18 overlap semantics \\
-\texttt{howManyTimesReturnsZeroForEmpty\-NullOrOversizedNeedles}             & Java/18 guards on blank / oversized needles \\
-\texttt{flipCasePreservesSymbolsWhile\-TogglingLetters}             & Java/27 case flip on symbols and digits \\
-\texttt{strlenThrowsOnNullAndReturns\-LengthOtherwise}             & Java/23 null contract and length \\
-\texttt{tokenizeWordsReturnsFreshMutable\-EmptyListForNullInput}             & helper hardening for null tokenisation \\
-\texttt{privateCanonicalizeWordRejectsBlankTokens}             & helper hardening for blank-token collapse \\
+\texttt{howManyTimesCounts}\-\texttt{OverlappingSubstrings} & Java/18 overlap semantics \\
+\texttt{howManyTimesReturnsZeroFor}\-\texttt{EmptyNullOrOversizedNeedles} & Java/18 guards on blank / oversized needles \\
+\texttt{flipCasePreservesSymbols}\-\texttt{WhileTogglingLetters} & Java/27 case flip on symbols and digits \\
+\texttt{strlenThrowsOnNullAnd}\-\texttt{ReturnsLengthOtherwise} & Java/23 null contract and length \\
+\texttt{tokenizeWordsReturnsFresh}\-\texttt{MutableEmptyListForNullInput} & helper hardening, null tokenisation \\
+\texttt{privateCanonicalizeWord}\-\texttt{RejectsBlankTokens} & helper hardening, blank-token collapse \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\subsection{Black-Box Assessment for \texttt{BookScan}}
+The integration tests are assembled from a cross-product of three sources:
+the Phase~1 test-smell checklist, the Phase~2 black-box assessment under
+\texttt{Phase2/docs/analysis/black\_box\_assessment.md}, and the concrete
+failure signatures we observed while running the original-prompt variants.
+Every test asserts at least one structural property (counts) and at least
+one shape property (matching-line list or per-line map), so a pass
+genuinely implies integration correctness, not just one scalar equality.
 
-Each public method of \texttt{BookScan} has its own equivalence-partitioning document under \texttt{Phase2/docs/analysis/black\_box\_assessment.md}. The document enumerates valid classes (typical multi-line texts, repeated hits on the same line, apostrophe/hyphen tokens), invalid classes (null / blank text, non-positive target length, blank / multi-token query) and boundary conditions (empty matched-line list, single-token line, exact target length). Every public class is mapped to at least one executed JUnit method, and the mapping is reproduced as a separate table inside the document.
+\subsection{Black-Box Assessment}
 
-% =============================================================
-% PHASE 2 TECHNICAL CHALLENGES
-% =============================================================
-\section{PHASE 2 TECHNICAL CHALLENGES AND SOLUTIONS}
-\label{sec:phase2-challenges}
+Each public method of \texttt{BookScan} has its own
+equivalence-partitioning document under
+\texttt{Phase2/docs/analysis/black\_box\_assessment.md}: valid classes,
+invalid classes, and boundary conditions. Every public class is mapped to
+at least one executed JUnit method. Table~\ref{tab:bb-scanwordlength}
+reproduces the equivalence classes for the most behaviour-rich method,
+\texttt{scanByWordLength}, as a representative example.
 
-\subsection{Unicode Workspace Path Issues}
+\begin{table}[!t]
+\renewcommand{\arraystretch}{1.15}
+\caption{Black-box equivalence classes for \texttt{scanByWordLength}.
+V$=$valid, I$=$invalid, B$=$boundary.}
+\label{tab:bb-scanwordlength}
+\centering
+\footnotesize
+\begin{tabular}{@{}lp{3.0cm}p{2.4cm}c@{}}
+\toprule
+\textbf{ID} & \textbf{Description} & \textbf{Representative input} & \textbf{Cov.} \\
+\midrule
+V1 & Multi-line text, exact-length hits & ``Echo code\textbackslash nThis here'', $4$ & yes \\
+V2 & Repeated hits on same line        & ``same size size'', $4$           & yes \\
+V3 & Apostrophe / hyphen tokens         & ``can't / co-op'', $5$            & yes \\
+I1 & Null text                          & \texttt{null}, $4$                & yes \\
+I2 & Blank text                         & ``\textbackslash n\textbackslash t'', $4$ & yes \\
+I3 & Non-positive target length         & ``hello'', $0$ or $-1$            & yes \\
+B1 & Empty matched-line list            & ``aa bbb cccc'', $5$              & yes \\
+B2 & Single-token line                  & ``hello'', $5$                    & yes \\
+B3 & Target equals max token length     & ``aa bbbbb'', $5$                 & yes \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-The development workspace lives under a path containing the Turkish character \emph{\.{I}}: \verb|D:\Indirilenler\BLG_475E_Term_Project\|. The Maven build originally placed the JaCoCo \texttt{destFile} and the Maven local repository under that path, which produced corrupted byte streams in \texttt{jacoco.exec} and intermittent resolver failures.
+The full assessment for \texttt{scanWord}, \texttt{howManyTimes},
+\texttt{strlen} and \texttt{flipCase} follows the same pattern; every
+row is annotated with the exact JUnit method that exercises it, so the
+mapping from contract to test is auditable.
 
-\subsubsection{Solution}
+\subsection{Prompt-Comparison Harness}
 
-The Maven \texttt{jacoco-maven-plugin} configuration was updated to redirect both \texttt{destFile} and \texttt{dataFile} to the system tmpdir:
+The Python runner
+\texttt{scripts/python/run\_phase2\_prompt\_comparison.py} is invoked
+through the PowerShell wrapper
+\texttt{scripts/Run-Phase2PromptComparison.ps1}. For every candidate
+\texttt{BookScan.java} (four prompt variants plus the manually selected
+final implementation) it copies the candidate and the shared JUnit suite
+into an isolated working directory, compiles with \texttt{javac} against
+the JUnit~6 console jar, runs JUnit under the JaCoCo agent, renders a
+JaCoCo CSV from the resulting \texttt{jacoco.exec}, and extracts branch
+coverage for the \texttt{BookScan} class. All raw artefacts
+(\texttt{compile.stdout}, \texttt{compile.stderr}, \texttt{junit.stdout},
+\texttt{jacoco.exec}, \texttt{jacoco.csv} and the copied source files)
+are stored under
+\texttt{Phase2/results/artifacts/prompt-comparison/}\,
+\texttt{<strategy>/<model>}, so every figure in this report can be
+reproduced from recorded data rather than from in-memory state.
 
-\begin{lstlisting}[language=XML, caption=JaCoCo plugin configuration in Phase2/pom.xml]
-<plugin>
-  <groupId>org.jacoco</groupId>
-  <artifactId>jacoco-maven-plugin</artifactId>
-  <version>${jacoco.version}</version>
-  <configuration>
-    <destFile>${java.io.tmpdir}/blg475e-${project.artifactId}-jacoco.exec</destFile>
-    <dataFile>${java.io.tmpdir}/blg475e-${project.artifactId}-jacoco.exec</dataFile>
-  </configuration>
-  <!-- prepare-agent + report executions -->
-</plugin>
-\end{lstlisting}
+% =====================================================================
+\section{Phase 2 Technical Challenges}\label{sec:phase2-challenges}
+% =====================================================================
 
-The prompt-comparison harness was likewise updated to use a relative \texttt{jacoco.exec} next to the per-task work directory, and the Maven local repository was pinned to a workspace-local \texttt{.m2} folder via \texttt{-Dmaven.repo.local}, which is in turn excluded from version control.
+\subsection{Unicode Workspace Path}
+The Maven \texttt{jacoco-maven-plugin} originally placed
+\texttt{jacoco.exec} under a path containing the Turkish character
+\.{I} (\verb|D:\Indirilenler\...|) which produced corrupted byte streams.
+The \texttt{destFile} and \texttt{dataFile} are now redirected to the
+system tmpdir, the prompt-comparison harness uses a relative
+\texttt{jacoco.exec}, and the Maven local repository is pinned to a
+workspace-local \texttt{.m2}.
 
 \subsection{JaCoCo / PITest Coexistence}
-
-PITest also instruments the bytecode, and when both JaCoCo's \texttt{prepare-agent} and PITest are active in the same Maven invocation the two tools sometimes produce conflicting class definitions. Running the mutation profile on a clean machine surfaced this as a classpath error.
-
-\subsubsection{Solution}
-
-The Phase~2 mutation profile sets \texttt{<jacoco.skip>true</jacoco.skip>} so that JaCoCo's \texttt{prepare-agent} does not fire when the user explicitly asks for a mutation run via \texttt{mvn -P mutation test}. The default \texttt{mvn clean verify} pipeline keeps JaCoCo enabled, which is what the GitHub Actions workflow uses for branch coverage.
+PITest also instruments the bytecode; running both PITest and JaCoCo's
+\texttt{prepare-agent} in the same Maven invocation produced a classpath
+clash. The \texttt{mutation} profile now sets \texttt{<jacoco.skip>true</jacoco.skip>}
+so JaCoCo's agent does not fire when the user asks for a mutation run via
+\texttt{mvn -P mutation test}. The default \texttt{mvn clean verify} keeps
+JaCoCo enabled.
 
 \subsection{Original Prompt Failure Modes}
 
-The original combined prompt produced four distinct defect classes per model on the JUnit suite. Table~\ref{tab:failure-modes} lists them; every defect class is an integration-level contract that is missing from the original prompt and that would have been invisible at the single-function Phase~1 level.
+Table~\ref{tab:failure-modes} lists the four distinct defect classes per
+model that the original combined prompt produces on the JUnit suite.
+Every defect class is an integration-level contract that is missing from
+the original prompt and that would have been invisible at the
+single-function Phase~1 level.
 
-\begin{table}[H]
-\centering
+\begin{table}[!t]
+\renewcommand{\arraystretch}{1.15}
 \caption{Original combined prompt: defect classes observed on the JUnit suite.}
 \label{tab:failure-modes}
-\begin{tabular}{p{0.16\linewidth}p{0.78\linewidth}}
+\centering
+\footnotesize
+\begin{tabular}{@{}lp{6.0cm}@{}}
 \toprule
 \textbf{Model} & \textbf{Defect classes hit by the JUnit suite} \\
 \midrule
-Qwen     & zero-based / non-unique line numbers; raw space-splitting destroys \texttt{can't} / \texttt{co-op}; case-sensitive substring search; missing canonicalisation for uppercase or alphanumeric queries; missing helper extraction for the final hardening checks. \\
-DeepSeek & punctuation stripping changes token identity; substring matching inside longer words; over-counting in case-insensitive search; weak handling of punctuation around trimmed queries; alphanumeric over-counting; missing helper extraction for the final hardening checks. \\
+Qwen     & zero-based / non-unique line numbers; raw space-splitting destroys \texttt{can't}/\texttt{co-op}; case-sensitive substring search; missing canonicalisation for uppercase or alphanumeric queries; missing helper extraction. \\
+DeepSeek & punctuation stripping changes token identity; substring matching inside longer words; over-counting in case-insensitive search; weak handling of punctuation around trimmed queries; alphanumeric over-counting; missing helper extraction. \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-% =============================================================
-% PHASE 2 RESULTS
-% =============================================================
-\section{PHASE 2 RESULTS}
-\label{sec:phase2-results}
+% =====================================================================
+\section{Phase 2 Results}\label{sec:phase2-results}
+% =====================================================================
 
 \subsection{Prompt-Comparison Outcomes}
 
-Table~\ref{tab:phase2-cmp} aggregates the raw CSV in \texttt{Phase2/results/prompt\_comparison\_results.csv}. The original prompt lets both models compile but produces significant JUnit failures; the edited prompt removes all public-integration failures but still leaves one helper-hardening regression in each model; the manually selected final implementation closes that gap and reaches full coverage.
+Table~\ref{tab:phase2-cmp} aggregates the raw CSV in
+\texttt{Phase2/results/prompt\_comparison\_results.csv}. The original
+prompt lets both models compile but produces significant JUnit failures;
+the edited prompt removes all public-integration failures but still leaves
+one helper-hardening regression in each model; the manually selected
+final implementation closes that gap.
 
-\begin{table}[H]
-\centering
-\caption{Prompt-comparison results. Coverage is reported for the BookScan class only.}
+\begin{table}[!t]
+\renewcommand{\arraystretch}{1.15}
+\caption{Prompt-comparison results (BookScan class only).}
 \label{tab:phase2-cmp}
-\begin{tabular}{llcr}
+\centering
+\footnotesize
+\begin{tabular}{@{}llcc@{}}
 \toprule
-\textbf{Strategy} & \textbf{Model} & \textbf{Tests passed} & \textbf{Branch coverage} \\
+\textbf{Strategy} & \textbf{Model} & \textbf{Tests} & \textbf{Branch cov.} \\
 \midrule
 original-combined & Qwen     & 6 / 18  & n/a \\
 original-combined & DeepSeek & 8 / 18  & n/a \\
 edited-combined   & Qwen     & 17 / 18 & n/a \\
 edited-combined   & DeepSeek & 17 / 18 & n/a \\
-selected-final    & manual   & 18 / 18 & 72 / 72 = 100.00\,\% \\
+selected-final    & manual   & 18 / 18 & 72/72 = 100\,\% \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The headline finding is that the edited prompt removes all public-integration failures for both models, while switching between Qwen and DeepSeek inside a fixed prompt strategy moves the pass-rate by no more than two test cases. Once the integration contracts are explicit, prompt clarity does more work than model selection.
+The headline finding is that the edited prompt removes all
+public-integration failures for both models, while switching between
+Qwen and DeepSeek inside a fixed prompt strategy moves the pass rate by
+no more than two test cases. \emph{Once the integration contracts are
+explicit, prompt clarity does more work than model selection.}
 
 \subsection{Final BookScan Coverage}
 
-The Maven JaCoCo CSV at \texttt{Phase2/target/site/jacoco/jacoco.csv} reports for the manually selected final implementation:
-\begin{itemize}
-    \item branch coverage $72 / 72 = 100.00\,\%$,
-    \item line coverage $110 / 110 = 100.00\,\%$,
-    \item cyclomatic-complexity-covered $51 / 51 = 100.00\,\%$.
-\end{itemize}
-No JaCoCo branch or line misses remain in the final Maven report.
+The Maven JaCoCo CSV at \texttt{Phase2/target/site/jacoco/jacoco.csv}
+reports for the manually selected final implementation: branch coverage
+$72/72=100.00\,\%$, line coverage $110/110=100.00\,\%$, and
+cyclomatic-complexity-covered $51/51=100.00\,\%$. No JaCoCo branch or
+line misses remain in the final Maven report.
 
 \subsection{PITest Mutation Score}
 
-Running the opt-in Maven profile \texttt{mutation} (\texttt{mvn -P mutation test}) under the ASCII-safe configuration described in Section~\ref{sec:phase2-challenges} yields:
-\begin{itemize}
-    \item total mutants generated by PITest: \textbf{93},
-    \item killed: \textbf{79},
-    \item survived: \textbf{14},
-    \item mutation score: $79 / 93 = \textbf{84.95\,\%}$,
-    \item mutated-line coverage: $110 / 110 = 100.00\,\%$.
-\end{itemize}
+Running the opt-in Maven profile \texttt{mutation}
+(\texttt{mvn -P mutation test}) under the ASCII-safe configuration
+described in Section~\ref{sec:phase2-challenges} yields:
+total mutants generated by PITest: $93$;
+killed: $79$; survived: $14$; mutation score: $79/93=84.95\,\%$;
+mutated-line coverage: $110/110=100.00\,\%$. The 14 surviving mutants are
+concentrated on equivalent or defensive helper branches; the per-method
+breakdown is given in Table~\ref{tab:pit-survivors} and the full per-line
+inventory in \texttt{Phase2/docs/analysis/mutation\_assessment.md}.
 
-The 14 surviving mutants are concentrated on equivalent or defensive helper branches: 6 in \texttt{canonicalizeWord} (equivalent normalisation paths), 3 in \texttt{scanByWordLength} (defensive blank-input guard), 2 in \texttt{howManyTimes} (defensive behaviour), 1 each in \texttt{scanWord}, \texttt{tokenizeWords} and \texttt{flipCase}. The full breakdown lives in \texttt{Phase2/docs/analysis/mutation\_assessment.md}.
+\begin{table}[!t]
+\renewcommand{\arraystretch}{1.15}
+\caption{PITest survivors by location and mutation family.}
+\label{tab:pit-survivors}
+\centering
+\footnotesize
+\begin{tabular}{@{}lcl@{}}
+\toprule
+\textbf{Method} & \textbf{Survivors} & \textbf{Reason class} \\
+\midrule
+\texttt{canonicalizeWord}    & 6 & equivalent normalisation paths \\
+\texttt{scanByWordLength}    & 3 & defensive blank-input guard \\
+\texttt{howManyTimes}        & 2 & defensive empty / oversized needle \\
+\texttt{scanWord}            & 1 & defensive null query handling \\
+\texttt{tokenizeWords}       & 1 & equivalent boundary on regex matcher \\
+\texttt{flipCase}            & 1 & equivalent on non-letter character \\
+\midrule
+\textbf{total}               & \textbf{14} & 79 / 93 = 84.95\,\% killed \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Every surviving mutant has been classified as either \emph{equivalent}
+(no observable behavioural change for any input the public API accepts)
+or \emph{defensive} (covers a private guard whose only purpose is to
+keep the public method safe against unreachable inputs). No surviving
+mutant is in the public hot path of \texttt{scanByWordLength} or
+\texttt{scanWord}; every public-behaviour mutant is killed.
 
 \subsection{Helper-Hardening Regression Closure}
 
-Two of the six regression tests are specifically designed to close the last private-helper coverage gap that both edited-prompt variants leave open:
-\begin{itemize}
-    \item \texttt{tokenizeWordsReturnsFreshMutableEmptyListForNullInput} hardens the null-input behaviour of the tokenisation helper so that callers can mutate the returned list without affecting future calls.
-    \item \texttt{privateCanonicalizeWordRejectsBlankTokens} pins down the blank-token normalisation rule that both edited-prompt variants miss; this is the test that distinguishes the manually selected final implementation from the two edited-prompt variants.
-\end{itemize}
+Two of the six regression tests are specifically designed to close the
+last private-helper coverage gap that both edited-prompt variants leave
+open: \texttt{tokenizeWordsReturnsFreshMutableEmptyListForNullInput}
+hardens the null-input behaviour of the tokenisation helper, and
+\texttt{privateCanonicalizeWordRejectsBlankTokens} pins down the
+blank-token normalisation rule that distinguishes the manually selected
+final implementation from the two edited-prompt variants.
 
-% =============================================================
-% DISCUSSION
-% =============================================================
-\section{DISCUSSION}
-\label{sec:discussion}
+% =====================================================================
+\section{Discussion}\label{sec:discuss}
+% =====================================================================
 
 \subsection{Phase 1 versus Phase 2 Lessons}
+The two phases tell a consistent story. In Phase~1, where each prompt is
+a single function, the dataset's reference test plus the
+equivalence-class extension already cover most of the meaningful
+behaviour, and the choice of model determines mostly defensive coding
+style. In Phase~2, where the prompt has to specify an integrated class,
+the dataset reference test no longer exists, the integration contracts
+are not stated by the prompt by default, and the choice of model is
+dwarfed by the choice of prompt: both models reach the same $\sim\!\!94\,\%$
+pass rate under the edited prompt, even though under the original prompt
+they sat at $\sim\!\!33$--$\!44\,\%$.
 
-The two phases tell a consistent story. In Phase~1, where each prompt is a single function, the dataset's reference test plus the equivalence-class extension already cover most of the meaningful behaviour, and the choice of model determines mostly defensive coding style. In Phase~2, where the prompt has to specify an integrated class, the dataset reference test no longer exists, the integration contracts are not stated by the prompt by default, and the choice of model is dwarfed by the choice of prompt: both models reach the same $\sim\!\!94\,\%$ pass rate under the edited prompt, even though under the original prompt they sat at $\sim\!\!33\!-\!\!44\,\%$.
-
-\subsection{Prompt Engineering Outweighs Model Selection (at the Integration Level)}
-
-The pattern that the data forces on us in Phase~2 is precise. Going from the original prompt to the edited prompt closes 11 / 18 (Qwen) and 9 / 18 (DeepSeek) tests; switching from one model to the other inside a fixed prompt closes only 0--2 tests. This is consistent with the recent literature on LLM unit-test generation \cite{metatestgen,yang2024,panta2024,lit_review}, where explicit specifications repeatedly outperform model upsizing.
+\subsection{Prompt Engineering Outweighs Model Selection at the Integration Level}
+Going from the original prompt to the edited prompt closes 11/18 (Qwen)
+and 9/18 (DeepSeek) tests; switching from one model to the other inside a
+fixed prompt closes only 0--2 tests. This is consistent with the recent
+literature on LLM unit-test generation~\cite{metatestgen,yang2024,
+panta2024,lit_review}, where explicit specifications repeatedly
+outperform model upsizing.
 
 \subsection{Hand-Crafted versus Automated Mutation Testing}
+Phase~1 forbids automated mutation tooling, so the hand-crafted
+\texttt{improvedMutation\ldots} guards are an executable specification
+for the operator-level mutations the suite is supposed to catch.
+Phase~2 uses PITest in addition, which generates mutants automatically
+and removes the human-curation bias from the mutation set. The two
+perspectives are complementary: PITest discovers mutants we did not
+think of (and produces a measurable $84.95\,\%$ kill rate that we now
+have to defend), while the hand-crafted guards force us to articulate
+\emph{why} a particular mutation should be killed.
 
-Phase~1 forbids automated mutation tooling, so the hand-crafted \texttt{improvedMutation\ldots} guards are an executable spec for the operator-level mutations the suite is supposed to catch. Phase~2 uses PITest in addition, which generates mutants automatically and removes the human-curation bias from the mutation set. The two perspectives are complementary: PITest discovers mutants we did not think of (and produces an 84.95\,\% kill rate that we now have to defend), while the hand-crafted guards force us to articulate \emph{why} a particular mutation should be killed, which makes the suite easier to maintain.
+\subsection{Defect-Class to Failing-Test Mapping}
+
+The data behind Section~\ref{sec:phase2-results} is more granular than
+the headline numbers suggest. The original-prompt Qwen variant, for
+example, hits 12 distinct failing tests, but those failures are caused
+by only four underlying integration contracts that are missing from the
+prompt: zero-based versus one-based line numbers (3 failing tests),
+raw-space tokenisation that destroys \texttt{can't}/\texttt{co-op}
+(3 tests), case-sensitive substring search (2 tests), and missing
+canonicalisation for uppercase or alphanumeric queries (4 tests). The
+edited combined prompt fixes all four contracts at once, which is why
+its pass rate jumps from $6/18$ to $17/18$ rather than improving in a
+linear ``one test per added clarification'' fashion. The remaining
+$1/18$ gap is the helper-hardening regression
+(\texttt{privateCanonicalizeWordRejectsBlankTokens}) that neither
+edited-prompt variant produces a private \texttt{canonicalizeWord}
+helper to satisfy. The same shape holds for DeepSeek with slightly
+different per-class counts. We read this as evidence that the
+\emph{edited prompt is not just better in headline pass rate, it
+collapses several distinct defect classes into a single specification
+that the LLM can act on}.
+
+\subsection{Continuous Integration}
+
+The Phase~2 GitHub Actions workflow (\texttt{phase2-ci.yml}) re-runs the
+entire build on every push: it sets up JDK~21, downloads JUnit~6 and
+JaCoCo~0.8.12, runs \texttt{mvn clean verify} (Surefire 18-test suite +
+JaCoCo report), executes the prompt-comparison harness, summarises the
+prompt-comparison CSV, asserts that the \texttt{selected-final} row stays
+green, runs the \texttt{mutation} profile as a best-effort step, and
+uploads everything under \texttt{Phase2/results}, \texttt{target/site/jacoco}
+and \texttt{target/pit-reports} as build artefacts. The \texttt{mutation}
+profile is opt-in (continue-on-error) so that a transient PITest
+mismatch does not gate the rest of the pipeline; the mutation score
+reported in this paper was reproduced under the ASCII-safe local
+configuration.
 
 \subsection{Threats to Validity}
-
-\begin{itemize}
-    \item \textbf{Internal validity}: local-model non-determinism. Mitigated by pinning the sampling seed and the model checkpoints, and by re-running the entire pipeline under GitHub Actions.
-    \item \textbf{External validity}: HumanEval-X is a corpus of single-function algorithmic puzzles, and \texttt{BookScan} is a single composite class rather than a full Java system. The headline numbers should therefore be read as ``what does this LLM look like on bite-sized Java tasks and on one composite class derived from them'' rather than ``what would this LLM look like in production''.
-    \item \textbf{Construct validity}: branch coverage and mutation kill are proxies for test quality. We use both, and we report PITest as the automated counterpart to the hand-crafted Phase~1 guards.
-\end{itemize}
+\emph{Internal validity} is limited by local-model non-determinism;
+mitigated by pinning the sampling seed, the model checkpoints, and by
+re-running the entire pipeline under GitHub Actions on every push.
+\emph{External validity} is limited because Phase~1 evaluates a
+30-prompt subset of single-function puzzles and Phase~2 evaluates a
+single composite class; the headline numbers should be read as a
+controlled study, not as production benchmarks. \emph{Construct
+validity} depends on branch coverage and mutation kill being faithful
+proxies for test quality; we use both, and report PITest as the
+automated counterpart to the hand-crafted Phase~1 guards. We also offset
+the human-curation bias of the Phase~1 mutation set with an
+independently-generated PITest mutation set in Phase~2, on a class
+(\texttt{BookScan}) that was not part of the original Phase~1 corpus.
 
 \subsection{Future Work}
+Two extensions would tighten the project further. First, sweeping the
+sampling seed across both models and reporting confidence intervals on
+the prompt-comparison delta would distinguish ``Qwen and DeepSeek are
+statistically different on the original prompt'' from ``the difference
+is within sampling noise''. Second, replacing the manually selected
+final implementation with an LLM-driven repair loop targeted at the
+surviving PITest mutants would close the loop that Phase~2 deliberately
+leaves open: today the final implementation is hand-curated, and a
+fully agentic version of the same workflow could re-issue the failing
+test as a refactoring prompt and converge on the same hardened helpers
+without human intervention.
 
-Two extensions would tighten the project further. First, sweeping the sampling seed across both models and reporting confidence intervals on the prompt-comparison delta would distinguish ``Qwen and DeepSeek are statistically different on the original prompt'' from ``the difference is within sampling noise''. Second, replacing the manually selected final implementation with an LLM-driven repair loop targeted at the surviving PITest mutants would close the loop that Phase~2 deliberately leaves open: today the final implementation is hand-curated, and a fully agentic version of the same workflow could re-issue the failing test as a refactoring prompt.
+% =====================================================================
+\section{Literature Review}\label{sec:lit}
+% =====================================================================
 
-% =============================================================
-% LITERATURE REVIEW
-% =============================================================
-\section{LITERATURE REVIEW}
-\label{sec:literature}
+The literature set was selected to cover five complementary perspectives
+on LLM-driven test generation, all published within the last three years
+(2023--2026); the selection was performed by hand using Google Scholar
+and IEEE Xplore.
 
-The literature set was selected to cover five complementary perspectives on LLM-driven test generation, all published within the last three years (2023--2026): an early end-to-end tool paper, an industrial deployment study, a broad empirical evaluation of open-source LLMs, a hybrid coverage-driven test-generation technique and a recent systematic review. The selection was performed by hand using Google Scholar and IEEE Xplore; no LLM was used to surface or summarise the papers.
+\textbf{ChatUniTest~\cite{chatunitest}} is an early reference for LLM-based
+unit-test generation. Its main contribution is wrapping the model inside
+a generation--validation--repair loop. This motivates our normalisation
+plus repair loop in Phase~1 and the prompt-comparison harness in
+Phase~2.
 
-\textbf{ChatUniTest (Xie et al., 2023)} \cite{chatunitest} is an early reference point for LLM-based unit-test generation. Its main contribution is wrapping the model inside a generation-validation-repair loop. The paper argues that raw generations are often incomplete or syntactically broken, so validation and repair are necessary rather than optional. This motivates our normalisation plus repair loop in Phase~1: we did not accept generations that looked plausible, we accepted them only after they compiled and passed the dataset base test, and we extended the same instinct to the prompt-comparison harness in Phase~2.
+\textbf{Meta TestGen-LLM~\cite{metatestgen}} accepts model output only
+after it passes build, execution, flakiness and coverage-gain filters.
+Our pipeline uses the same instinct.
 
-\textbf{Automated Unit Test Improvement using LLMs at Meta (Alshahwan et al., 2024)} \cite{metatestgen} shifts the problem from generating tests from scratch to improving existing human-written tests. Its most important methodological lesson is that model output is accepted only after it passes build, execution, flakiness and coverage-gain filters. Our pipeline uses the same instinct: a generation is accepted only if it compiles, passes the dataset base test (Phase~1) or the integration suite (Phase~2) and produces measurable coverage under JaCoCo.
+\textbf{Yang \emph{et al.}~\cite{yang2024}} report that prompt structure
+materially affects compilation and coverage outcomes, and that
+open-source models can be competitive but still need additional
+engineering. Our Phase~2 prompt-comparison data mirrors this exactly:
+under the original prompt both models sit between 33\,\% and 45\,\%
+pass rate; under the edited prompt both reach 94\,\%.
 
-\textbf{On the Evaluation of LLMs in Unit Test Generation (Yang et al., 2024)} \cite{yang2024} is a direct empirical comparison of multiple open-source LLMs on Java unit-test generation, with an explicit prompt-structure axis. Two findings are relevant for our work: prompt structure materially affects compilation and coverage outcomes, and open-source models can be competitive but still need additional engineering. Our own measured results mirror this exactly: under the original combined prompt both Qwen and DeepSeek sit between 33\,\% and 45\,\% pass-rate; under the edited combined prompt both reach 94\,\%.
+\textbf{Panta~\cite{panta2024}} combines LLM generation with static
+control-flow analysis and dynamic coverage feedback. Our improved-test
+step in Phase~1 and our PITest profile in Phase~2 are simpler instances
+of the same philosophy.
 
-\textbf{LLM Test Generation via Iterative Hybrid Program Analysis / Panta (Gu et al., 2025; accepted to ICSE 2026)} \cite{panta2024} pushes beyond prompt tuning by combining LLM generation with static control-flow analysis and dynamic coverage feedback. The paper targets the specific weakness that also appears in our project: coverage gaps on branch-heavy code. Our improved-test step in Phase~1 and our PITest profile in Phase~2 are simpler instances of the same philosophy.
+\textbf{Tasarsu, Tokmak and Catal~\cite{lit_review}} synthesise 38
+peer-reviewed studies from 2020--2025. Their findings confirm patterns
+visible in our project: coverage remains the dominant evaluation metric;
+post-processing and integration logic are common; maintainability and
+robustness are still weaker than simple coverage reporting. We
+complement coverage with hand-crafted mutation guards in Phase~1 and
+with automated PITest in Phase~2 specifically because of this
+observation.
 
-\textbf{Test case generation using LLMs: a Systematic Literature Review (Tasarsu, Tokmak and Catal, 2026)} \cite{lit_review} synthesises 38 peer-reviewed studies from 2020--2025. Its findings confirm patterns that are visible in our project: coverage remains the dominant evaluation metric, post-processing and integration logic are common, and maintainability / robustness are still weaker than simple coverage reporting. We therefore complement coverage with hand-crafted mutation guards in Phase~1 and with automated PITest in Phase~2, and we report all three numbers together.
+% =====================================================================
+\section{Conclusion}\label{sec:conclusion}
+% =====================================================================
 
-% =============================================================
-% CONCLUSION
-% =============================================================
-\section{CONCLUSION}
-\label{sec:conclusion}
+The combined Phase~1 + Phase~2 submission shows that two small open-weight
+code-LLMs can drive a reproducible Java evaluation pipeline when they are
+surrounded by normalization, repair, coverage and mutation-based
+guardrails. On 30 HumanEval-X Java prompts both models reach $30/30$
+base-test success after at most one logged refactoring round; the
+improved suites lift aggregate branch coverage from $96.09\,\%$ /
+$98.46\,\%$ to $98.44\,\%$ / $100.00\,\%$; every (task, model) pair
+carries at least one hand-crafted mutation guard. Phase~2 lifts the
+helpers behind Java/18, Java/23 and Java/27 into a composite
+\texttt{BookScan} class and runs the same two models against an original
+combined prompt, an edited combined prompt and a manually selected final
+implementation under a Maven build with Surefire, JaCoCo and PITest.
+The original prompt produces $6/18$ (Qwen) and $8/18$ (DeepSeek) test
+passes; the edited prompt lifts both models to $17/18$; the manually
+selected final implementation passes $18/18$, reaches $100\,\%$ branch
+and $100\,\%$ line coverage, and records an $84.95\,\%$ PITest mutation
+score. The most important Phase~2 lesson is that, at the integration
+level, prompt clarity does more work than model selection. The
+combination of branch coverage, hand-crafted mutation guards and
+PITest mutation analysis gives three independent angles on test quality.
 
-The combined Phase~1 + Phase~2 submission shows that two small open-weight code-LLMs (\texttt{Qwen2.5-Coder-1.5B-Instruct} and \texttt{DeepSeek-Coder-1.3B-Instruct}) can drive a reproducible Java evaluation pipeline when they are surrounded by normalisation, repair, coverage and mutation-based guardrails. On 30 HumanEval-X Java prompts both models reach 30 / 30 base-test success after at most one logged refactoring round; the improved suites lift aggregate branch coverage from 96.09\,\% / 98.46\,\% to 98.44\,\% / 100.00\,\%; every (task, model) pair carries at least one hand-crafted mutation guard.
+% =====================================================================
+\appendices
+\section{Selected HumanEval-X Java Prompts}\label{app:prompts}
+% =====================================================================
 
-Phase~2 lifts the helpers behind Java/18, Java/23 and Java/27 into a composite \texttt{BookScan} class and runs the same two models against an original combined prompt, an edited combined prompt and a manually selected final implementation under a Maven build with Surefire, JaCoCo and PITest. The original prompt produces 6 / 18 (Qwen) and 8 / 18 (DeepSeek) test passes; the edited prompt lifts both models to 17 / 18; the manually selected final implementation passes 18 / 18, reaches 100\,\% branch and 100\,\% line coverage and records an 84.95\,\% PITest mutation score. The most important Phase~2 lesson is that, at the integration level, prompt clarity does more work than model selection: explicit integration contracts close 9--11 tests, while switching between the two models closes at most two.
-
-The combination of branch coverage (objective but blunt), hand-crafted mutation guards (targeted but human-curated) and PITest mutation analysis (automated but mechanical) gives three independent angles on test quality, and we report all three side by side because no single metric is sufficient on its own. The repository, including all interaction logs, scripts, CI workflows and raw artefacts, is publicly available under the URL listed in the acknowledgement so that every figure in this report can be reproduced from a clean checkout.
-
-% =============================================================
-% ACKNOWLEDGEMENT
-% =============================================================
-\section*{ACKNOWLEDGEMENT}
-\addcontentsline{toc}{section}{ACKNOWLEDGEMENT}
-
-The source repository, including the prompt-comparison harness, the Maven build, the PITest profile, the GitHub Actions workflow and the raw JaCoCo artefacts, is available at \url{https://github.com/mustafaerenkoc44/BLG-475E-Term-Project}. The two-person group split the project workload along two complementary tracks; both authors contributed equally and continuously cross-reviewed each other's deliverables before they were merged. The same split applied to both Phase~1 and Phase~2.
-
-\textbf{Mustafa Eren KO\c{C}} (150190805) led the \emph{engineering and automation} track: the repository scaffolding, the GitHub Actions CI workflows, the PowerShell + Python~3.11 driver layer, the local \texttt{llama.cpp} execution pipeline, the dataset-to-JUnit adapters, the JaCoCo automation, the Maven and PITest configuration, the \texttt{BookScan} reference implementation and helper hardening, the prompt-comparison harness and the Git commit discipline.
-
-\textbf{Onat Bar{\i}\c{s} ERCAN} (150210075) led the \emph{quality and analysis} track: the 30-prompt selection rationale and easy / moderate / hard categorisation, the per-task equivalence-partitioning and boundary-value documents, the test-smell audit, the hand-crafted mutation-operator catalogue and the \texttt{improvedMutation\ldots} JUnit method authoring, the \texttt{BookScan} black-box assessment, the original-versus-edited prompt-strategy design, the failure-mode classification, the five-paper literature review and the term-project manuscript.
-
-% =============================================================
-% REFERENCES
-% =============================================================
-\begin{thebibliography}{9}
-
-\bibitem{humaneval}
-M. Chen, J. Tworek, H. Jun, et al.
-\newblock Evaluating Large Language Models Trained on Code.
-\newblock \emph{arXiv preprint arXiv:2107.03374}, 2021.
-\newblock URL: \url{https://arxiv.org/abs/2107.03374}.
-
-\bibitem{chatunitest}
-Z. Xie, Y. Chen, C. Zhi, S. Deng, and J. Yin.
-\newblock {ChatUniTest}: a {ChatGPT}-based automated unit test generation tool.
-\newblock \emph{CoRR}, abs/2305.04764, 2023.
-\newblock DOI: 10.48550/arXiv.2305.04764.
-
-\bibitem{metatestgen}
-N. Alshahwan, J. Chheda, A. Finogenova, B. Gokkaya, M. Harman, I. Harper, A. Marginean, S. Sengupta, and E. Wang.
-\newblock Automated Unit Test Improvement using Large Language Models at Meta.
-\newblock In \emph{Companion Proceedings of the 32nd ACM International Conference on the Foundations of Software Engineering (FSE Companion)}, pp.\ 185--196, 2024.
-\newblock DOI: 10.1145/3663529.3663839.
-
-\bibitem{yang2024}
-L. Yang, C. Yang, S. Gao, W. Wang, B. Wang, Q. Zhu, X. Chu, J. Zhou, G. Liang, Q. Wang, and J. Chen.
-\newblock On the Evaluation of Large Language Models in Unit Test Generation.
-\newblock In \emph{Proceedings of the 39th IEEE/ACM International Conference on Automated Software Engineering (ASE)}, pp.\ 987--999, 2024.
-\newblock DOI: 10.1145/3691620.3695529.
-
-\bibitem{panta2024}
-S. Gu, N. Nashid, and A. Mesbah.
-\newblock {LLM} Test Generation via Iterative Hybrid Program Analysis.
-\newblock \emph{CoRR}, abs/2503.13580, 2025. Accepted to ICSE 2026.
-\newblock DOI: 10.48550/arXiv.2503.13580.
-
-\bibitem{lit_review}
-M. Tasarsu, A. V. Tokmak, and C. Catal.
-\newblock Test case generation using large language models: a systematic literature review.
-\newblock \emph{Cluster Computing}, 29(4), Springer, 2026.
-\newblock DOI: 10.1007/s10586-026-06021-z.
-
-\end{thebibliography}
-
-% =============================================================
-% APPENDIX
-% =============================================================
-\appendix
-\section{Selected HumanEval-X Java Prompts}
-\label{app:prompts}
-
-The 30 prompts selected for Phase~1, with their difficulty labels and Phase~2 dependency flag:
-
-\begin{table}[H]
-\centering
+\begin{table}[!ht]
+\renewcommand{\arraystretch}{1.05}
 \caption{Phase 1 selected prompts (full list).}
 \label{tab:prompts-full}
-\begin{tabular}{llll}
+\centering
+\footnotesize
+\begin{tabular}{@{}llll@{}}
 \toprule
-\textbf{Task} & \textbf{Method} & \textbf{Difficulty} & \textbf{Phase 2 dependency?} \\
+\textbf{Task} & \textbf{Method} & \textbf{Diff.} & \textbf{P2 dep?} \\
 \midrule
-Java/2  & truncateNumber       & easy     & no \\
-Java/3  & belowZero            & easy     & no \\
-Java/9  & rollingMax           & easy     & no \\
-Java/11 & stringXor            & easy     & no \\
-Java/13 & greatestCommonDivisor& easy     & no \\
-Java/14 & allPrefixes          & easy     & no \\
-Java/22 & filterIntegers       & easy     & no \\
-Java/23 & strlen               & easy     & \textbf{yes} \\
-Java/24 & largestDivisor       & easy     & no \\
-Java/27 & flipCase             & easy     & \textbf{yes} \\
+Java/2  & truncateNumber       & easy  & no \\
+Java/3  & belowZero            & easy  & no \\
+Java/9  & rollingMax           & easy  & no \\
+Java/11 & stringXor            & easy  & no \\
+Java/13 & greatestCommonDivisor& easy  & no \\
+Java/14 & allPrefixes          & easy  & no \\
+Java/22 & filterIntegers       & easy  & no \\
+Java/23 & strlen               & easy  & \textbf{yes} \\
+Java/24 & largestDivisor       & easy  & no \\
+Java/27 & flipCase             & easy  & \textbf{yes} \\
 \midrule
 Java/0  & hasCloseElements     & moderate & no \\
 Java/4  & meanAbsoluteDeviation& moderate & no \\
@@ -701,87 +939,103 @@ Java/19 & sortNumbers          & moderate & no \\
 Java/25 & factorize            & moderate & no \\
 Java/29 & filterByPrefix       & moderate & no \\
 \midrule
-Java/1  & separateParenGroups  & hard     & no \\
-Java/6  & parseNestedParens    & hard     & no \\
-Java/7  & filterBySubstring    & hard     & no \\
-Java/10 & isPalindrome         & hard     & no \\
-Java/12 & longest              & hard     & no \\
-Java/17 & parseMusic           & hard     & no \\
-Java/20 & findClosestElements  & hard     & no \\
-Java/21 & rescaleToUnit        & hard     & no \\
-Java/31 & isPrime              & hard     & no \\
-Java/39 & primeFib             & hard     & no \\
+Java/1  & separateParenGroups  & hard & no \\
+Java/6  & parseNestedParens    & hard & no \\
+Java/7  & filterBySubstring    & hard & no \\
+Java/10 & isPalindrome         & hard & no \\
+Java/12 & longest              & hard & no \\
+Java/17 & parseMusic           & hard & no \\
+Java/20 & findClosestElements  & hard & no \\
+Java/21 & rescaleToUnit        & hard & no \\
+Java/31 & isPrime              & hard & no \\
+Java/39 & primeFib             & hard & no \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\section{Build and Reproduction Instructions}
-\label{app:build}
+\section{Reproduction Recipe}\label{app:repro}
 
-\subsection{Prerequisites}
-
-\begin{itemize}
-    \item JDK 21 (Temurin recommended)
-    \item Maven 3.9 or newer (for Phase 2 build)
-    \item Python 3.11 (for the Phase 1 + Phase 2 driver scripts)
-    \item PowerShell 7 (for the Phase 1 + Phase 2 PowerShell wrappers)
-    \item \texttt{llama.cpp} runtime with the GGUF model files placed under \texttt{.tools/models/}
-\end{itemize}
-
-\subsection{Phase 1 Reproduction}
-
-\begin{lstlisting}[language=bash, caption=Reproducing the Phase 1 coverage CSVs]
-# from the repository root
-python Phase1/scripts/python/run_base_coverage.py \
-  --tasks-root Phase1/tasks \
-  --results   Phase1/results/base_coverage_results.csv \
-  --java      $JAVA_HOME/bin/java \
-  --javac     $JAVA_HOME/bin/javac \
-  --junit-console .tools/junit-platform-console-standalone-6.0.3.jar \
-  --jacoco-agent  .tools/org.jacoco.agent-0.8.12-runtime.jar \
-  --jacoco-cli    .tools/org.jacoco.cli-0.8.12-nodeps.jar
-\end{lstlisting}
-
-A second invocation with \verb|--test-stage improved --test-file-name DatasetImprovedTest.java| produces the improved-coverage CSV. The same flow is automated in \texttt{.github/workflows/phase1-ci.yml}.
-
-\subsection{Phase 2 Reproduction}
-
-\begin{lstlisting}[language=bash, caption=Reproducing the Phase 2 BookScan build and PITest report]
+\begin{lstlisting}[language=bash, caption=Reproducing the Phase 2 BookScan build and PITest report.]
 # from Phase2/
 mvn -Dmaven.repo.local="$PWD/.m2" clean verify
-mvn -Dmaven.repo.local="$PWD/.m2" -P mutation -DskipTests=false test
+mvn -Dmaven.repo.local="$PWD/.m2" \
+    -P mutation -DskipTests=false test
 \end{lstlisting}
 
-The first command runs the 18-test Surefire suite and writes the JaCoCo report to \texttt{target/site/jacoco/}. The second command runs PITest and writes the mutation report to \texttt{target/pit-reports/}. The same flow is automated in \texttt{.github/workflows/phase2-ci.yml}.
+The first command runs the 18-test Surefire suite and writes the JaCoCo
+report to \texttt{target/site/jacoco/}. The second command runs PITest
+and writes the mutation report to \texttt{target/pit-reports/}. The same
+flow is automated in \texttt{.github/workflows/phase2-ci.yml}.
 
-\subsection{Repository Layout}
+% =====================================================================
+\section*{Acknowledgment}
+% =====================================================================
 
-\begin{verbatim}
-BLG_475E_Term_Project/
-|- Phase1/
-|  |- data/selected_prompts.csv              # 30 prompts + difficulty
-|  |- tasks/Java_<NNN>_<name>/               # per-task analysis
-|  |  |- analysis/equivalence_classes.md     # black-box analysis
-|  |  |- generated-code/<model>/Solution.java
-|  |  |- generated-tests/base/<model>/DatasetBaseTest.java
-|  |  '- generated-tests/improved/<model>/DatasetImprovedTest.java
-|  |- logs/<model>/Java_<N>_<step>.md        # full prompt + response logs
-|  |- results/base_coverage_results.csv      # JaCoCo base CSV
-|  |- results/improved_coverage_results.csv  # JaCoCo improved CSV
-|  '- docs/report/ieee/phase1_report.tex     # Phase 1 standalone report
-|- Phase2/
-|  |- src/main/java/BookScan.java            # final BookScan implementation
-|  |- src/test/java/BookScanIntegrationTest.java
-|  |- src/test/java/BookScanRegressionTest.java
-|  |- pom.xml                                # Maven + JaCoCo + PITest
-|  |- scripts/python/run_phase2_prompt_comparison.py
-|  |- results/prompt_comparison_results.csv  # 5-row outcome CSV
-|  |- target/site/jacoco/jacoco.csv          # Maven JaCoCo report
-|  |- target/pit-reports/mutations.csv       # Maven PITest report
-|  '- docs/report/ieee/phase2_report.tex     # this report
-|- .github/workflows/phase1-ci.yml
-|- .github/workflows/phase2-ci.yml
-'- reports/                                  # polished PDF copies
-\end{verbatim}
+The two-person group split the project workload along two complementary
+tracks; both authors contributed equally and continuously cross-reviewed
+each other's deliverables. The same split applied to both phases.
+\textbf{Mustafa Eren Ko\c{c}} (150190805) led the \emph{engineering and
+automation} track: repository scaffolding, GitHub Actions CI workflows,
+the PowerShell + Python~3.11 driver layer, the local \texttt{llama.cpp}
+execution pipeline, dataset-to-JUnit adapters, JaCoCo automation, the
+Maven and PITest configuration, the \texttt{BookScan} reference
+implementation and helper hardening, the prompt-comparison harness and
+the Git commit discipline. \textbf{Onat Bar{\i}\c{s} Ercan} (150210075)
+led the \emph{quality and analysis} track: 30-prompt selection rationale
+and difficulty categorisation, per-task equivalence-partitioning and
+boundary-value documents, test-smell audit, hand-crafted mutation-operator
+catalogue and \texttt{improvedMutation\ldots} JUnit method authoring, the
+\texttt{BookScan} black-box assessment, the original-versus-edited
+prompt-strategy design, failure-mode classification, the five-paper
+literature review, and the IEEE journal manuscript.
+
+% =====================================================================
+\begin{thebibliography}{9}
+% =====================================================================
+
+\bibitem{chatunitest}
+Z.~Xie, Y.~Chen, C.~Zhi, S.~Deng, and J.~Yin, ``ChatUniTest: a
+ChatGPT-based automated unit test generation tool,'' \emph{CoRR},
+abs/2305.04764, 2023, doi: 10.48550/arXiv.2305.04764.
+
+\bibitem{metatestgen}
+N.~Alshahwan \emph{et al.}, ``Automated unit test improvement using large
+language models at Meta,'' in \emph{Companion Proc.\ 32nd ACM Int.\ Conf.
+Found.\ Softw.\ Eng. (FSE Companion)}, 2024, pp.~185--196, doi:
+10.1145/3663529.3663839.
+
+\bibitem{yang2024}
+L.~Yang \emph{et al.}, ``On the evaluation of large language models in
+unit test generation,'' in \emph{Proc.\ 39th IEEE/ACM Int.\ Conf.\
+Automated Softw.\ Eng. (ASE)}, 2024, pp.~987--999, doi:
+10.1145/3691620.3695529.
+
+\bibitem{panta2024}
+S.~Gu, N.~Nashid, and A.~Mesbah, ``LLM test generation via iterative
+hybrid program analysis,'' \emph{CoRR}, abs/2503.13580, 2025. Accepted
+to ICSE 2026, doi: 10.48550/arXiv.2503.13580.
+
+\bibitem{lit_review}
+M.~Tasarsu, A.~V.\ Tokmak, and C.~Catal, ``Test case generation using
+large language models: a systematic literature review,'' \emph{Cluster
+Computing}, vol.~29, no.~4, Springer, 2026, doi:
+10.1007/s10586-026-06021-z.
+
+\bibitem{humaneval}
+M.~Chen \emph{et al.}, ``Evaluating large language models trained on
+code,'' \emph{arXiv preprint arXiv:2107.03374}, 2021.
+
+\bibitem{phase1report}
+M.~E.~Ko\c{c} and O.~B.~Ercan, ``Evaluating local code-LLMs on HumanEval-X
+Java prompts: semi-agentic generation, improved tests, and mutation-based
+guardrails,'' BLG 475E term project, Phase~1 report, Istanbul Technical
+University, Apr.\ 2026.
+
+\bibitem{jnose}
+J.~Aniche, B.~Alves, and J.~Fonseca, ``JNose: a JUnit test smell detection
+tool,'' \emph{Online}: \url{https://jnosetest.github.io/}, accessed
+2026-04-25.
+
+\end{thebibliography}
 
 \end{document}
