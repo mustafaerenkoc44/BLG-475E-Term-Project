@@ -311,13 +311,13 @@ implementations (Table~\ref{tab:divergence}); the improved suites carry
 different assertions for those tasks so the suite documents what each LLM
 actually did.
 
-\begin{table}[!t]
+\begin{table*}[!t]
 \renewcommand{\arraystretch}{1.15}
 \caption{Phase 1 tasks where Qwen and DeepSeek diverge on observable behaviour.}
 \label{tab:divergence}
 \centering
 \footnotesize
-\begin{tabular}{@{}lp{6.0cm}@{}}
+\begin{tabular}{@{}lp{14.0cm}@{}}
 \toprule
 \textbf{Task} & \textbf{Behavioural disagreement} \\
 \midrule
@@ -328,7 +328,7 @@ Java/20 & First tied pair (Qwen) vs accumulate-all-ties (DeepSeek). \\
 Java/21 & Returns a fresh list (Qwen) vs mutates input in place (DeepSeek). \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 
 % =====================================================================
 \section{Phase 2 Methodology}\label{sec:phase2-method}
@@ -483,13 +483,13 @@ five configurations. Tables~\ref{tab:int-tests} and \ref{tab:reg-tests}
 enumerate each test method together with the integration contract or
 helper semantic it exercises.
 
-\begin{table}[!t]
+\begin{table*}[!t]
 \renewcommand{\arraystretch}{1.15}
 \caption{Integration tests in BookScanIntegrationTest.}
 \label{tab:int-tests}
 \centering
 \footnotesize
-\begin{tabular}{@{}p{3.3cm}p{4.3cm}@{}}
+\begin{tabular}{@{}p{6.0cm}p{10.0cm}@{}}
 \toprule
 \textbf{Test method} & \textbf{Integration contract} \\
 \midrule
@@ -507,15 +507,15 @@ helper semantic it exercises.
 \texttt{scanWordNormalizesMixed}\-\texttt{CaseTokensWithoutFlipArtifacts} & mixed-case normalisation remains stable \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 
-\begin{table}[!t]
+\begin{table*}[!t]
 \renewcommand{\arraystretch}{1.15}
 \caption{Regression / hardening tests in BookScanRegressionTest.}
 \label{tab:reg-tests}
 \centering
 \footnotesize
-\begin{tabular}{@{}p{3.3cm}p{4.3cm}@{}}
+\begin{tabular}{@{}p{6.0cm}p{10.0cm}@{}}
 \toprule
 \textbf{Test method} & \textbf{Phase 1 helper under test} \\
 \midrule
@@ -527,7 +527,7 @@ helper semantic it exercises.
 \texttt{privateCanonicalizeWord}\-\texttt{RejectsBlankTokens} & helper hardening, blank-token collapse \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 
 The integration tests are assembled from a cross-product of three sources:
 the Phase~1 test-smell checklist, the Phase~2 black-box assessment under
@@ -624,13 +624,13 @@ Every defect class is an integration-level contract that is missing from
 the original prompt and that would have been invisible at the
 single-function Phase~1 level.
 
-\begin{table}[!t]
+\begin{table*}[!t]
 \renewcommand{\arraystretch}{1.15}
 \caption{Original combined prompt: defect classes observed on the JUnit suite.}
 \label{tab:failure-modes}
 \centering
 \footnotesize
-\begin{tabular}{@{}lp{6.0cm}@{}}
+\begin{tabular}{@{}lp{14.5cm}@{}}
 \toprule
 \textbf{Model} & \textbf{Defect classes hit by the JUnit suite} \\
 \midrule
@@ -638,7 +638,7 @@ Qwen     & zero-based / non-unique line numbers; raw space-splitting destroys \t
 DeepSeek & punctuation stripping changes token identity; substring matching inside longer words; over-counting in case-insensitive search; weak handling of punctuation around trimmed queries; alphanumeric over-counting; missing helper extraction. \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 
 % =====================================================================
 \section{Phase 2 Results}\label{sec:phase2-results}
@@ -704,15 +704,15 @@ inventory in \texttt{Phase2/docs/analysis/mutation\_assessment.md}.
 \label{tab:pit-survivors}
 \centering
 \footnotesize
-\begin{tabular}{@{}lcl@{}}
+\begin{tabular}{@{}lcp{4.0cm}@{}}
 \toprule
-\textbf{Method} & \textbf{Survivors} & \textbf{Reason class} \\
+\textbf{Method} & \textbf{Surv.} & \textbf{Reason class} \\
 \midrule
 \texttt{canonicalizeWord}    & 6 & equivalent normalisation paths \\
 \texttt{scanByWordLength}    & 3 & defensive blank-input guard \\
 \texttt{howManyTimes}        & 2 & defensive empty / oversized needle \\
 \texttt{scanWord}            & 1 & defensive null query handling \\
-\texttt{tokenizeWords}       & 1 & equivalent boundary on regex matcher \\
+\texttt{tokenizeWords}       & 1 & equivalent regex-matcher boundary \\
 \texttt{flipCase}            & 1 & equivalent on non-letter character \\
 \midrule
 \textbf{total}               & \textbf{14} & 79 / 93 = 84.95\,\% killed \\

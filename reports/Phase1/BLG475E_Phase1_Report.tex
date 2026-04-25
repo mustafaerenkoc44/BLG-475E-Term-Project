@@ -417,13 +417,13 @@ top of \texttt{Phase1/logs/README.md}.
 Seven of the 30 selected tasks initially failed their base test on at
 least one model. Table~\ref{tab:repair} summarises them.
 
-\begin{table}[!t]
+\begin{table*}[!t]
 \renewcommand{\arraystretch}{1.15}
 \caption{Tasks that required a refactoring round before reaching base-test success.}
 \label{tab:repair}
 \centering
 \footnotesize
-\begin{tabular}{@{}lp{6.0cm}@{}}
+\begin{tabular}{@{}lp{14.0cm}@{}}
 \toprule
 \textbf{Task} & \textbf{Initial defect} \\
 \midrule
@@ -441,7 +441,7 @@ Java/39 & \texttt{primeFib} timed out on the larger fixed input under the
         default settings. \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 
 % =====================================================================
 \section{Results}\label{sec:results}
@@ -515,13 +515,13 @@ Qwen and DeepSeek (Table~\ref{tab:divergence}). The improved suites carry
 different assertions for those tasks so that the suite documents what each
 LLM actually did.
 
-\begin{table}[!t]
+\begin{table*}[!t]
 \renewcommand{\arraystretch}{1.15}
 \caption{Tasks where Qwen and DeepSeek diverge on observable behaviour.}
 \label{tab:divergence}
 \centering
 \footnotesize
-\begin{tabular}{@{}lp{6.0cm}@{}}
+\begin{tabular}{@{}lp{14.0cm}@{}}
 \toprule
 \textbf{Task} & \textbf{Behavioural disagreement} \\
 \midrule
@@ -532,7 +532,7 @@ Java/20 & First tied pair (Qwen) vs accumulate-all-ties (DeepSeek). \\
 Java/21 & Returns a fresh list (Qwen) vs mutates input in place (DeepSeek). \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 
 % =====================================================================
 \section{Discussion}\label{sec:discuss}
