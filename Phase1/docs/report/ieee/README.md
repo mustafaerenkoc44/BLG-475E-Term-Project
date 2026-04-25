@@ -1,10 +1,12 @@
 # IEEE LaTeX report (Phase 1)
 
-This folder contains the IEEE conference-style submission for Phase 1.
+This folder contains the IEEE journal-style submission for Phase 1, prepared
+against the official IEEE journal LaTeX template referenced in the course
+brief (`\documentclass[journal]{IEEEtran}`).
 
 | File | Purpose |
 |---|---|
-| `phase1_report.tex` | Main document, written against the standard `IEEEtran.cls` class file |
+| `phase1_report.tex` | Main document, written against the standard `IEEEtran.cls` class file in journal mode |
 | `phase1_report.bib` | BibTeX database for the five literature-review references |
 
 ## How to build

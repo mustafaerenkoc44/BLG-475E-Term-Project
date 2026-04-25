@@ -1,8 +1,8 @@
-\documentclass[conference]{IEEEtran}
+\documentclass[journal]{IEEEtran}
 
 % ---------------------------------------------------------------------------
 %  BLG 475E Software Quality and Testing - Term Project
-%  Phase 1 Report (IEEE conference style)
+%  Phase 1 Report (IEEE journal style)
 %  Authors: Mustafa Eren KOC (150190805), Onat Baris ERCAN (150210075)
 % ---------------------------------------------------------------------------
 
@@ -361,9 +361,10 @@ in the companion document \texttt{Phase2/docs/report/ieee/phase2\_report.tex}:
     (\texttt{Java/18}, \texttt{Java/23}, \texttt{Java/27}) are lifted
     into a single \texttt{BookScan} class that combines substring
     counting, string-length filtering and case-insensitive word search.
-    The final \texttt{BookScan} passes $15/15$ integration and
-    regression tests and reaches $70/72 = 97.22\,\%$ branch coverage
-    under Maven-driven JaCoCo.
+    The final \texttt{BookScan} passes the full $18/18$ integration and
+    regression suite and reaches $72/72 = 100.00\,\%$ branch coverage,
+    $110/110 = 100.00\,\%$ line coverage and a $79/93 = 84.95\,\%$ PITest
+    mutation score under Maven-driven JaCoCo and PITest.
   \item \textbf{From a single prompt to prompt variation:} Phase~2
     compares an original combined prompt against an edited combined
     prompt for both models, with every run recorded to CSV and to raw

@@ -709,6 +709,19 @@ def copy_report_sources(spec: ReportSpec) -> dict[str, Path]:
     output_pdf = spec.output_dir / f"{spec.output_basename}.pdf"
     shutil.copy2(spec.latex_source, output_tex)
     shutil.copy2(spec.bib_source, output_bib)
+    # The source .tex references the bibliography by the source basename
+    # (e.g. \bibliography{phase1_report}). After we rename the .bib file to
+    # match the polished output basename, rewrite the same reference inside
+    # the copied .tex so a downstream `pdflatex + bibtex` build still resolves.
+    source_bib_stem = spec.bib_source.stem
+    output_bib_stem = output_bib.stem
+    if source_bib_stem != output_bib_stem:
+        original_tex = output_tex.read_text(encoding="utf-8")
+        rewritten_tex = original_tex.replace(
+            f"\\bibliography{{{source_bib_stem}}}",
+            f"\\bibliography{{{output_bib_stem}}}",
+        )
+        output_tex.write_text(rewritten_tex, encoding="utf-8")
     output_md.write_text(report_markdown_text(spec), encoding="utf-8")
     return {
         "tex": output_tex,
