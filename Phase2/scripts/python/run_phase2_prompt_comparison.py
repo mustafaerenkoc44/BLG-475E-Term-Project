@@ -90,8 +90,7 @@ def run_junit(
     work_dir: pathlib.Path,
     timeout_seconds: int,
 ) -> subprocess.CompletedProcess:
-    jacoco_exec = work_dir / "jacoco.exec"
-    agent_arg = f"-javaagent:{jacoco_agent}=destfile={jacoco_exec}"
+    agent_arg = f"-javaagent:{jacoco_agent}=destfile=jacoco.exec"
     return subprocess.run(
         [
             str(java_path),

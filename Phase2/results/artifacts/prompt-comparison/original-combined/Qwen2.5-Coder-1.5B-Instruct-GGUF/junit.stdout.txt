@@ -104,14 +104,14 @@ Failures (12):
     MethodSource [className = 'BookScanRegressionTest', methodName = 'tokenizeWordsReturnsFreshMutableEmptyListForNullInput', methodParameterTypes = '']
     => java.lang.NoSuchMethodException: BookScan.tokenizeWords(java.lang.String)
        java.base/java.lang.Class.getDeclaredMethod(Class.java:2850)
-       BookScanRegressionTest.tokenizeWordsReturnsFreshMutableEmptyListForNullInput(BookScanRegressionTest.java:52)
+       BookScanRegressionTest.tokenizeWordsReturnsFreshMutableEmptyListForNullInput(BookScanRegressionTest.java:51)
   JUnit Jupiter:BookScanRegressionTest:privateCanonicalizeWordRejectsBlankTokens()
     MethodSource [className = 'BookScanRegressionTest', methodName = 'privateCanonicalizeWordRejectsBlankTokens', methodParameterTypes = '']
     => java.lang.NoSuchMethodException: BookScan.canonicalizeWord(java.lang.String)
        java.base/java.lang.Class.getDeclaredMethod(Class.java:2850)
-       BookScanRegressionTest.privateCanonicalizeWordRejectsBlankTokens(BookScanRegressionTest.java:67)
+       BookScanRegressionTest.privateCanonicalizeWordRejectsBlankTokens(BookScanRegressionTest.java:66)
 
-Test run finished after 543 ms
+Test run finished after 529 ms
 [         5 containers found      ]
 [         0 containers skipped    ]
 [         5 containers started    ]

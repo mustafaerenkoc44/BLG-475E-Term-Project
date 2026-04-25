@@ -4,6 +4,8 @@
 __pycache__/
 *.pyc
 .tools/
+.m2/
+.maven-home/
 2526_BLG_475E_Project.pdf
 
 Phase1/target/

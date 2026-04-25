@@ -75,6 +75,10 @@ def run_java(java_path: pathlib.Path, work_dir: pathlib.Path) -> subprocess.Comp
     )
 
 
+def artifact_path(path: pathlib.Path, results_root: pathlib.Path) -> str:
+    return path.relative_to(results_root).as_posix()
+
+
 ARGS = None
 
 
@@ -96,6 +100,7 @@ def main() -> int:
     javac_path = pathlib.Path(args.javac)
     runs_root = results_path.parent / "artifacts" / "base-tests"
     runs_root.mkdir(parents=True, exist_ok=True)
+    results_root = results_path.parent
 
     results: list[RunResult] = []
 
@@ -122,6 +127,7 @@ def main() -> int:
                 continue
 
             run_dir = runs_root / task_dir.name / model_name
+            output_dir = artifact_path(run_dir, results_root)
             if run_dir.exists():
                 shutil.rmtree(run_dir)
             run_dir.mkdir(parents=True)
@@ -141,7 +147,7 @@ def main() -> int:
                         model_name=model_name,
                         compile_success=False,
                         run_success=False,
-                        output_dir=str(run_dir),
+                        output_dir=output_dir,
                         notes="compile timeout",
                     )
                 )
@@ -156,7 +162,7 @@ def main() -> int:
                         model_name=model_name,
                         compile_success=False,
                         run_success=False,
-                        output_dir=str(run_dir),
+                        output_dir=output_dir,
                         notes="compile failure",
                     )
                 )
@@ -172,7 +178,7 @@ def main() -> int:
                         model_name=model_name,
                         compile_success=True,
                         run_success=False,
-                        output_dir=str(run_dir),
+                        output_dir=output_dir,
                         notes="run timeout",
                     )
                 )
@@ -186,7 +192,7 @@ def main() -> int:
                     model_name=model_name,
                     compile_success=True,
                     run_success=(run_proc.returncode == 0),
-                    output_dir=str(run_dir),
+                    output_dir=output_dir,
                     notes="pass" if run_proc.returncode == 0 else "runtime failure",
                 )
             )
