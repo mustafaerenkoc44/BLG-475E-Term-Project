@@ -602,41 +602,60 @@ coverage-driven test-generation technique, and a recent systematic
 review. The selection was performed by hand using Google Scholar and IEEE
 Xplore; no LLM was used to surface or summarise the papers.
 
-\textbf{ChatUniTest~\cite{chatunitest}} is an early reference for LLM-based
-unit-test generation. Its main contribution is wrapping the model inside
-a generation--validation--repair loop. The paper argues that raw
-generations are often incomplete or syntactically broken, so validation
-and repair are necessary rather than optional. This directly motivates
-our normalisation plus repair loop in Phase~1.
+\textbf{ChatUniTest~\cite{chatunitest}} is an early reference point for
+unit-test generation using LLMs. The paper has an impressive contribution
+that goes beyond just asking ChatGPT for tests: it wraps the model inside
+a generation--validation--repair loop. The authors contend that
+validation and repair of raw generations are not optional but indeed
+necessary, since the raw outputs are often incomplete or have syntactic
+flaws. This consequently motivates our own normalisation plus repair
+loop in Phase~1: we did not accept generations that looked plausible;
+rather, we accepted them only after they compiled and passed the dataset
+base tests.
 
-\textbf{Meta TestGen-LLM~\cite{metatestgen}} shifts the problem from
-generating tests from scratch to improving existing human-written tests.
-Its lesson is methodological: model output is accepted only after it
-passes build, execution, flakiness and coverage-gain filters. Our
-pipeline uses the same instinct.
+\textbf{Automated Unit Test Improvement using LLMs at
+Meta~\cite{metatestgen}} focuses on improving human-written tests rather
+than generating tests from scratch. The most important lesson is
+methodological: the output of a model is accepted only after it passes
+build, execution, flakiness and coverage-gain filters. This design
+transforms the application of LLMs into an assured engineering workflow
+rather than a mere text-generation task. The design of our Phase~1
+follows the same reasoning: we do not accept generations because they
+look plausible; we accept them only if they compile, pass the dataset
+base tests, and produce measurable branch coverage under JaCoCo.
 
-\textbf{Yang \emph{et al.}~\cite{yang2024}} is a direct empirical
-comparison of multiple open-source LLMs on Java unit-test generation.
-Two findings are relevant: prompt structure materially affects compilation
-and coverage outcomes, and open-source models can be competitive but
-still need additional engineering. Both observations are mirrored by our
-own measurements.
+\textbf{``On the Evaluation of LLMs in Unit Test Generation'' by Yang
+\emph{et al.}~\cite{yang2024}} directly compares various open-source LLMs
+on Java unit-test generation. Two findings from that paper are
+particularly relevant for our work. First, the formulation of the prompt
+is crucial: just the switch of ingredients can change the outcome of
+compilation and coverage. Second, while open-source models can be
+competitive, they still show reliability problems that need further
+engineering. Our findings support both views; the two local coder models
+achieved complete base-test success only after normalisation and
+targeted repair on seven tasks.
 
-\textbf{Panta~\cite{panta2024}} pushes beyond prompt tuning by combining
-LLM generation with static control-flow analysis and dynamic coverage
-feedback. The paper targets exactly the weakness that appears in our
-project: coverage gaps on branch-heavy code. Our improved-test step is a
-simpler instance of the same philosophy.
+\textbf{LLM Test Generation via Iterative Hybrid Program Analysis (Gu
+\emph{et al.}~\cite{panta2024}, Panta)} pushes the literature one step
+beyond prompt tuning, as it combines LLM generation, static control-flow
+analysis, and dynamic coverage feedback. The study is relevant since it
+aims in particular at the weakness that appears in our assignment:
+coverage gaps on branch-heavy code. Panta does not treat the LLM as a
+`one-shot' generator but instead continuously steers test generation
+towards uncovered paths. As part of our improved-test step we utilised
+black-box reasoning combined with branch-coverage information to
+develop targeted tests for missed or poorly exercised behaviour.
 
-\textbf{Tasarsu, Tokmak and Catal~\cite{lit_review}} synthesise 38
-peer-reviewed studies from 2020--2025 in a 2026 \emph{Cluster Computing}
-systematic literature review. Their findings confirm patterns visible in
-our project as well: coverage remains the dominant evaluation metric,
-post-processing and integration logic are common, and
-maintainability/robustness are still weaker than simple coverage
-reporting. We complement coverage with hand-crafted mutation guards in
-Phase~1 and with automated PITest in Phase~2 specifically because of this
-observation.
+\textbf{``Test case generation using LLMs: a Systematic Literature
+Review'' by Tasarsu, Tokmak and Catal~\cite{lit_review}} synthesises 38
+peer-reviewed studies from 2020--2025. The survey results confirm
+several patterns visible in our project. Most of the literature is
+coverage-oriented; post-processing and integration logic are common
+because raw model output is not reliable enough; and maintainability,
+robustness and workflow integration remain weaker than simple coverage
+reporting. This finding helps us interpret our own results: high branch
+coverage is impressive, but by itself it does not allow us to claim that
+a suite is complete or production-ready.
 
 % =====================================================================
 \section{Conclusion}\label{sec:conclusion}
